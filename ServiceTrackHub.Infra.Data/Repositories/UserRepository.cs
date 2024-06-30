@@ -1,0 +1,50 @@
+﻿using Microsoft.EntityFrameworkCore;
+using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Interfaces;
+using ServiceTrackHub.Infra.Data.Context;
+
+namespace ServiceTrackHub.Infra.Data.Repositories
+{
+    public class UserRepository : IUserRepository
+    {
+        ApplicationDbContext _context;
+        public UserRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+        public async Task<User> CreateAsync(User user)
+        {
+            _context.Add(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+           return await _context.Users
+                .AsNoTracking()
+                .ToListAsync();
+            
+        }
+
+        public async Task<User> GetByIdAsync(int? id)
+        {
+            return await _context.Users.FindAsync(id);
+            
+        }
+
+        public async Task<User> RemoveAsync(User user)
+        {
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<User> UpdateAsync(User user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
+    }
+}

@@ -1,0 +1,6 @@
+@ServiceTrackHub.Api_HostAddress = http://localhost:5186
+
+GET {{ServiceTrackHub.Api_HostAddress}}/v1/users/
+Accept: application/json
+
+###
