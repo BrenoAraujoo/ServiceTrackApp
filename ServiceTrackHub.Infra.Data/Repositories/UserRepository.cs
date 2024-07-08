@@ -15,7 +15,7 @@ namespace ServiceTrackHub.Infra.Data.Repositories
         public async Task<User> CreateAsync(User user)
         {
             _context.Add(user);
-            await _context.SaveChangesAsync();
+            var result = await _context.SaveChangesAsync();
             return user;
         }
 
@@ -29,8 +29,8 @@ namespace ServiceTrackHub.Infra.Data.Repositories
 
         public async Task<User> GetByIdAsync(int? id)
         {
-            return await _context.Users.FindAsync(id);
-            
+            var user = await _context.Users.SingleOrDefaultAsync(p => p.Id==id);
+            return user;
         }
 
         public async Task<User> RemoveAsync(User user)

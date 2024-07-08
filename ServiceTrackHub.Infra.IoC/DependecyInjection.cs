@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ServiceTrackHub.Application.Services;
 using ServiceTrackHub.Domain.Interfaces;
 using ServiceTrackHub.Infra.Data.Context;
 using ServiceTrackHub.Infra.Data.Repositories;
+using ServiceTrackHub.Application.Interfaces;
+using ServiceTrackHub.Application.Mappings;
 
 namespace ServiceTrackHub.Infra.IoC
 {
@@ -20,6 +23,12 @@ namespace ServiceTrackHub.Infra.IoC
             services.AddScoped<IServiceRepository, ServiceRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             
+          
+            services.AddScoped<IServiceService, ServiceService>();
+            services.AddScoped<IUserService, UserService>();
+            
+            services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
+
             return services;
         }
     }
