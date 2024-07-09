@@ -4,9 +4,9 @@ using ServiceTrackHub.Domain.Entities;
 
 namespace ServiceTrackHub.Infra.Data.EntitiesConfiguration
 {
-    public class ServiceConfiguration : IEntityTypeConfiguration<Service>
+    public class TasksConfiguration : IEntityTypeConfiguration<Tasks>
     {
-        public void Configure(EntityTypeBuilder<Service> builder)
+        public void Configure(EntityTypeBuilder<Tasks> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id)

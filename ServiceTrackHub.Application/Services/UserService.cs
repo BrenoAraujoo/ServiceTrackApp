@@ -48,7 +48,7 @@ namespace ServiceTrackHub.Application.Services
 
         }
 
-        public async Task Remove(int? id)
+        public async Task Delete(int? id)
         {
             var userEntity = _userRepository.GetByIdAsync(id).Result;
             await _userRepository.RemoveAsync(userEntity);

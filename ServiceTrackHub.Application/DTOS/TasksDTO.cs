@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ServiceTrackHub.Application.DTOS
 {
-    public class ServiceDTO
+    public class TasksDTO
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Name is required")]

@@ -24,7 +24,7 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Services",
+                name: "Tasks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -35,9 +35,9 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.PrimaryKey("PK_Tasks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Services_Users_UserId",
+                        name: "FK_Tasks_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -45,8 +45,8 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Services_UserId",
-                table: "Services",
+                name: "IX_Tasks_UserId",
+                table: "Tasks",
                 column: "UserId");
         }
 
@@ -54,7 +54,7 @@ namespace ServiceTrackHub.Infra.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Services");
+                name: "Tasks");
 
             migrationBuilder.DropTable(
                 name: "Users");

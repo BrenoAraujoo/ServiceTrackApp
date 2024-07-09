@@ -5,40 +5,40 @@ using ServiceTrackHub.Domain.Interfaces;
 
 namespace ServiceTrackHub.Application.Services
 {
-    public class ServiceService : IServiceService
+    public class TasksService : ITasksService
     {
-        private IServiceRepository _serviceRepository;
+        private ITasksRepository _tasksRepository;
         private IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        public ServiceService(IServiceRepository serviceRepository, IMapper mapper, IUserRepository userRepository)
+        public TasksService(ITasksRepository taskRepository, IMapper mapper, IUserRepository userRepository)
         {
-            _serviceRepository = serviceRepository;
+            _tasksRepository = taskRepository;
             _userRepository = userRepository;
             _mapper = mapper;
         }
 
 
-        public async Task<IEnumerable<ServiceDTO>> GetServices()
+        public async Task<IEnumerable<TasksDTO>> GetServices()
         {
             return null;
         }
-        public async Task<ServiceDTO> Create(ServiceDTO serviceDTO)
+        public async Task<TasksDTO> Create(TasksDTO serviceDTO)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ServiceDTO> GetById(int? id)
+        public async Task<TasksDTO> GetById(int? id)
         {
             throw new NotImplementedException();
         }
 
 
-        public async Task<ServiceDTO> Remove(int? id)
+        public async Task<TasksDTO> Remove(int? id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ServiceDTO> Update(ServiceDTO serviceDTO)
+        public async Task<TasksDTO> Update(TasksDTO serviceDTO)
         {
             throw new NotImplementedException();
         }

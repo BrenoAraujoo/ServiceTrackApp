@@ -21,7 +21,7 @@ namespace ServiceTrackHub.Infra.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.Service", b =>
+            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.Tasks", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,7 +46,7 @@ namespace ServiceTrackHub.Infra.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Services");
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("ServiceTrackHub.Domain.Entities.User", b =>
@@ -67,7 +67,7 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.Service", b =>
+            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.Tasks", b =>
                 {
                     b.HasOne("ServiceTrackHub.Domain.Entities.User", "User")
                         .WithMany("Services")

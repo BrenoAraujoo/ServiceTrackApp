@@ -4,7 +4,7 @@
     {
         public int Id { get;  set; }
         public string Name { get;  set; }
-        public ICollection<Service> Services { get;  set; }
+        public ICollection<Tasks> Services { get;  set; }
 
     }
 }

@@ -20,11 +20,11 @@ namespace ServiceTrackHub.Infra.IoC
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), 
                 b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             
-            services.AddScoped<IServiceRepository, ServiceRepository>();
+            services.AddScoped<ITasksRepository, TasksRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             
           
-            services.AddScoped<IServiceService, ServiceService>();
+            services.AddScoped<ITasksService, TasksService>();
             services.AddScoped<IUserService, UserService>();
             
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
