@@ -17,7 +17,9 @@ namespace ServiceTrackHub.Application.Mappings
             */
 
 
-            CreateMap<Domain.Entities.Tasks, TasksDTO>().ReverseMap();
+            CreateMap<Tasks, TasksDTORequest>().ReverseMap();
+            CreateMap<Tasks, TasksDTOResponse>();
+
         }
     }
 }

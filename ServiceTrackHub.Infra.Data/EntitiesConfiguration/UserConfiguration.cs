@@ -16,9 +16,10 @@ namespace ServiceTrackHub.Infra.Data.EntitiesConfiguration
                 .UseIdentityColumn();
 
             builder
-                .HasMany(x => x.Services)
+                .HasMany(x => x.Tasks)
                 .WithOne(x => x.User)
-                .HasForeignKey(x => x.UserId); // Chave estrangeira é a propriedade de navegação UserId
+                .OnDelete(DeleteBehavior.Restrict);
+                
 
         }
     }

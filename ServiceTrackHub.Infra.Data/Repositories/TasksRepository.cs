@@ -29,7 +29,9 @@ namespace ServiceTrackHub.Infra.Data.Repositories
 
         public async Task<Tasks> GetByIdAsync(int? id)
         {
-            return await _context.Tasks.FindAsync(id);
+            return await _context.Tasks
+                .AsNoTracking()
+                .SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<Tasks>> GetServicesByUserIdAsync(int userId)

@@ -50,8 +50,8 @@ namespace ServiceTrackHub.Application.Services
 
         public async Task Delete(int? id)
         {
-            var userEntity = _userRepository.GetByIdAsync(id).Result;
-            await _userRepository.RemoveAsync(userEntity);
+            var userDomain = await _userRepository.GetByIdAsync(id);
+            await _userRepository.RemoveAsync(userDomain);
         }
     }
 }

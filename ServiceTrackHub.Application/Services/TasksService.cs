@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ServiceTrackHub.Application.DTOS;
 using ServiceTrackHub.Application.Interfaces;
+using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
 
 namespace ServiceTrackHub.Application.Services
@@ -18,29 +19,39 @@ namespace ServiceTrackHub.Application.Services
         }
 
 
-        public async Task<IEnumerable<TasksDTO>> GetServices()
+        public async Task<IEnumerable<TasksDTOResponse>> GetTasks()
         {
-            return null;
+            var taskDomain = await _tasksRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<TasksDTOResponse>>(taskDomain);
         }
-        public async Task<TasksDTO> Create(TasksDTO serviceDTO)
+        public async Task<TasksDTOResponse> Create(TasksDTORequest tasksDTORequest)
         {
-            throw new NotImplementedException();
-        }
+            var taskDomain = _mapper.Map<Tasks>(tasksDTORequest);
+            await _tasksRepository.CreateAsync(taskDomain);
+            return _mapper.Map<TasksDTOResponse>(taskDomain);
 
-        public async Task<TasksDTO> GetById(int? id)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public async Task<TasksDTO> Remove(int? id)
-        {
-            throw new NotImplementedException();
         }
 
-        public async Task<TasksDTO> Update(TasksDTO serviceDTO)
+        public async Task<TasksDTOResponse> GetById(int? id)
         {
-            throw new NotImplementedException();
+            var taskDomain = await _tasksRepository.GetByIdAsync(id);
+            return _mapper.Map<TasksDTOResponse>(taskDomain) ;
+        }
+
+
+        public async Task Delete(int? id)
+        {
+            var taskDomain = await _tasksRepository.GetByIdAsync(id);
+            await _tasksRepository.RemoveAsync(taskDomain);
+        }
+
+        public async Task<TasksDTOResponse> Update(int? taskId, TasksDTORequest tasksDTO)
+        {
+            var taskDomain = await _tasksRepository.GetByIdAsync(taskId);
+            _mapper.Map(taskDomain, tasksDTO);
+            await _tasksRepository.UpdateAsync(taskDomain);
+            return _mapper.Map<TasksDTOResponse>(taskDomain);
+
         }
     }
 }

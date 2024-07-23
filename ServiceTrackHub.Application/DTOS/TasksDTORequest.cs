@@ -8,14 +8,12 @@ using System.Threading.Tasks;
 
 namespace ServiceTrackHub.Application.DTOS
 {
-    public class TasksDTO
+    public class TasksDTORequest
     {
-        public int Id { get; set; }
-        [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
-        [Required(ErrorMessage ="User is required")]
+        [Required(ErrorMessage ="User Id is required")]
         public int UserId { get; set; }
     }
 }

@@ -15,7 +15,11 @@ namespace ServiceTrackHub.Infra.Data.EntitiesConfiguration
             builder.Property(x => x.Name).HasMaxLength(30).IsRequired();
             builder.Property(x => x.Description).HasMaxLength(100).IsRequired();
 
-            builder.HasOne(x => x.User).WithMany(x => x.Services).HasForeignKey(x => x.UserId);
+            builder.HasOne(x => x.User)
+                .WithMany(x => x.Tasks)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
         }
     }
 }
