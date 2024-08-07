@@ -1,6 +1,6 @@
-﻿namespace ServiceTrackHub.Application.DTOS
+﻿namespace ServiceTrackHub.Application.ViewModel.Task
 {
-    public class TasksDTOResponse
+    public record TasksViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

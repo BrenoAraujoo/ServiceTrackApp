@@ -1,8 +1,14 @@
 ﻿using AutoMapper;
-using ServiceTrackHub.Application.DTOS;
+using ServiceTrackHub.Application.InputViewModel.User;
 using ServiceTrackHub.Application.Interfaces;
+using ServiceTrackHub.Application.ViewModel;
+using ServiceTrackHub.Application.ViewModel.User;
 using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using ServiceTrackHub.Domain;
+using ServiceTrackHub.Domain.Common.Result;
+using ServiceTrackHub.Domain.Common.Erros;
 
 namespace ServiceTrackHub.Application.Services
 {
@@ -17,34 +23,35 @@ namespace ServiceTrackHub.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<UserDTOResponse>> GetUsers()
+        public async Task<ResponseViewModel<IEnumerable<UserViewModel>>> GetUsers()
         {
             var usersEntity = await _userRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<UserDTOResponse>>(usersEntity);  
+            var result = _mapper.Map<IEnumerable<UserViewModel>>(usersEntity);
+            return new ResponseViewModel<IEnumerable<UserViewModel>>(result);
         }
 
-        public async Task<UserDTOResponse> GetById(int? id)
+        public async Task<UserViewModel> GetById(int? id)
         {
             var user = await _userRepository.GetByIdAsync(id);
-            return _mapper.Map<UserDTOResponse>(user);
+            return _mapper.Map<UserViewModel>(user);
         }
 
-        public async Task<UserDTOResponse> Create(UserDTORequest UserDTO)
+        public async Task<UserViewModel> Create(CreateUserInputModel UserDTO)
         {
             var userEntity = _mapper.Map<User>(UserDTO);
             await _userRepository.CreateAsync(userEntity);
-            return _mapper.Map<UserDTOResponse>(userEntity);
+            return _mapper.Map<UserViewModel>(userEntity);
             
         }
 
-        public async Task<UserDTOResponse> Update(int? id, UserDTORequest userDTORequest)
+        public async Task<UserViewModel> Update(int? id, CreateUserInputModel userDTORequest)
         {
             var userEntity = await _userRepository.GetByIdAsync(id);
 
             _mapper.Map(userDTORequest,userEntity);
             await  _userRepository.UpdateAsync(userEntity);
             
-            return _mapper.Map<UserDTOResponse>(userEntity);
+            return _mapper.Map<UserViewModel>(userEntity);
 
         }
 
@@ -52,6 +59,17 @@ namespace ServiceTrackHub.Application.Services
         {
             var userDomain = await _userRepository.GetByIdAsync(id);
             await _userRepository.RemoveAsync(userDomain);
+        }
+
+        public async Task<Result> Teste(int? id)
+        {
+            var user  = await _userRepository.GetByIdAsync(id);
+            if (user is null)
+            {
+                return Result.Failure(new Error("xxx","Description"));
+
+            }
+            return Result.Sucess();
         }
     }
 }

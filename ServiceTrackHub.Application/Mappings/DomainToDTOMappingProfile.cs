@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
-using ServiceTrackHub.Application.DTOS;
+using ServiceTrackHub.Application.InputViewModel.Task;
+using ServiceTrackHub.Application.InputViewModel.User;
+using ServiceTrackHub.Application.ViewModel.Task;
+using ServiceTrackHub.Application.ViewModel.User;
 using ServiceTrackHub.Domain.Entities;
 
 namespace ServiceTrackHub.Application.Mappings
@@ -8,8 +11,8 @@ namespace ServiceTrackHub.Application.Mappings
     {
         public DomainToDTOMappingProfile()
         {
-            CreateMap<User, UserDTORequest>().ReverseMap();
-            CreateMap<User, UserDTOResponse>();
+            CreateMap<User, CreateUserInputModel>().ReverseMap();
+            CreateMap<User, UserViewModel>();
 
             /*
             CreateMap<UserDTORequest, User>()
@@ -17,8 +20,8 @@ namespace ServiceTrackHub.Application.Mappings
             */
 
 
-            CreateMap<Tasks, TasksDTORequest>().ReverseMap();
-            CreateMap<Tasks, TasksDTOResponse>();
+            CreateMap<Tasks, TasksInputViewModel>().ReverseMap();
+            CreateMap<Tasks, TasksViewModel>();
 
         }
     }

@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ServiceTrackHub.Application.DTOS;
+using ServiceTrackHub.Application.Extensions;
+using ServiceTrackHub.Application.InputViewModel.Task;
 using ServiceTrackHub.Application.Interfaces;
+using ServiceTrackHub.Application.ViewModel;
+using ServiceTrackHub.Application.ViewModel.Task;
 
 namespace ServiceTrackHub.Api.Controllers
 {
@@ -32,15 +35,20 @@ namespace ServiceTrackHub.Api.Controllers
         }
 
         [HttpPost("v1/tasks")]
-        public async Task<ActionResult> Create([FromBody] TasksDTORequest tasksDTORequest)
+        public async Task<ActionResult> Create([FromBody] TasksInputViewModel tasksDTORequest)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new ResponseViewModel<string>(ModelState.GetErrors()));
+            }
 
             var result = await _tasksService.Create(tasksDTORequest);
-            return Ok(result);
+
+            return Ok(new ResponseViewModel<TasksViewModel>(result));
 
         }
         [HttpPut("v1/tasks/{id:int}")]
-        public async Task<ActionResult> Update([FromRoute] int? id, [FromBody] TasksDTORequest tasksDTORequest)
+        public async Task<ActionResult> Update([FromRoute] int? id, [FromBody] TasksInputViewModel tasksDTORequest)
         {
             var task = await _tasksService.Update(id, tasksDTORequest);
             return Ok(task);

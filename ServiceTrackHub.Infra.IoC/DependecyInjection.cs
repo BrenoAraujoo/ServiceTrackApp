@@ -28,7 +28,6 @@ namespace ServiceTrackHub.Infra.IoC
             services.AddScoped<IUserService, UserService>();
             
             services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
-
             return services;
         }
     }

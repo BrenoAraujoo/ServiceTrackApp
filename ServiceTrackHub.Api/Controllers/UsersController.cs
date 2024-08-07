@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ServiceTrackHub.Application.DTOS;
+using ServiceTrackHub.Application.InputViewModel.User;
 using ServiceTrackHub.Application.Interfaces;
+using ServiceTrackHub.Application.ViewModel;
+using ServiceTrackHub.Application.ViewModel.User;
 
 namespace ServiceTrackHub.Api.Controllers
 {
@@ -28,17 +30,26 @@ namespace ServiceTrackHub.Api.Controllers
             return Ok(result);
         }
         [HttpPost("v1/users")]
-        public async Task<ActionResult> Create(UserDTORequest user)
+        public async Task<ActionResult> Create(CreateUserInputModel user)
         {
-            return Ok(await _userService.Create(user));
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+
+                //return BadRequest(new ResponseViewModel<List<UserViewModel>>(ModelState.GetErrors()));
+            }
+            var result = await _userService.Create(user);
+ 
+
+            return Ok(new ResponseViewModel<UserViewModel>(result));
 
         }
         
         [HttpPut("v1/users/{id:int}")]
-        public async Task<ActionResult> Update([FromRoute]int? id, [FromBody]UserDTORequest userDTO)
+        public async Task<ActionResult> Update([FromRoute]int? id, [FromBody]CreateUserInputModel userDTO)
         {
             var user = await _userService.Update(id, userDTO);
-            return Ok(user);
+            return Ok(new ResponseViewModel<UserViewModel>(user));
         }
 
         [HttpDelete("v1/users/{id:int}")]
@@ -47,6 +58,17 @@ namespace ServiceTrackHub.Api.Controllers
             await _userService.Delete(id);
             return NoContent();
         }
+
+        [HttpGet("teste/{id:int}")]
+        public async Task<IActionResult>Teste(int id)
+        {
+            var result =  await _userService.Teste(id);
+            return result.IsSuccess ? Ok(result) : NotFound(result);
+            
+            //return Ok(result);
+
+        }
+        
 
         
     }
