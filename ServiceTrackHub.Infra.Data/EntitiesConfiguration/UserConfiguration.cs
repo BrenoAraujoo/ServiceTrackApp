@@ -13,6 +13,12 @@ namespace ServiceTrackHub.Infra.Data.EntitiesConfiguration
             builder.ToTable("users");
             builder.Property(x => x.Name).HasMaxLength(50)
                 .IsRequired();
+            builder.Property(x => x.Email).HasMaxLength(40)
+                .IsRequired();
+            builder.Property(x => x.Password).HasMaxLength(50)
+                .IsRequired();
+            builder.Property(x => x.Phone).HasMaxLength(11)
+                .IsRequired();
             builder.Property(x => x.Id)
                 .ValueGeneratedNever();
 
@@ -21,7 +27,6 @@ namespace ServiceTrackHub.Infra.Data.EntitiesConfiguration
                 .WithOne(x => x.User)
                 .OnDelete(DeleteBehavior.Restrict);
                 
-
         }
     }
 }

@@ -7,7 +7,7 @@ namespace ServiceTrackHub.Application.Interfaces
 {
     public interface IUserService
     {
-        Task<ResponseViewModel<IEnumerable<UserViewModel>>> GetUsers();
+        Task<ResponseViewModel<List<UserViewModel>>> GetUsers();
         Task<UserViewModel> GetById(Guid? id);
         Task<UserViewModel> Create(CreateUserInputModel UserDTO);
         Task<UserViewModel> Update(Guid? id, CreateUserInputModel UserDTO);

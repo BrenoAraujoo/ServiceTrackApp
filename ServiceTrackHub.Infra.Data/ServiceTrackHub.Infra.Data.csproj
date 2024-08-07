@@ -22,4 +22,8 @@
     <ProjectReference Include="..\ServiceTrackHub.Domain\ServiceTrackHub.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

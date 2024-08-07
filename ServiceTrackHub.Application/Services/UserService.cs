@@ -23,11 +23,11 @@ namespace ServiceTrackHub.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<ResponseViewModel<IEnumerable<UserViewModel>>> GetUsers()
+        public async Task<ResponseViewModel<List<UserViewModel>>> GetUsers()
         {
             var usersEntity = await _userRepository.GetAllAsync();
-            var result = _mapper.Map<IEnumerable<UserViewModel>>(usersEntity);
-            return new ResponseViewModel<IEnumerable<UserViewModel>>(result);
+            var result = _mapper.Map<List<UserViewModel>>(usersEntity);
+            return new ResponseViewModel<List<UserViewModel>>(result);
         }
 
         public async Task<UserViewModel> GetById(Guid? id)
