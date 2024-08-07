@@ -6,10 +6,10 @@ namespace ServiceTrackHub.Application.Interfaces
     public interface ITasksService
     {
         Task<IEnumerable<TasksViewModel>> GetTasks();
-        Task<TasksViewModel> GetById(int? id);
+        Task<TasksViewModel> GetById(Guid? id);
         Task<TasksViewModel> Create(TasksInputViewModel serviceDTO);
-        Task<TasksViewModel> Update(int? taskId, TasksInputViewModel serviceDTO);
-        Task Delete(int? id);
+        Task<TasksViewModel> Update(Guid? taskId, TasksInputViewModel serviceDTO);
+        Task Delete(Guid? id);
 
     }
 }

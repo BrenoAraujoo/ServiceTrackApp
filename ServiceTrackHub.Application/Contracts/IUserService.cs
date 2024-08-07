@@ -8,10 +8,9 @@ namespace ServiceTrackHub.Application.Interfaces
     public interface IUserService
     {
         Task<ResponseViewModel<IEnumerable<UserViewModel>>> GetUsers();
-        Task<Result> Teste(int ? id);
-        Task<UserViewModel> GetById(int? id);
+        Task<UserViewModel> GetById(Guid? id);
         Task<UserViewModel> Create(CreateUserInputModel UserDTO);
-        Task<UserViewModel> Update(int? id, CreateUserInputModel UserDTO);
-        Task Delete(int? id);
+        Task<UserViewModel> Update(Guid? id, CreateUserInputModel UserDTO);
+        Task Delete(Guid? id);
     }
 }

@@ -27,8 +27,8 @@ namespace ServiceTrackHub.Api.Controllers
 
         }
 
-        [HttpGet("v1/taksk/{id:int}")]
-        public async Task<ActionResult> GetTaskById(int? id)
+        [HttpGet("v1/taksk/{id}")]
+        public async Task<ActionResult> GetTaskById(Guid? id)
         {
             var result = await _tasksService.GetById(id);
             return Ok(result);
@@ -47,15 +47,15 @@ namespace ServiceTrackHub.Api.Controllers
             return Ok(new ResponseViewModel<TasksViewModel>(result));
 
         }
-        [HttpPut("v1/tasks/{id:int}")]
-        public async Task<ActionResult> Update([FromRoute] int? id, [FromBody] TasksInputViewModel tasksDTORequest)
+        [HttpPut("v1/tasks/{id}")]
+        public async Task<ActionResult> Update([FromRoute] Guid? id, [FromBody] TasksInputViewModel tasksDTORequest)
         {
             var task = await _tasksService.Update(id, tasksDTORequest);
             return Ok(task);
         }
 
-        [HttpDelete("v1/tasks/{id:int}")]
-        public async Task<ActionResult> Delete([FromRoute] int? id)
+        [HttpDelete("v1/tasks/{id}")]
+        public async Task<ActionResult> Delete([FromRoute] Guid? id)
         {
             await _tasksService.Delete(id);
             return NoContent();

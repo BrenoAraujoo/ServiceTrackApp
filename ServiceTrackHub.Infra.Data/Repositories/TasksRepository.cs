@@ -20,21 +20,21 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             return tasks;
         }
 
-        public async Task<IEnumerable<Tasks>> GetAllAsync()
+        public async Task<List<Tasks>> GetAllAsync()
         {
             return await _context.Tasks
                 .AsNoTracking()
                 .ToListAsync(); 
         }
 
-        public async Task<Tasks> GetByIdAsync(int? id)
+        public async Task<Tasks> GetByIdAsync(Guid? id)
         {
             return await _context.Tasks
                 .AsNoTracking()
-                .SingleOrDefaultAsync(x => x.Id == id);
+                .SingleOrDefaultAsync(x => x.TaskId == id);
         }
 
-        public async Task<IEnumerable<Tasks>> GetServicesByUserIdAsync(int userId)
+        public async Task<List<Tasks>> GetServicesByUserIdAsync(Guid? userId)
         {   
                                            //Eager loading
             return await _context.Tasks.Include(u => u.User)

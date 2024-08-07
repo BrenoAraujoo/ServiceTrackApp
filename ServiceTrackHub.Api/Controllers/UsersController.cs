@@ -23,8 +23,8 @@ namespace ServiceTrackHub.Api.Controllers
 
         }
 
-        [HttpGet("v1/users/{id:int}")]
-        public async Task<ActionResult> GetUserById(int? id)
+        [HttpGet("v1/users/{id}")]
+        public async Task<ActionResult> GetUserById(Guid? id)
         {
             var result = await _userService.GetById(id);
             return Ok(result);
@@ -45,31 +45,19 @@ namespace ServiceTrackHub.Api.Controllers
 
         }
         
-        [HttpPut("v1/users/{id:int}")]
-        public async Task<ActionResult> Update([FromRoute]int? id, [FromBody]CreateUserInputModel userDTO)
+        [HttpPut("v1/users/{id}")]
+        public async Task<ActionResult> Update([FromRoute]Guid? id, [FromBody]CreateUserInputModel userDTO)
         {
             var user = await _userService.Update(id, userDTO);
             return Ok(new ResponseViewModel<UserViewModel>(user));
         }
 
-        [HttpDelete("v1/users/{id:int}")]
-        public async Task<ActionResult> Delete([FromRoute] int? id)
+        [HttpDelete("v1/users/{id}")]
+        public async Task<ActionResult> Delete([FromRoute] Guid? id)
         {
             await _userService.Delete(id);
             return NoContent();
         }
-
-        [HttpGet("teste/{id:int}")]
-        public async Task<IActionResult>Teste(int id)
-        {
-            var result =  await _userService.Teste(id);
-            return result.IsSuccess ? Ok(result) : NotFound(result);
-            
-            //return Ok(result);
-
-        }
-        
-
-        
+ 
     }
 }

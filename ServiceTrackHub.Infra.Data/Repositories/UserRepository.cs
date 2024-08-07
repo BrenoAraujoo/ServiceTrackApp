@@ -19,7 +19,7 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             return user;
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<List<User>> GetAllAsync()
         {
            return await _context.Users
                 .AsNoTracking()
@@ -27,7 +27,7 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             
         }
 
-        public async Task<User> GetByIdAsync(int? id)
+        public async Task<User> GetByIdAsync(Guid? id)
         {
             var user = await _context.Users
                 .AsNoTracking()
@@ -48,5 +48,6 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             await _context.SaveChangesAsync();
             return user;
         }
+
     }
 }

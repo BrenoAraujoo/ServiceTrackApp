@@ -8,12 +8,19 @@ namespace ServiceTrackHub.Infra.Data.EntitiesConfiguration
     {
         public void Configure(EntityTypeBuilder<Tasks> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id)
-                .UseIdentityColumn();
+            builder.ToTable("tasks");
+            builder.HasKey(x => x.TaskId);
+            builder.Property(x => x.TaskId)
+                .ValueGeneratedNever();
 
-            builder.Property(x => x.Name).HasMaxLength(30).IsRequired();
-            builder.Property(x => x.Description).HasMaxLength(100).IsRequired();
+            builder.HasOne(x => x.TaskType)
+                .WithMany()
+                .HasForeignKey(x => x.TaskTypeId);
+
+
+            builder.Property(x => x.Description)
+                .HasMaxLength(100)
+                .IsRequired();
 
             builder.HasOne(x => x.User)
                 .WithMany(x => x.Tasks)

@@ -33,20 +33,20 @@ namespace ServiceTrackHub.Application.Services
 
         }
 
-        public async Task<TasksViewModel> GetById(int? id)
+        public async Task<TasksViewModel> GetById(Guid? id)
         {
             var taskDomain = await _tasksRepository.GetByIdAsync(id);
             return _mapper.Map<TasksViewModel>(taskDomain) ;
         }
 
 
-        public async Task Delete(int? id)
+        public async Task Delete(Guid? id)
         {
             var taskDomain = await _tasksRepository.GetByIdAsync(id);
             await _tasksRepository.RemoveAsync(taskDomain);
         }
 
-        public async Task<TasksViewModel> Update(int? taskId, TasksInputViewModel tasksDTO)
+        public async Task<TasksViewModel> Update(Guid? taskId, TasksInputViewModel tasksDTO)
         {
             var taskDomain = await _tasksRepository.GetByIdAsync(taskId);
             _mapper.Map(taskDomain, tasksDTO);

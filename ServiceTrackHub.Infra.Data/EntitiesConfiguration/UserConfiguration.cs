@@ -10,10 +10,11 @@ namespace ServiceTrackHub.Infra.Data.EntitiesConfiguration
         {
             //Primary Key
             builder.HasKey(x => x.Id);
+            builder.ToTable("users");
             builder.Property(x => x.Name).HasMaxLength(50)
                 .IsRequired();
             builder.Property(x => x.Id)
-                .UseIdentityColumn();
+                .ValueGeneratedNever();
 
             builder
                 .HasMany(x => x.Tasks)

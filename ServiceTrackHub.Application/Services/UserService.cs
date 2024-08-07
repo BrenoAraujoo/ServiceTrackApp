@@ -30,7 +30,7 @@ namespace ServiceTrackHub.Application.Services
             return new ResponseViewModel<IEnumerable<UserViewModel>>(result);
         }
 
-        public async Task<UserViewModel> GetById(int? id)
+        public async Task<UserViewModel> GetById(Guid? id)
         {
             var user = await _userRepository.GetByIdAsync(id);
             return _mapper.Map<UserViewModel>(user);
@@ -44,7 +44,7 @@ namespace ServiceTrackHub.Application.Services
             
         }
 
-        public async Task<UserViewModel> Update(int? id, CreateUserInputModel userDTORequest)
+        public async Task<UserViewModel> Update(Guid? id, CreateUserInputModel userDTORequest)
         {
             var userEntity = await _userRepository.GetByIdAsync(id);
 
@@ -55,21 +55,10 @@ namespace ServiceTrackHub.Application.Services
 
         }
 
-        public async Task Delete(int? id)
+        public async Task Delete(Guid? id)
         {
             var userDomain = await _userRepository.GetByIdAsync(id);
             await _userRepository.RemoveAsync(userDomain);
-        }
-
-        public async Task<Result> Teste(int? id)
-        {
-            var user  = await _userRepository.GetByIdAsync(id);
-            if (user is null)
-            {
-                return Result.Failure(new Error("xxx","Description"));
-
-            }
-            return Result.Sucess();
         }
     }
 }
