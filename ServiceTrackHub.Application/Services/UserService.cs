@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using ServiceTrackHub.Application.InputViewModel.User;
 using ServiceTrackHub.Application.Interfaces;
-using ServiceTrackHub.Application.ViewModel;
 using ServiceTrackHub.Application.ViewModel.User;
 using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using ServiceTrackHub.Domain;
 using ServiceTrackHub.Domain.Common.Result;
 using ServiceTrackHub.Domain.Common.Erros;
 
@@ -23,24 +20,35 @@ namespace ServiceTrackHub.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<ResponseViewModel<List<UserViewModel>>> GetUsers()
+        public async Task<Result<List<UserViewModel?>>> GetUsers()
         {
             var usersEntity = await _userRepository.GetAllAsync();
-            var result = _mapper.Map<List<UserViewModel>>(usersEntity);
-            return new ResponseViewModel<List<UserViewModel>>(result);
+            var users = _mapper.Map<List<UserViewModel?>>(usersEntity);
+
+            return users is not null ?
+                Result<List<UserViewModel?>>.Success(users):
+                Result<List<UserViewModel?>>.Failure(new Error("xx","description"));
         }
 
-        public async Task<UserViewModel> GetById(Guid? id)
+        public async Task<Result<UserViewModel?>> GetById(Guid? id)
         {
             var user = await _userRepository.GetByIdAsync(id);
-            return _mapper.Map<UserViewModel>(user);
+            var userModel = _mapper.Map<UserViewModel?>(user);
+
+            return userModel is not null ?
+                    Result<UserViewModel?>.Success(userModel) :
+                    Result<UserViewModel?>.Failure(ErrorMessages.NotFound(id, nameof(user)));
         }
 
-        public async Task<UserViewModel> Create(CreateUserInputModel UserDTO)
+        public async Task<Result<UserViewModel?>> Create(CreateUserInputModel UserDTO)
         {
+            if (UserDTO == null)
+                return Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(UserDTO)));
+
             var userEntity = _mapper.Map<User>(UserDTO);
             await _userRepository.CreateAsync(userEntity);
-            return _mapper.Map<UserViewModel>(userEntity);
+            var userModel = _mapper.Map<UserViewModel>(userEntity);
+            return Result<UserViewModel?>.Success(userModel);
             
         }
 

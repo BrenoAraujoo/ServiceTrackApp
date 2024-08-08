@@ -3,6 +3,8 @@ using ServiceTrackHub.Application.InputViewModel.User;
 using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.ViewModel;
 using ServiceTrackHub.Application.ViewModel.User;
+using ServiceTrackHub.Domain.Common.Erros;
+using ServiceTrackHub.Domain.Common.Result;
 
 namespace ServiceTrackHub.Api.Controllers
 {
@@ -30,18 +32,20 @@ namespace ServiceTrackHub.Api.Controllers
             return Ok(result);
         }
         [HttpPost("v1/users")]
-        public async Task<ActionResult> Create(CreateUserInputModel user)
+        public async Task<ActionResult> Create(CreateUserInputModel userInputModel)
         {
+
             if (!ModelState.IsValid)
             {
+                //return BadRequest(Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInputModel))));
                 return BadRequest(ModelState);
-
-                //return BadRequest(new ResponseViewModel<List<UserViewModel>>(ModelState.GetErrors()));
             }
-            var result = await _userService.Create(user);
- 
+            var result = await _userService.Create(userInputModel);
 
-            return Ok(new ResponseViewModel<UserViewModel>(result));
+            if(result.IsFailure)
+                return BadRequest(result);
+ 
+            return Ok(result);
 
         }
         
