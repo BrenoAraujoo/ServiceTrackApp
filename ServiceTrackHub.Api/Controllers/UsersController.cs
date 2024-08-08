@@ -37,8 +37,16 @@ namespace ServiceTrackHub.Api.Controllers
 
             if (!ModelState.IsValid)
             {
+
+                var erros = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
                 //return BadRequest(Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInputModel))));
-                return BadRequest(ModelState);
+                return BadRequest(Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInputModel),erros)));
+               
+                
             }
             var result = await _userService.Create(userInputModel);
 

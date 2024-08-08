@@ -27,14 +27,20 @@ namespace ServiceTrackHub.Domain.Common.Result
     public class Result<T> : Result
     {
 
-        public T Value { get; }
+        public T Data { get; }
 
         private Result(T value, bool isSuccess, Error error) : base(isSuccess, error)
         {
-            Value = value;
+            Data = value;
+        }       
+        private Result(T value, bool isSuccess, Error error, List<string?> erros) : base(isSuccess, error)
+        {
+            Data = value;
         }
+        
         public static Result<T> Success(T value) => new Result<T>(value, true, Error.None);
         public new static Result<T> Failure(Error error) => new Result<T>(default(T), false, error);
+        public new static Result<T> Failure(Error erro, List<string?> erros) => new Result<T>(default(T), default, erro, erros);
     }
 
 
