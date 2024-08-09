@@ -20,17 +20,17 @@ namespace ServiceTrackHub.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<Result<List<UserViewModel?>>> GetUsers()
+        public async Task<Result> GetAll()
         {
             var usersEntity = await _userRepository.GetAllAsync();
             var users = _mapper.Map<List<UserViewModel?>>(usersEntity);
 
             return users is not null ?
                 Result<List<UserViewModel?>>.Success(users):
-                Result<List<UserViewModel?>>.Failure(new Error("xx","description"));
+                Result<List<UserViewModel?>>.Failure(ErrorMessages.NotFound(nameof(usersEntity)));
         }
 
-        public async Task<Result<UserViewModel?>> GetById(Guid? id)
+        public async Task<Result> GetById(Guid? id)
         {
             var user = await _userRepository.GetByIdAsync(id);
             var userModel = _mapper.Map<UserViewModel?>(user);
@@ -40,9 +40,9 @@ namespace ServiceTrackHub.Application.Services
                     Result<UserViewModel?>.Failure(ErrorMessages.NotFound(id, nameof(user)));
         }
 
-        public async Task<Result<UserViewModel?>> Create(CreateUserInputModel UserDTO)
+        public async Task<Result> Create(CreateUserInputModel UserDTO)
         {
-            if (UserDTO == null)
+            if (UserDTO is null)
                 return Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(UserDTO)));
 
             var userEntity = _mapper.Map<User>(UserDTO);
@@ -52,21 +52,31 @@ namespace ServiceTrackHub.Application.Services
             
         }
 
-        public async Task<UserViewModel> Update(Guid? id, CreateUserInputModel userDTORequest)
+        public async Task<Result> Update(Guid? id, UpdateUserInputModel userInput)
         {
-            var userEntity = await _userRepository.GetByIdAsync(id);
+            if(userInput is null)
+                return Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInput)));
 
-            _mapper.Map(userDTORequest,userEntity);
+            var userEntity = await _userRepository.GetByIdAsync(id);
+            if(userEntity is null)
+                return Result<UserViewModel?>.Failure(ErrorMessages.NotFound($"{nameof(userInput)}"));
+
+            _mapper.Map(userInput,userEntity);
             await  _userRepository.UpdateAsync(userEntity);
             
-            return _mapper.Map<UserViewModel>(userEntity);
+            var userModel = _mapper.Map<UserViewModel>(userEntity);
+            
+            return Result<UserViewModel?>.Success(userModel);
 
         }
 
-        public async Task Delete(Guid? id)
+        public async Task<Result> Delete(Guid? id)
         {
-            var userDomain = await _userRepository.GetByIdAsync(id);
-            await _userRepository.RemoveAsync(userDomain);
+            var userEntity = await _userRepository.GetByIdAsync(id);
+            if (userEntity is null)
+                return Result<UserViewModel>.Failure(ErrorMessages.NotFound(nameof(userEntity)));
+            await _userRepository.RemoveAsync(userEntity);
+            return Result.Success();
         }
     }
 }

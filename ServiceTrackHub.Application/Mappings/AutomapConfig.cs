@@ -7,11 +7,19 @@ using ServiceTrackHub.Domain.Entities;
 
 namespace ServiceTrackHub.Application.Mappings
 {
-    public class DomainToDTOMappingProfile : Profile
+    public class AutomapConfig : Profile
     {
-        public DomainToDTOMappingProfile()
+        public AutomapConfig()
         {
+            CreateMap<UpdateUserInputModel, User>()
+                    .ForAllMembers(opt => opt.Condition((
+                        src, dest, srcMember) =>
+                        !string.IsNullOrEmpty(srcMember?.ToString()))
+                        );
+
+
             CreateMap<User, CreateUserInputModel>().ReverseMap();
+            //CreateMap<User, UpdateUserInputModel>().ReverseMap();
             CreateMap<User, UserViewModel>();
 
             /*
@@ -20,7 +28,7 @@ namespace ServiceTrackHub.Application.Mappings
             */
 
 
-            CreateMap<Tasks, TasksInputViewModel>().ReverseMap();
+            CreateMap<Tasks, TasksInputModel>().ReverseMap();
             CreateMap<Tasks, TasksViewModel>();
 
         }

@@ -2,6 +2,8 @@
 using ServiceTrackHub.Application.InputViewModel.Task;
 using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.ViewModel.Task;
+using ServiceTrackHub.Domain.Common.Erros;
+using ServiceTrackHub.Domain.Common.Result;
 using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
 
@@ -20,38 +22,56 @@ namespace ServiceTrackHub.Application.Services
         }
 
 
-        public async Task<IEnumerable<TasksViewModel>> GetTasks()
+        public async Task<Result> GetAll()
         {
             var taskDomain = await _tasksRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<TasksViewModel>>(taskDomain);
+            var taskModel = _mapper.Map<List<TasksViewModel>>(taskDomain);
+            return Result<List<TasksViewModel>>.Success(taskModel);
         }
-        public async Task<TasksViewModel> Create(TasksInputViewModel tasksDTORequest)
+        public async Task<Result> Create(TasksInputModel taskInput)
         {
-            var taskDomain = _mapper.Map<Tasks>(tasksDTORequest);
+            if (taskInput is null)
+                return Result<TasksViewModel>.Failure(ErrorMessages.BadRequest(nameof(taskInput)));
+
+            var taskDomain = _mapper.Map<Tasks>(taskInput);
             await _tasksRepository.CreateAsync(taskDomain);
-            return _mapper.Map<TasksViewModel>(taskDomain);
+            var taskModel = _mapper.Map<TasksViewModel>(taskDomain);
+            return Result<TasksViewModel?>.Success(taskModel);
 
         }
 
-        public async Task<TasksViewModel> GetById(Guid? id)
+        public async Task<Result> GetById(Guid? id)
         {
             var taskDomain = await _tasksRepository.GetByIdAsync(id);
-            return _mapper.Map<TasksViewModel>(taskDomain) ;
+            if (taskDomain is null)
+                return Result<TasksViewModel?>.Failure(ErrorMessages.NotFound(nameof(id)));
+
+
+            var taskModel = _mapper.Map<TasksViewModel>(taskDomain);
+            return Result<TasksViewModel?>.Success(taskModel);
         }
 
 
-        public async Task Delete(Guid? id)
+        public async Task<Result> Delete(Guid? id)
         {
             var taskDomain = await _tasksRepository.GetByIdAsync(id);
+            if (taskDomain is null)
+                return  Result.Failure(ErrorMessages.NotFound(nameof(id)));
+
             await _tasksRepository.RemoveAsync(taskDomain);
+            return Result.Success();
         }
 
-        public async Task<TasksViewModel> Update(Guid? taskId, TasksInputViewModel tasksDTO)
+        public async Task<Result> Update(Guid? id, TasksInputModel taskInput)
         {
-            var taskDomain = await _tasksRepository.GetByIdAsync(taskId);
-            _mapper.Map(taskDomain, tasksDTO);
+            var taskDomain = await _tasksRepository.GetByIdAsync(id);
+            if(taskDomain is null)
+                return Result.Failure(ErrorMessages.NotFound(nameof(id)));
+
+            var taskModel = _mapper.Map(taskDomain, taskInput);
+
             await _tasksRepository.UpdateAsync(taskDomain);
-            return _mapper.Map<TasksViewModel>(taskDomain);
+            return Result.Success();
 
         }
     }

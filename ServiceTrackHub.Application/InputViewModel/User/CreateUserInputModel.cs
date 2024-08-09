@@ -10,7 +10,9 @@ namespace ServiceTrackHub.Application.InputViewModel.User
         [Required(ErrorMessage = "The email is required")]
         [EmailAddress]
         string Email,
+        [Required(ErrorMessage = "The phone is required")]
         string Phone,
+        [Required(ErrorMessage = "The password is required")]
         string Password
         );
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ServiceTrackHub.Application.Extensions;
 using ServiceTrackHub.Application.InputViewModel.User;
 using ServiceTrackHub.Application.Interfaces;
-using ServiceTrackHub.Application.ViewModel;
 using ServiceTrackHub.Application.ViewModel.User;
 using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Common.Result;
@@ -20,7 +20,7 @@ namespace ServiceTrackHub.Api.Controllers
         [HttpGet("v1/users")]
         public async Task <ActionResult> GetUsers()
         {
-            var result = await _userService.GetUsers();
+            var result = await _userService.GetAll();
             return Ok(result);
 
         }
@@ -37,31 +37,35 @@ namespace ServiceTrackHub.Api.Controllers
 
             if (!ModelState.IsValid)
             {
-
-                var erros = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-
-                //return BadRequest(Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInputModel))));
+                var erros = ModelState.GetErrors();
                 return BadRequest(Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInputModel),erros)));
-               
-                
+
             }
             var result = await _userService.Create(userInputModel);
 
             if(result.IsFailure)
-                return BadRequest(result);
- 
-            return Ok(result);
+                return BadRequest(Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInputModel))));
+
+            return CreatedAtAction(nameof(Create), result);
 
         }
         
-        [HttpPut("v1/users/{id}")]
-        public async Task<ActionResult> Update([FromRoute]Guid? id, [FromBody]CreateUserInputModel userDTO)
+        [HttpPut("v1/users/{id:guid}")]
+        public async Task<ActionResult> Update([FromRoute]Guid? id, [FromBody]UpdateUserInputModel userInput)
         {
-            var user = await _userService.Update(id, userDTO);
-            return Ok(new ResponseViewModel<UserViewModel>(user));
+            if (!ModelState.IsValid) 
+            {
+                var erros = ModelState.GetErrors();
+
+                return BadRequest(Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInput)),erros));
+            }
+
+
+            var result = await _userService.Update(id, userInput);
+            if (result.IsFailure)
+                return BadRequest(Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInput))));
+
+            return Ok(result);
         }
 
         [HttpDelete("v1/users/{id}")]

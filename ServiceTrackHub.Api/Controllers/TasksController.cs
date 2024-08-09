@@ -4,6 +4,8 @@ using ServiceTrackHub.Application.InputViewModel.Task;
 using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.ViewModel;
 using ServiceTrackHub.Application.ViewModel.Task;
+using ServiceTrackHub.Domain.Common.Erros;
+using ServiceTrackHub.Domain.Common.Result;
 
 namespace ServiceTrackHub.Api.Controllers
 {
@@ -22,7 +24,7 @@ namespace ServiceTrackHub.Api.Controllers
         public async Task<ActionResult> GetTasks()
         {
 
-            var result = await _tasksService.GetTasks();
+            var result = await _tasksService.GetAll();
             return Ok(result);
 
         }
@@ -35,20 +37,24 @@ namespace ServiceTrackHub.Api.Controllers
         }
 
         [HttpPost("v1/tasks")]
-        public async Task<ActionResult> Create([FromBody] TasksInputViewModel tasksDTORequest)
+        public async Task<ActionResult> Create([FromBody] TasksInputModel taskInput)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new ResponseViewModel<string>(ModelState.GetErrors()));
+                return BadRequest(Result<TasksViewModel?>
+                    .Failure(ErrorMessages.BadRequest(nameof(taskInput),ModelState.GetErrors())));
             }
 
-            var result = await _tasksService.Create(tasksDTORequest);
+            var result = await _tasksService.Create(taskInput);
+            if(result.IsFailure)
+                return BadRequest(Result<TasksViewModel?>
+                    .Failure(ErrorMessages.BadRequest(nameof(taskInput))));
 
-            return Ok(new ResponseViewModel<TasksViewModel>(result));
+            return Ok(Result.Success());
 
         }
         [HttpPut("v1/tasks/{id}")]
-        public async Task<ActionResult> Update([FromRoute] Guid? id, [FromBody] TasksInputViewModel tasksDTORequest)
+        public async Task<ActionResult> Update([FromRoute] Guid? id, [FromBody] TasksInputModel tasksDTORequest)
         {
             var task = await _tasksService.Update(id, tasksDTORequest);
             return Ok(task);

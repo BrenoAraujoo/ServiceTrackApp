@@ -1,15 +1,16 @@
 ﻿using ServiceTrackHub.Application.InputViewModel.Task;
 using ServiceTrackHub.Application.ViewModel.Task;
+using ServiceTrackHub.Domain.Common.Result;
 
 namespace ServiceTrackHub.Application.Interfaces
 {
     public interface ITasksService
     {
-        Task<IEnumerable<TasksViewModel>> GetTasks();
-        Task<TasksViewModel> GetById(Guid? id);
-        Task<TasksViewModel> Create(TasksInputViewModel serviceDTO);
-        Task<TasksViewModel> Update(Guid? taskId, TasksInputViewModel serviceDTO);
-        Task Delete(Guid? id);
+        Task<Result> GetAll();
+        Task<Result> GetById(Guid? id);
+        Task<Result> Create(TasksInputModel serviceDTO);
+        Task<Result> Update(Guid? taskId, TasksInputModel serviceDTO);
+        Task <Result>Delete(Guid? id);
 
     }
 }

@@ -33,14 +33,14 @@ namespace ServiceTrackHub.Domain.Common.Result
         {
             Data = value;
         }       
-        private Result(T value, bool isSuccess, Error error, List<string?> erros) : base(isSuccess, error)
+        private Result(T value, bool isSuccess, Error error, List<string> erros) : base(isSuccess, error)
         {
             Data = value;
         }
         
         public static Result<T> Success(T value) => new Result<T>(value, true, Error.None);
         public new static Result<T> Failure(Error error) => new Result<T>(default(T), false, error);
-        public new static Result<T> Failure(Error erro, List<string?> erros) => new Result<T>(default(T), default, erro, erros);
+        public  static Result<T> Failure(Error erro, List<string> erros) => new Result<T>(default(T), default, erro, erros);
     }
 
 

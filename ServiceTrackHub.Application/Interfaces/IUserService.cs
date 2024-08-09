@@ -7,10 +7,10 @@ namespace ServiceTrackHub.Application.Interfaces
 {
     public interface IUserService
     {
-        Task<Result<List<UserViewModel?>>> GetUsers();
-        Task<Result<UserViewModel>?> GetById(Guid? id);
-        Task<Result<UserViewModel?>> Create(CreateUserInputModel UserDTO);
-        Task<UserViewModel> Update(Guid? id, CreateUserInputModel UserDTO);
-        Task Delete(Guid? id);
+        Task<Result> GetAll();
+        Task<Result> GetById(Guid? id);
+        Task<Result> Create(CreateUserInputModel UserDTO);
+        Task<Result> Update(Guid? id, UpdateUserInputModel UserDTO);
+        Task <Result>Delete(Guid? id);
     }
 }

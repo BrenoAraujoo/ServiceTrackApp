@@ -27,7 +27,7 @@ namespace ServiceTrackHub.Infra.IoC
             services.AddScoped<ITasksService, TasksService>();
             services.AddScoped<IUserService, UserService>();
             
-            services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
+            services.AddAutoMapper(typeof(AutomapConfig));
             return services;
         }
     }
