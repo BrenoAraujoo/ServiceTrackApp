@@ -31,7 +31,7 @@ namespace ServiceTrackHub.Infra.Data.Repositories
         {
             return await _context.Tasks
                 .AsNoTracking()
-                .SingleOrDefaultAsync(x => x.TaskId == id);
+                .SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<Tasks>> GetServicesByUserIdAsync(Guid? userId)

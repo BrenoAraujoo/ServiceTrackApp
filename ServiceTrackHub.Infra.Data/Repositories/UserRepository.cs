@@ -35,11 +35,10 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             return user;
         }
 
-        public async Task<User> RemoveAsync(User user)
+        public async Task RemoveAsync(User user)
         {
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
-            return user;
         }
 
         public async Task<User> UpdateAsync(User user)

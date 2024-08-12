@@ -9,8 +9,8 @@ namespace ServiceTrackHub.Infra.Data.EntitiesConfiguration
         public void Configure(EntityTypeBuilder<Tasks> builder)
         {
             builder.ToTable("tasks");
-            builder.HasKey(x => x.TaskId);
-            builder.Property(x => x.TaskId)
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id)
                 .ValueGeneratedNever();
 
             builder.HasOne(x => x.TaskType)

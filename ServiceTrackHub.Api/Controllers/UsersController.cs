@@ -71,8 +71,14 @@ namespace ServiceTrackHub.Api.Controllers
         [HttpDelete("v1/users/{id}")]
         public async Task<ActionResult> Delete([FromRoute] Guid? id)
         {
-            await _userService.Delete(id);
+            var result = await _userService.Delete(id);
+            if (result.IsFailure) {
+            return BadRequest(Result.Failure(result.Error));
+            }
+
+            
             return NoContent();
+
         }
  
     }

@@ -8,7 +8,7 @@ namespace ServiceTrackHub.Domain.Interfaces
         Task<User?> GetByIdAsync(Guid? id);
         Task<User> CreateAsync(User user);
         Task<User> UpdateAsync(User user);
-        Task<User> RemoveAsync(User user);
+        Task RemoveAsync(User user);
 
     }
 }

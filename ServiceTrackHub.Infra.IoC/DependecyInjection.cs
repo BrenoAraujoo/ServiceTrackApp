@@ -22,6 +22,7 @@ namespace ServiceTrackHub.Infra.IoC
             
             services.AddScoped<ITasksRepository, TasksRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITaskTypeRepository, TaskTypeRepository>();
             
           
             services.AddScoped<ITasksService, TasksService>();

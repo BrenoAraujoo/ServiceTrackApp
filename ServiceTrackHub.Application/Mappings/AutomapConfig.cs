@@ -11,23 +11,15 @@ namespace ServiceTrackHub.Application.Mappings
     {
         public AutomapConfig()
         {
+            //Maping without consider null or empty properties.
             CreateMap<UpdateUserInputModel, User>()
-                    .ForAllMembers(opt => opt.Condition((
-                        src, dest, srcMember) =>
-                        !string.IsNullOrEmpty(srcMember?.ToString()))
-                        );
+                .ForAllMembers
+                (opt => opt.Condition((src, dest, srcMember) =>
+                !string.IsNullOrEmpty(srcMember?.ToString())));
 
 
             CreateMap<User, CreateUserInputModel>().ReverseMap();
-            //CreateMap<User, UpdateUserInputModel>().ReverseMap();
             CreateMap<User, UserViewModel>();
-
-            /*
-            CreateMap<UserDTORequest, User>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
-            */
-
-
             CreateMap<Tasks, TasksInputModel>().ReverseMap();
             CreateMap<Tasks, TasksViewModel>();
 

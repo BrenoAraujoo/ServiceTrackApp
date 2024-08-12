@@ -39,8 +39,8 @@ namespace ServiceTrackHub.Domain.Common.Result
         }
         
         public static Result<T> Success(T value) => new Result<T>(value, true, Error.None);
-        public new static Result<T> Failure(Error error) => new Result<T>(default(T), false, error);
-        public  static Result<T> Failure(Error erro, List<string> erros) => new Result<T>(default(T), default, erro, erros);
+        public new static Result<T> Failure(Error error) => new Result<T>(default, false, error);
+        public  static Result<T> Failure(Error erro, List<string> erros) => new Result<T>(default, default, erro, erros);
     }
 
 
