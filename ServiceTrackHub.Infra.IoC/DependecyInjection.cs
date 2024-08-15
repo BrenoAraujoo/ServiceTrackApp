@@ -27,6 +27,7 @@ namespace ServiceTrackHub.Infra.IoC
           
             services.AddScoped<ITasksService, TasksService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITaskTypeService, TaskTypeService>();
             
             services.AddAutoMapper(typeof(AutomapConfig));
             return services;

@@ -18,7 +18,7 @@ namespace ServiceTrackHub.Domain.Entities
             Name = name;
             Description = description;
             CreatorId = creatorId;
-            Active = true;
+            Activate();
         }
 
         public void Activate()

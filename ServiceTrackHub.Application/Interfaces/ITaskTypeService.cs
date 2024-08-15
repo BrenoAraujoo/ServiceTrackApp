@@ -1,4 +1,4 @@
-﻿using ServiceTrackHub.Application.InputViewModel.User;
+﻿using ServiceTrackHub.Application.InputViewModel.TaskType;
 using ServiceTrackHub.Domain.Common.Result;
 
 namespace ServiceTrackHub.Application.Interfaces
@@ -7,8 +7,8 @@ namespace ServiceTrackHub.Application.Interfaces
     {
         Task<Result> GetAll();
         Task<Result> GetById(Guid? id);
-        Task<Result> Create(CreateUserInputModel UserDTO);
-        Task<Result> Update(Guid? id, UpdateUserInputModel UserDTO);
+        Task<Result> Create(CreateTaskTypeInputModel taskTypeModel);
+        Task<Result> Update(Guid? id, CreateTaskTypeInputModel taskTypeModel);
         Task<Result> Delete(Guid? id);
     }
 }

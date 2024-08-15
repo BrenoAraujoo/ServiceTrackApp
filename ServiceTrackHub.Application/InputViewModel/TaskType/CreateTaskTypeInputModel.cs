@@ -2,7 +2,10 @@
 
 namespace ServiceTrackHub.Application.InputViewModel.TaskType
 {
-public record CreateUserInputModel(
+public record CreateTaskTypeInputModel(
+
+    [Required] 
+    Guid creatorId,
     [Required]
     string name,
     [Required]
