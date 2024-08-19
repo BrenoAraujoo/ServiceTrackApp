@@ -25,11 +25,8 @@ namespace ServiceTrackHub.Application.Services
             var usersEntity = await _userRepository.GetAllAsync();
             var users = _mapper.Map<List<UserViewModel?>>(usersEntity);
 
-            return users is not null ?
-                Result<List<UserViewModel?>>.Success(users):
-                Result<List<UserViewModel?>>.Failure(ErrorMessages.NotFound(nameof(usersEntity)));
+            return Result<List<UserViewModel?>>.Success(users);
         }
-
         public async Task<Result> GetById(Guid? id)
         {
             var user = await _userRepository.GetByIdAsync(id);
@@ -37,13 +34,13 @@ namespace ServiceTrackHub.Application.Services
 
             return userModel is not null ?
                     Result<UserViewModel?>.Success(userModel) :
-                    Result<UserViewModel?>.Failure(ErrorMessages.NotFound(id, nameof(user)));
+                    Result<UserViewModel?>.Failure(CustomError.RecordNotFound($"User with {id} not found"));
         }
 
         public async Task<Result> Create(CreateUserInputModel UserDTO)
         {
             if (UserDTO is null)
-                return Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(UserDTO)));
+                return Result<UserViewModel?>.Failure(CustomError.ValidationError("User model is invalid"));
 
             var userEntity = _mapper.Map<User>(UserDTO);
             await _userRepository.CreateAsync(userEntity);

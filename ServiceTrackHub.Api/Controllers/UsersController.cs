@@ -9,7 +9,7 @@ using ServiceTrackHub.Domain.Common.Result;
 namespace ServiceTrackHub.Api.Controllers
 {
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : ApiControllerBase
     {
         private readonly IUserService _userService;
         public UsersController(IUserService userService)
@@ -26,10 +26,13 @@ namespace ServiceTrackHub.Api.Controllers
         }
 
         [HttpGet("v1/users/{id}")]
-        public async Task<ActionResult> GetUserById(Guid id)
+        public async Task<IActionResult> GetUserById(Guid id)
         {
             var result = await _userService.GetById(id);
-            return Ok(result);
+
+            return result.IsSuccess ? 
+                Ok(result):
+                ApiControllerHandleResult(result);
         }
         [HttpPost("v1/users")]
         public async Task<ActionResult> Create(CreateUserInputModel userInputModel)

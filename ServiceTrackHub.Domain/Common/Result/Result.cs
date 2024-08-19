@@ -6,21 +6,21 @@ namespace ServiceTrackHub.Domain.Common.Result
     {
         public bool IsSuccess { get; }
 
-        public Error Error { get; }
+        public CustomError Error { get; }
 
-        protected Result(bool isSuccess, Error error)
+        protected Result(bool isSuccess, CustomError error)
         {
-            if (isSuccess && error != Error.None ||
-                !isSuccess && error == Error.None)
+            if (isSuccess && error != CustomError.None ||
+                !isSuccess && error == CustomError.None)
             {
-                throw new ArgumentException("Invalida Operation", nameof(error));
+                throw new ArgumentException("Invalid Operation", nameof(error));
             }
             IsSuccess = isSuccess;
             Error = error;
         }
 
-        public static Result Success() => new (true, Error.None);
-        public static Result Failure(Error error) => new (false, error);
+        public static Result Success() => new (true, CustomError.None);
+        public static Result Failure(CustomError error) => new (false, error);
     }
 
     public class Result<T> : Result
@@ -28,18 +28,18 @@ namespace ServiceTrackHub.Domain.Common.Result
 
         public T Data { get; }
 
-        private Result(T value, bool isSuccess, Error error) : base(isSuccess, error)
+        private Result(T value, bool isSuccess, CustomError error) : base(isSuccess, error)
         {
             Data = value;
         }       
-        private Result(T value, bool isSuccess, Error error, List<string> erros) : base(isSuccess, error)
+        private Result(T value, bool isSuccess, CustomError error, List<string> erros) : base(isSuccess, error)
         {
             Data = value;
         }
         
-        public static Result<T> Success(T value) => new Result<T>(value, true, Error.None);
-        public new static Result<T> Failure(Error error) => new Result<T>(default, false, error);
-        public  static Result<T> Failure(Error erro, List<string> erros) => new Result<T>(default, default, erro, erros);
+        public static Result<T> Success(T value) => new Result<T>(value, true, CustomError.None);
+        public new static Result<T> Failure(CustomError error) => new Result<T>(default, false, error);
+        public  static Result<T> Failure(CustomError erro, List<string> erros) => new Result<T>(default, default, erro, erros);
     }
 
 
