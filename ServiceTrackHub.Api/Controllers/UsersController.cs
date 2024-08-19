@@ -26,7 +26,7 @@ namespace ServiceTrackHub.Api.Controllers
         }
 
         [HttpGet("v1/users/{id}")]
-        public async Task<ActionResult> GetUserById(Guid? id)
+        public async Task<ActionResult> GetUserById(Guid id)
         {
             var result = await _userService.GetById(id);
             return Ok(result);
@@ -43,7 +43,7 @@ namespace ServiceTrackHub.Api.Controllers
             }
             var result = await _userService.Create(userInputModel);
 
-            if(result.IsFailure)
+            if(!result.IsSuccess)
                 return BadRequest(Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInputModel))));
 
             return CreatedAtAction(nameof(Create), result);
@@ -62,7 +62,7 @@ namespace ServiceTrackHub.Api.Controllers
 
 
             var result = await _userService.Update(id, userInput);
-            if (result.IsFailure)
+            if (!result.IsSuccess)
                 return BadRequest(Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInput))));
 
             return Ok(result);
@@ -72,7 +72,7 @@ namespace ServiceTrackHub.Api.Controllers
         public async Task<ActionResult> Delete([FromRoute] Guid? id)
         {
             var result = await _userService.Delete(id);
-            if (result.IsFailure) {
+            if (!result.IsSuccess) {
             return BadRequest(Result.Failure(result.Error));
             }
 

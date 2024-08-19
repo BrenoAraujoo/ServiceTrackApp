@@ -45,9 +45,15 @@ namespace ServiceTrackHub.Application.Services
 
         }
 
-        public Task<Result> GetById(Guid? id)
+        public async Task<Result> GetById(Guid? id)
         {
-            throw new NotImplementedException();
+            var taskEntity = await _taskTypeRepository.GetByIdAsync(id);
+            if(taskEntity is null)
+            {
+                return Result<TaskTypeViewModel?>.Failure(ErrorMessages.NotFound(nameof(id)));
+            }
+            var taskModel = _mapper.Map<TaskType?,TaskTypeViewModel>(taskEntity); 
+            return Result<TaskTypeViewModel?> .Success(taskModel);
         }
 
         public Task<Result> Update(Guid? id, CreateTaskTypeInputModel taskTypeModel)

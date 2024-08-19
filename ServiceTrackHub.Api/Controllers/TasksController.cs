@@ -46,7 +46,7 @@ namespace ServiceTrackHub.Api.Controllers
             }
 
             var result = await _tasksService.Create(taskInput);
-            if(result.IsFailure)
+            if(!result.IsSuccess)
                 return BadRequest(Result<TasksViewModel?>
                     .Failure(ErrorMessages.BadRequest(nameof(taskInput))));
 

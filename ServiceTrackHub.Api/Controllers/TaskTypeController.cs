@@ -23,6 +23,15 @@ namespace ServiceTrackHub.Api.Controllers
             var result = await _taskTypeService.GetAll();
             return Ok(result);
         }
+        [HttpGet("v1/tasktypes/{id}")]
+        public async Task<IActionResult> GetById(Guid? id)
+        {
+            var result = await _taskTypeService.GetById(id);
+            if(!result.IsSuccess)
+                return BadRequest(result);
+            return Ok(result);
+
+        }
         [HttpPost("v1/tasktypes")]
         public async Task<IActionResult> Create([FromBody] CreateTaskTypeInputModel model)
         {
@@ -33,7 +42,7 @@ namespace ServiceTrackHub.Api.Controllers
 
             }
             var result = await _taskTypeService.Create(model);
-            if (result.IsFailure)
+            if (!result.IsSuccess)
                 return BadRequest(Result<TaskTypeViewModel?>.Failure(ErrorMessages.BadRequest(nameof(model))));
 
             return CreatedAtAction(nameof(Create), result);
