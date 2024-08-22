@@ -3,16 +3,16 @@
 namespace ServiceTrackHub.Application.InputViewModel.User
 {
     public record CreateUserInputModel(
-        [Required(ErrorMessage = "The name is required")]
-        [MinLength(3, ErrorMessage ="Min length must be 3"),
-        MaxLength(100, ErrorMessage = "Max length must be 100")]
+        [Required(ErrorMessage = "O nome é obrigatório")]
+        [MinLength(3, ErrorMessage ="O tamanho mínimo é 3"),
+        MaxLength(100, ErrorMessage = "O tamanho máximo é 100")]
         string Name,
-        [Required(ErrorMessage = "The email is required")]
-        [EmailAddress]
+        [Required(ErrorMessage = "O e-mail é obrigatório")]
+        [EmailAddress(ErrorMessage ="O e-mail não está no padrão correto")]
         string Email,
-        [Required(ErrorMessage = "The phone is required")]
+        [Required(ErrorMessage = "O Telefone é obrigatório")]
         string Phone,
-        [Required(ErrorMessage = "The password is required")]
+        [Required(ErrorMessage = "A senha é obrigatória")]
         string Password
         );
 

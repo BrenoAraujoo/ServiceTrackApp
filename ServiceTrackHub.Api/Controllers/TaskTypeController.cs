@@ -17,6 +17,7 @@ namespace ServiceTrackHub.Api.Controllers
         {
             _taskTypeService = taskTypeService;
         }
+        /*
         [HttpGet("v1/tasktypes")]
         public async Task<IActionResult> GetAll()
         {
@@ -47,5 +48,6 @@ namespace ServiceTrackHub.Api.Controllers
 
             return CreatedAtAction(nameof(Create), result);
         }
+        */
     }
 }

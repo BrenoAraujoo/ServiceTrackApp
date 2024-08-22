@@ -19,9 +19,10 @@ namespace ServiceTrackHub.Application.Services
             _taskTypeRepository = taskTypeRepository;
             _mapper = mapper;
         }
-
+        
         public async Task<Result> Create(CreateTaskTypeInputModel TaskTypeInputModel)
         {
+            /*
             if (TaskTypeInputModel == null)
                 return Result<TaskTypeViewModel?>
                     .Failure(ErrorMessages.BadRequest(nameof(TaskTypeInputModel)));
@@ -30,6 +31,8 @@ namespace ServiceTrackHub.Application.Services
             await _taskTypeRepository.CreateAsync(taskTypeEntity);
             var taskTypeModel = _mapper.Map<TaskTypeViewModel>(taskTypeEntity);
             return Result<TaskTypeViewModel?> .Success(taskTypeModel);
+            */
+            throw new NotImplementedException();
         }
 
         public Task<Result> Delete(Guid? id)
@@ -39,14 +42,17 @@ namespace ServiceTrackHub.Application.Services
 
         public async Task<Result> GetAll()
         {
+            /*
             var tasksEntity = await _taskTypeRepository.GetAllAsync();
             var tasksModel = _mapper.Map<List<TaskTypeViewModel?>>(tasksEntity);    
-            return Result<List<TaskTypeViewModel?>> .Success(tasksModel); 
-
+            return Result<List<TaskTypeViewModel?>> .Success(tasksModel);
+            */
+            throw new NotImplementedException();
         }
 
         public async Task<Result> GetById(Guid? id)
         {
+            /*
             var taskEntity = await _taskTypeRepository.GetByIdAsync(id);
             if(taskEntity is null)
             {
@@ -54,11 +60,14 @@ namespace ServiceTrackHub.Application.Services
             }
             var taskModel = _mapper.Map<TaskType?,TaskTypeViewModel>(taskEntity); 
             return Result<TaskTypeViewModel?> .Success(taskModel);
+            */
+            throw new NotImplementedException();
         }
 
         public Task<Result> Update(Guid? id, CreateTaskTypeInputModel taskTypeModel)
         {
             throw new NotImplementedException();
         }
+        
     }
 }

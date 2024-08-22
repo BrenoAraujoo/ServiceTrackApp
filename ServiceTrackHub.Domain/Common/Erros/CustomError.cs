@@ -2,24 +2,24 @@
 {
 
 
-    public sealed record CustomError (string Code, string Message, List<string?> erros)
+    public sealed record CustomError (int Code, string Message, List<string> Erros)
     {
 
-        public static readonly CustomError None = new(string.Empty, string.Empty, new List<string?>());
-        public static readonly string RecordNotFoundCode = "RecordNotFound";
-        public static readonly string ValidationErrorCode = "ValidationError";
+        public static readonly CustomError None = new(0, string.Empty, new List<string>());
+
+        public static readonly int RecordNotFoundCode = 1;
+        public static readonly int ValidationErrorCode = 2;
+        public static readonly int ConflictErrorCode = 3;
         
-        public CustomError(string code, string message) : this(code, message, new List<string?>())
+        public CustomError( int code, string message) : this(code, message, new List<string>())
         {
         }
-        public static CustomError RecordNotFound(string message)
-        {
-            return new CustomError(RecordNotFoundCode, message);
-        }
-        public static CustomError ValidationError(string message)
-        {
-            return new CustomError(ValidationErrorCode, message);
-        }
+        public static CustomError RecordNotFound(string message) => new (RecordNotFoundCode, message);
+        public static CustomError ValidationError(string message, List<string> erros = null) 
+            =>new (ValidationErrorCode, message, erros ?? new List<string>());
+
+        public static CustomError Conflict (string message, List<string> erros = null) => new (ConflictErrorCode, message, erros ?? new List<string>());
+
 
     }
 }

@@ -19,7 +19,7 @@ namespace ServiceTrackHub.Application.Services
             _userRepository = userRepository;
             _mapper = mapper;
         }
-
+        
         public async Task<Result> GetAll()
         {
             var usersEntity = await _userRepository.GetAllAsync();
@@ -34,15 +34,16 @@ namespace ServiceTrackHub.Application.Services
 
             return userModel is not null ?
                     Result<UserViewModel?>.Success(userModel) :
-                    Result<UserViewModel?>.Failure(CustomError.RecordNotFound($"User with {id} not found"));
+                    Result.Failure(CustomError.RecordNotFound($"Usuário com id {id} não encontrado"));
         }
 
-        public async Task<Result> Create(CreateUserInputModel UserDTO)
+        public async Task<Result> Create(CreateUserInputModel userInput)
         {
-            if (UserDTO is null)
-                return Result<UserViewModel?>.Failure(CustomError.ValidationError("User model is invalid"));
-
-            var userEntity = _mapper.Map<User>(UserDTO);
+            var userExists = await _userRepository.GetByEmail(userInput.Email) is not null;
+            if (userExists)
+                return Result.Failure(CustomError.Conflict($"Já existe um usuário com o  e-mail {userInput.Email}cadastrado"));
+            
+            var userEntity = _mapper.Map<User>(userInput);
             await _userRepository.CreateAsync(userEntity);
             var userModel = _mapper.Map<UserViewModel>(userEntity);
             return Result<UserViewModel?>.Success(userModel);
@@ -51,12 +52,10 @@ namespace ServiceTrackHub.Application.Services
 
         public async Task<Result> Update(Guid? id, UpdateUserInputModel userInput)
         {
-            if(userInput is null)
-                return Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInput)));
 
             var userEntity = await _userRepository.GetByIdAsync(id);
             if(userEntity is null)
-                return Result<UserViewModel?>.Failure(ErrorMessages.NotFound($"{nameof(userInput)}"));
+                return Result<UserViewModel?>.Failure(CustomError.RecordNotFound($"Usuário com id {id} não encontrado"));
 
             _mapper.Map(userInput,userEntity);
             await  _userRepository.UpdateAsync(userEntity);
@@ -64,16 +63,21 @@ namespace ServiceTrackHub.Application.Services
             var userModel = _mapper.Map<UserViewModel>(userEntity);
             
             return Result<UserViewModel?>.Success(userModel);
+            
 
         }
 
         public async Task<Result> Delete(Guid? id)
         {
+            throw new NotImplementedException();
+            /*
             var userEntity = await _userRepository.GetByIdAsync(id);
             if (userEntity is null)
                 return Result<UserViewModel>.Failure(ErrorMessages.NotFound(nameof(userEntity)));
             await _userRepository.RemoveAsync(userEntity);
             return Result.Success();
+            */
         }
+        
     }
 }

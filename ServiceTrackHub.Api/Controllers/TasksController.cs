@@ -19,7 +19,7 @@ namespace ServiceTrackHub.Api.Controllers
         {
             _tasksService = tasksService;
         }
-
+        /*
         [HttpGet("v1/tasks")]
         public async Task<ActionResult> GetTasks()
         {
@@ -66,5 +66,6 @@ namespace ServiceTrackHub.Api.Controllers
             await _tasksService.Delete(id);
             return NoContent();
         }
+        */
     }
 }

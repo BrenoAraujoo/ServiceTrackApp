@@ -35,40 +35,41 @@ namespace ServiceTrackHub.Api.Controllers
                 ApiControllerHandleResult(result);
         }
         [HttpPost("v1/users")]
-        public async Task<ActionResult> Create(CreateUserInputModel userInputModel)
+        public async Task<IActionResult> Create([FromBody] CreateUserInputModel userInputModel)
         {
 
             if (!ModelState.IsValid)
             {
                 var erros = ModelState.GetErrors();
-                return BadRequest(Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInputModel),erros)));
+                var resultError = Result<UserViewModel?>.Failure(CustomError.ValidationError("Usuário inválido", erros));
+                return ApiControllerHandleResult(resultError);
 
             }
+            
             var result = await _userService.Create(userInputModel);
 
-            if(!result.IsSuccess)
-                return BadRequest(Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInputModel))));
-
-            return CreatedAtAction(nameof(Create), result);
-
+            return result.IsSuccess? 
+                CreatedAtAction(nameof(Create),result):
+                ApiControllerHandleResult(result);
         }
         
         [HttpPut("v1/users/{id:guid}")]
-        public async Task<ActionResult> Update([FromRoute]Guid? id, [FromBody]UpdateUserInputModel userInput)
+        public async Task<IActionResult> Update([FromRoute]Guid? id, [FromBody]UpdateUserInputModel userInput)
         {
+            
+          
             if (!ModelState.IsValid) 
             {
                 var erros = ModelState.GetErrors();
 
-                return BadRequest(Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInput)),erros));
+                var resultError = Result<UserViewModel?>.Failure(CustomError.ValidationError("erro update",erros));
+                return ApiControllerHandleResult(resultError);
             }
-
-
             var result = await _userService.Update(id, userInput);
-            if (!result.IsSuccess)
-                return BadRequest(Result<UserViewModel?>.Failure(ErrorMessages.BadRequest(nameof(userInput))));
-
-            return Ok(result);
+            return result.IsSuccess?
+                NoContent():
+                ApiControllerHandleResult(result);
+            
         }
 
         [HttpDelete("v1/users/{id}")]

@@ -35,6 +35,14 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             return user;
         }
 
+        public async Task<User?> GetByEmail(string email)
+        {
+            var user = await _context.Users
+                .AsNoTracking()
+                .SingleOrDefaultAsync(user => user.Email==email);
+            return user;
+        }
+
         public async Task RemoveAsync(User user)
         {
             _context.Users.Remove(user);

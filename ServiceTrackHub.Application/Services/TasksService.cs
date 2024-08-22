@@ -21,7 +21,7 @@ namespace ServiceTrackHub.Application.Services
             _mapper = mapper;
         }
 
-
+        
         public async Task<Result> GetAll()
         {
             var taskDomain = await _tasksRepository.GetAllAsync();
@@ -30,6 +30,8 @@ namespace ServiceTrackHub.Application.Services
         }
         public async Task<Result> Create(TasksInputModel taskInput)
         {
+            throw new NotImplementedException();
+            /*
             if (taskInput is null)
                 return Result<TasksViewModel>.Failure(ErrorMessages.BadRequest(nameof(taskInput)));
 
@@ -37,11 +39,13 @@ namespace ServiceTrackHub.Application.Services
             await _tasksRepository.CreateAsync(taskDomain);
             var taskModel = _mapper.Map<TasksViewModel>(taskDomain);
             return Result<TasksViewModel?>.Success(taskModel);
-
+            */
         }
 
         public async Task<Result> GetById(Guid? id)
         {
+            throw new NotImplementedException();
+            /*
             var taskDomain = await _tasksRepository.GetByIdAsync(id);
             if (taskDomain is null)
                 return Result<TasksViewModel?>.Failure(ErrorMessages.NotFound(nameof(id)));
@@ -49,21 +53,28 @@ namespace ServiceTrackHub.Application.Services
 
             var taskModel = _mapper.Map<TasksViewModel>(taskDomain);
             return Result<TasksViewModel?>.Success(taskModel);
+            */
         }
 
 
         public async Task<Result> Delete(Guid? id)
         {
+            throw new NotImplementedException();
+            /*
             var taskDomain = await _tasksRepository.GetByIdAsync(id);
             if (taskDomain is null)
                 return  Result.Failure(ErrorMessages.NotFound(nameof(id)));
 
             await _tasksRepository.RemoveAsync(taskDomain);
             return Result.Success();
+            */
         }
 
         public async Task<Result> Update(Guid? id, TasksInputModel taskInput)
         {
+
+            throw new NotImplementedException();
+            /*
             var taskDomain = await _tasksRepository.GetByIdAsync(id);
             if(taskDomain is null)
                 return Result.Failure(ErrorMessages.NotFound(nameof(id)));
@@ -72,7 +83,8 @@ namespace ServiceTrackHub.Application.Services
 
             await _tasksRepository.UpdateAsync(taskDomain);
             return Result.Success();
-
+            */
         }
+        
     }
 }

@@ -37,9 +37,9 @@ namespace ServiceTrackHub.Domain.Common.Result
             Data = value;
         }
         
-        public static Result<T> Success(T value) => new Result<T>(value, true, CustomError.None);
-        public new static Result<T> Failure(CustomError error) => new Result<T>(default, false, error);
-        public  static Result<T> Failure(CustomError erro, List<string> erros) => new Result<T>(default, default, erro, erros);
+        public static Result<T> Success(T value) => new (value, true, CustomError.None);
+        public new static Result<T> Failure(CustomError error) => new (default, false, error);
+ 
     }
 
 
