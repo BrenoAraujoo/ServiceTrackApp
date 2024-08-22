@@ -34,14 +34,14 @@ namespace ServiceTrackHub.Application.Services
 
             return userModel is not null ?
                     Result<UserViewModel?>.Success(userModel) :
-                    Result.Failure(CustomError.RecordNotFound($"Usuário com id {id} não encontrado"));
+                    Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.UserNotFound,id)));
         }
 
         public async Task<Result> Create(CreateUserInputModel userInput)
         {
             var userExists = await _userRepository.GetByEmail(userInput.Email) is not null;
             if (userExists)
-                return Result.Failure(CustomError.Conflict($"Já existe um usuário com o  e-mail {userInput.Email}cadastrado"));
+                return Result.Failure(CustomError.Conflict(string.Format(ErrorMessage.UserEmailAlreadyExists, userInput.Email)));
             
             var userEntity = _mapper.Map<User>(userInput);
             await _userRepository.CreateAsync(userEntity);

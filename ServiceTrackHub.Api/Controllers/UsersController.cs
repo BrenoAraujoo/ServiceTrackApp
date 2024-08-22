@@ -41,9 +41,8 @@ namespace ServiceTrackHub.Api.Controllers
             if (!ModelState.IsValid)
             {
                 var erros = ModelState.GetErrors();
-                var resultError = Result<UserViewModel?>.Failure(CustomError.ValidationError("Usuário inválido", erros));
+                var resultError = Result<UserViewModel?>.Failure(CustomError.ValidationError(ErrorMessage.UserInvalid, erros));
                 return ApiControllerHandleResult(resultError);
-
             }
             
             var result = await _userService.Create(userInputModel);
