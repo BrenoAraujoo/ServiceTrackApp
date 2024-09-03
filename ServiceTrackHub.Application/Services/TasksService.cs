@@ -30,30 +30,26 @@ namespace ServiceTrackHub.Application.Services
         }
         public async Task<Result> Create(TasksInputModel taskInput)
         {
-            throw new NotImplementedException();
-            /*
-            if (taskInput is null)
-                return Result<TasksViewModel>.Failure(ErrorMessages.BadRequest(nameof(taskInput)));
+
 
             var taskDomain = _mapper.Map<Tasks>(taskInput);
             await _tasksRepository.CreateAsync(taskDomain);
             var taskModel = _mapper.Map<TasksViewModel>(taskDomain);
             return Result<TasksViewModel?>.Success(taskModel);
-            */
+            
+            
         }
 
         public async Task<Result> GetById(Guid? id)
         {
-            throw new NotImplementedException();
-            /*
-            var taskDomain = await _tasksRepository.GetByIdAsync(id);
-            if (taskDomain is null)
-                return Result<TasksViewModel?>.Failure(ErrorMessages.NotFound(nameof(id)));
+            var tasks = await _tasksRepository.GetByIdAsync(id);
+            var taksViewModel = _mapper.Map<TasksViewModel>(tasks);
 
 
-            var taskModel = _mapper.Map<TasksViewModel>(taskDomain);
-            return Result<TasksViewModel?>.Success(taskModel);
-            */
+            return tasks is not null ?
+                Result<TasksViewModel?>.Success(taksViewModel) :
+                Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.TaskNotFound, id)));
+
         }
 
 

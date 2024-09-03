@@ -16,7 +16,10 @@ namespace ServiceTrackHub.Infra.Data.EntitiesConfiguration
             builder.HasOne(x => x.TaskType)
                 .WithMany()
                 .HasForeignKey(x => x.TaskTypeId);
-
+           
+            builder.Property(x => x.Name)
+                    .HasMaxLength(50)
+                    .IsRequired();
 
             builder.Property(x => x.Description)
                 .HasMaxLength(100)

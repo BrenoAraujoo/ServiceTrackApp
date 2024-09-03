@@ -2,6 +2,7 @@
 using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
 using ServiceTrackHub.Infra.Data.Context;
+using ServiceTrackHub.Infra.Data.Migrations;
 
 namespace ServiceTrackHub.Infra.Data.Repositories
 {
@@ -32,6 +33,14 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             var result = await _context.TaskType
                 .AsNoTracking()
                 .SingleOrDefaultAsync(x => x.Id == id);
+            return result;
+        }
+
+        public async Task<TaskType?> GetByNameAsync(string name)
+        {
+            var result = await _context.TaskType
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Name == name);
             return result;
         }
 

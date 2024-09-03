@@ -11,7 +11,7 @@ namespace ServiceTrackHub.Api.Controllers
 {
 
     [ApiController]
-    public class TasksController : ControllerBase
+    public class TasksController : ApiControllerBase
     {
         private readonly ITasksService _tasksService;
         
@@ -27,7 +27,8 @@ namespace ServiceTrackHub.Api.Controllers
             var result = await _tasksService.GetAll();
             return Ok(result);
 
-        }
+        }*/
+
 
         [HttpGet("v1/taksk/{id}")]
         public async Task<ActionResult> GetTaskById(Guid? id)
@@ -37,22 +38,22 @@ namespace ServiceTrackHub.Api.Controllers
         }
 
         [HttpPost("v1/tasks")]
-        public async Task<ActionResult> Create([FromBody] TasksInputModel taskInput)
+        public async Task<IActionResult> Create([FromBody] TasksInputModel taskInput)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) 
             {
-                return BadRequest(Result<TasksViewModel?>
-                    .Failure(ErrorMessages.BadRequest(nameof(taskInput),ModelState.GetErrors())));
+                var erros = ModelState.GetErrors();
+                var resultError = Result<TasksViewModel?>.Failure(CustomError.ValidationError(ErrorMessage.TaskNotFound, erros));
+                return ApiControllerHandleResult(resultError);
             }
-
             var result = await _tasksService.Create(taskInput);
-            if(!result.IsSuccess)
-                return BadRequest(Result<TasksViewModel?>
-                    .Failure(ErrorMessages.BadRequest(nameof(taskInput))));
+            return result.IsSuccess ?
+                CreatedAtAction(nameof(Create),result) :
+                ApiControllerHandleResult(result);
 
-            return Ok(Result.Success());
 
         }
+        /*
         [HttpPut("v1/tasks/{id}")]
         public async Task<ActionResult> Update([FromRoute] Guid? id, [FromBody] TasksInputModel tasksDTORequest)
         {

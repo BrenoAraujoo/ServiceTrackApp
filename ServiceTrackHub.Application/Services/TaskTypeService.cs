@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using ServiceTrackHub.Application.InputViewModel.TaskType;
 using ServiceTrackHub.Application.Interfaces;
+using ServiceTrackHub.Application.ViewModel.Task;
 using ServiceTrackHub.Application.ViewModel.TaskType;
 using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Common.Result;
 using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
+using System.Threading.Tasks;
 
 namespace ServiceTrackHub.Application.Services
 {
@@ -20,19 +22,17 @@ namespace ServiceTrackHub.Application.Services
             _mapper = mapper;
         }
         
-        public async Task<Result> Create(CreateTaskTypeInputModel TaskTypeInputModel)
+        public async Task<Result> Create(CreateTaskTypeInputModel taskTypeInputModel)
         {
-            /*
-            if (TaskTypeInputModel == null)
-                return Result<TaskTypeViewModel?>
-                    .Failure(ErrorMessages.BadRequest(nameof(TaskTypeInputModel)));
+            var taskTypeExists = await _taskTypeRepository.GetByNameAsync(taskTypeInputModel.name) is not null;
 
-            var taskTypeEntity = _mapper.Map<TaskType>(TaskTypeInputModel);
+             if(taskTypeExists)
+                return Result.Failure(CustomError.Conflict(string.Format(ErrorMessage.TaskNameAlreadyExists, taskTypeInputModel.name)));
+
+            var taskTypeEntity = _mapper.Map<TaskType>(taskTypeInputModel);
             await _taskTypeRepository.CreateAsync(taskTypeEntity);
-            var taskTypeModel = _mapper.Map<TaskTypeViewModel>(taskTypeEntity);
-            return Result<TaskTypeViewModel?> .Success(taskTypeModel);
-            */
-            throw new NotImplementedException();
+            var taskViewModel = _mapper.Map<TaskTypeViewModel>(taskTypeInputModel);
+            return Result<TaskTypeViewModel?>.Success(taskViewModel);
         }
 
         public Task<Result> Delete(Guid? id)
@@ -42,26 +42,22 @@ namespace ServiceTrackHub.Application.Services
 
         public async Task<Result> GetAll()
         {
-            /*
+            
             var tasksEntity = await _taskTypeRepository.GetAllAsync();
             var tasksModel = _mapper.Map<List<TaskTypeViewModel?>>(tasksEntity);    
             return Result<List<TaskTypeViewModel?>> .Success(tasksModel);
-            */
-            throw new NotImplementedException();
+
         }
 
         public async Task<Result> GetById(Guid? id)
         {
-            /*
-            var taskEntity = await _taskTypeRepository.GetByIdAsync(id);
-            if(taskEntity is null)
-            {
-                return Result<TaskTypeViewModel?>.Failure(ErrorMessages.NotFound(nameof(id)));
-            }
-            var taskModel = _mapper.Map<TaskType?,TaskTypeViewModel>(taskEntity); 
-            return Result<TaskTypeViewModel?> .Success(taskModel);
-            */
-            throw new NotImplementedException();
+            
+            var taskTypeEntity = await _taskTypeRepository.GetByIdAsync(id);
+            var taskTypeEntityViewModel = _mapper.Map<TaskTypeViewModel>(taskTypeEntity);
+
+            return taskTypeEntity is not null ?
+                Result<TaskTypeViewModel?>.Success(taskTypeEntityViewModel) :
+                Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.TaskTypeNotFound, id)));
         }
 
         public Task<Result> Update(Guid? id, CreateTaskTypeInputModel taskTypeModel)
