@@ -2,9 +2,14 @@
 {
     public record TasksViewModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
+        public Guid UserToId { get; set; }
+        public Guid TaskTypeId { get; set; }
+        public DateTime CreationDate { get;  set; }
+        public DateTime UpdateDate{ get;  set; }
+        
     }
 }

@@ -7,7 +7,7 @@ namespace ServiceTrackHub.Domain.Interfaces
         Task<List<Tasks>> GetAllAsync();
         Task<Tasks> GetByIdAsync(Guid? id);
 
-        Task<List<Tasks>> GetServicesByUserIdAsync(Guid? userId);
+        Task<List<Tasks>> GetTasksByUserIdAsync(Guid? userId);
         Task<Tasks> CreateAsync(Tasks task);
         Task<Tasks> UpdateAsync(Tasks task);
         Task<Tasks> RemoveAsync(Tasks task);

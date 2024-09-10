@@ -34,9 +34,9 @@ namespace ServiceTrackHub.Infra.Data.Repositories
                 .SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<List<Tasks>> GetServicesByUserIdAsync(Guid? userId)
-        {   
-                                           //Eager loading
+        public async Task<List<Tasks>> GetTasksByUserIdAsync(Guid? userId)
+        { 
+            //Eager loading
             return await _context.Tasks.Include(u => u.User)
                 .Where(s => s.UserId == userId)
                 .ToListAsync();

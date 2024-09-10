@@ -35,7 +35,7 @@ namespace ServiceTrackHub.Api.Controllers
                 ApiControllerHandleResult(result);
         }
         [HttpPost("v1/users")]
-        public async Task<IActionResult> Create([FromBody] CreateUserInputModel userInputModel)
+        public async Task<IActionResult> Create([FromBody] CreateUserModel userInputModel)
         {
 
             if (!ModelState.IsValid)
@@ -53,7 +53,7 @@ namespace ServiceTrackHub.Api.Controllers
         }
         
         [HttpPut("v1/users/{id:guid}")]
-        public async Task<IActionResult> Update([FromRoute]Guid? id, [FromBody]UpdateUserInputModel userInput)
+        public async Task<IActionResult> Update([FromRoute]Guid? id, [FromBody]UpdateUserModel userInput)
         {
             
           
@@ -71,17 +71,31 @@ namespace ServiceTrackHub.Api.Controllers
             
         }
 
-        [HttpDelete("v1/users/{id}")]
-        public async Task<ActionResult> Delete([FromRoute] Guid? id)
+        [HttpPut("v1/users/{id}/deactivate")]
+        public async Task<ActionResult> Deactivate([FromRoute] Guid? id)
         {
-            var result = await _userService.Delete(id);
-            if (!result.IsSuccess) {
-            return BadRequest(Result.Failure(result.Error));
-            }
-
+            var result = await _userService.Deactivate(id);
+                return !result.IsSuccess ?
+                    BadRequest(Result.Failure(result.Error)): 
+                    NoContent();
+        }
+        [HttpPut("v1/users/{id}/activate")]
+        public async Task<ActionResult> Activate([FromRoute] Guid? id)
+        {
+            var result = await _userService.Activate(id);
+            if (!result.IsSuccess) 
+                return BadRequest(Result.Failure(result.Error));
             
             return NoContent();
 
+        }
+
+        [HttpDelete("v1/users/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid? id)
+        {
+            var result = await _userService.Remove(id);
+            return result.IsSuccess ? NoContent():
+                ApiControllerHandleResult(result);
         }
  
     }

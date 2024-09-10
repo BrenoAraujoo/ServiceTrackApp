@@ -7,8 +7,8 @@ namespace ServiceTrackHub.Application.Interfaces
     {
         Task<Result> GetAll();
         Task<Result> GetById(Guid? id);
-        Task<Result> Create(CreateTaskTypeInputModel taskTypeModel);
-        Task<Result> Update(Guid? id, CreateTaskTypeInputModel taskTypeModel);
+        Task<Result> Create(CreateTaskTypeModel taskTypeModel);
+        Task<Result> Update(Guid? id, UpdateTaskTypeModel taskTypeInput);
         Task<Result> Delete(Guid? id);
     }
 }

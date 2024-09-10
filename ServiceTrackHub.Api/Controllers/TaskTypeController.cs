@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServiceTrackHub.Application.Extensions;
 using ServiceTrackHub.Application.InputViewModel.TaskType;
 using ServiceTrackHub.Application.Interfaces;
@@ -35,13 +34,13 @@ namespace ServiceTrackHub.Api.Controllers
 
         }
         [HttpPost("v1/tasktypes")]
-        public async Task<IActionResult> Create([FromBody] CreateTaskTypeInputModel model)
+        public async Task<IActionResult> Create([FromBody] CreateTaskTypeModel model)
         {
             if (!ModelState.IsValid)
             {
                 var erros = ModelState.GetErrors();
-                var resulErro = Result<TaskTypeViewModel>.Failure(CustomError.ValidationError(ErrorMessage.TaskTypeInvalid, erros));
-                return ApiControllerHandleResult(resulErro);
+                var resultError = Result<TaskTypeViewModel>.Failure(CustomError.ValidationError(ErrorMessage.TaskTypeInvalid, erros));
+                return ApiControllerHandleResult(resultError);
 
             }
             var result = await _taskTypeService.Create(model);
@@ -49,6 +48,24 @@ namespace ServiceTrackHub.Api.Controllers
             CreatedAtAction(nameof(Create), result) :
             ApiControllerHandleResult(result);
         }
+
+        [HttpPut("v1/tasktypes/{id}")]
+        public async Task<IActionResult> Update([FromBody] UpdateTaskTypeModel model, [FromRoute] Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                var erros = ModelState.GetErrors();
+                var resultError =  Result<TaskTypeViewModel>.Failure(CustomError.ValidationError(ErrorMessage.TaskTypeInvalid, erros));
+                return ApiControllerHandleResult(resultError);
+            }
+            var result = await _taskTypeService.Update(id, model);
+            return result.IsSuccess? 
+                NoContent():
+                ApiControllerHandleResult(result);
+            
+        }
+
+       
     }
         
 }

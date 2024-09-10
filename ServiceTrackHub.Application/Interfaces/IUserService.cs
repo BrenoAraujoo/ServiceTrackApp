@@ -9,8 +9,10 @@ namespace ServiceTrackHub.Application.Interfaces
     {
         Task<Result> GetAll();
         Task<Result> GetById(Guid? id);
-        Task<Result> Create(CreateUserInputModel UserDTO);
-        Task<Result> Update(Guid? id, UpdateUserInputModel UserDTO);
-        Task <Result>Delete(Guid? id);
+        Task<Result> Create(CreateUserModel UserDTO);
+        Task<Result> Update(Guid? id, UpdateUserModel UserDTO);
+        Task <Result>Deactivate(Guid? id);
+        Task <Result>Activate(Guid? id);
+        Task <Result>Remove(Guid? id);
     }
 }

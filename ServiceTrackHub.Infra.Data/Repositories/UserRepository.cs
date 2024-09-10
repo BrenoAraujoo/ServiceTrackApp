@@ -43,7 +43,7 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             return user;
         }
 
-        public async Task RemoveAsync(User user)
+        public async Task Remove(User user)
         {
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();

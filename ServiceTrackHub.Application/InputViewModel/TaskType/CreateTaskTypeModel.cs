@@ -2,7 +2,7 @@
 
 namespace ServiceTrackHub.Application.InputViewModel.TaskType
 {
-public record CreateTaskTypeInputModel(
+public record CreateTaskTypeModel(
 
     [Required(ErrorMessage ="O id do usuário que criou a tarefa é obrigatório")] 
     Guid creatorId,

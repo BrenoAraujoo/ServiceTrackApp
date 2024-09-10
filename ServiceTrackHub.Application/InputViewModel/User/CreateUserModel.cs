@@ -2,7 +2,7 @@
 
 namespace ServiceTrackHub.Application.InputViewModel.User
 {
-    public record CreateUserInputModel(
+    public record CreateUserModel(
         [Required(ErrorMessage = "O nome é obrigatório")]
         [MinLength(3, ErrorMessage ="O tamanho mínimo é 3"),
         MaxLength(100, ErrorMessage = "O tamanho máximo é 100")]

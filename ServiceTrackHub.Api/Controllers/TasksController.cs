@@ -19,19 +19,17 @@ namespace ServiceTrackHub.Api.Controllers
         {
             _tasksService = tasksService;
         }
-        /*
+        
         [HttpGet("v1/tasks")]
         public async Task<ActionResult> GetTasks()
         {
-
             var result = await _tasksService.GetAll();
             return Ok(result);
-
-        }*/
+        }
 
 
         [HttpGet("v1/taksk/{id}")]
-        public async Task<ActionResult> GetTaskById(Guid? id)
+        public async Task<ActionResult> GetTaskById(Guid id)
         {
             var result = await _tasksService.GetById(id);
             return Ok(result);
@@ -52,6 +50,13 @@ namespace ServiceTrackHub.Api.Controllers
                 ApiControllerHandleResult(result);
 
 
+        }
+
+        [HttpGet("v1/tasks/userTasks/{id}")]
+        public async Task<IActionResult> GetUserTasks(Guid id)
+        {
+            var userTasks = await _tasksService.GetTasksByUserIdAsync(id);
+            return Ok(userTasks);
         }
         /*
         [HttpPut("v1/tasks/{id}")]

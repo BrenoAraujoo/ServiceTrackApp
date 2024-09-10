@@ -19,7 +19,8 @@ namespace ServiceTrackHub.Api.Middleware
             problemDetails = new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
-                Title = "Server Error"
+                Title = "Server Error",
+                Detail = exception.InnerException.Message
             };
             httpContext.Response.StatusCode = problemDetails.Status.Value;
             await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);

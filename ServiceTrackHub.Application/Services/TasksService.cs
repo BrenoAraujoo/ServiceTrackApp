@@ -28,6 +28,14 @@ namespace ServiceTrackHub.Application.Services
             var taskModel = _mapper.Map<List<TasksViewModel>>(taskDomain);
             return Result<List<TasksViewModel>>.Success(taskModel);
         }
+
+        public async Task<Result> GetTasksByUserIdAsync(Guid userId)
+        {
+            var tasks = await _tasksRepository.GetTasksByUserIdAsync(userId);
+            var tasksViewModel = _mapper.Map<List<TasksViewModel>>(tasks);
+            return Result<List<TasksViewModel>>.Success(tasksViewModel);
+        }
+
         public async Task<Result> Create(TasksInputModel taskInput)
         {
 
@@ -40,7 +48,7 @@ namespace ServiceTrackHub.Application.Services
             
         }
 
-        public async Task<Result> GetById(Guid? id)
+        public async Task<Result> GetById(Guid id)
         {
             var tasks = await _tasksRepository.GetByIdAsync(id);
             var taksViewModel = _mapper.Map<TasksViewModel>(tasks);
@@ -53,7 +61,7 @@ namespace ServiceTrackHub.Application.Services
         }
 
 
-        public async Task<Result> Delete(Guid? id)
+        public async Task<Result> Delete(Guid id)
         {
             throw new NotImplementedException();
             /*
@@ -66,7 +74,7 @@ namespace ServiceTrackHub.Application.Services
             */
         }
 
-        public async Task<Result> Update(Guid? id, TasksInputModel taskInput)
+        public async Task<Result> Update(Guid id, TasksInputModel taskInput)
         {
 
             throw new NotImplementedException();

@@ -22,7 +22,7 @@ namespace ServiceTrackHub.Application.Services
             _mapper = mapper;
         }
         
-        public async Task<Result> Create(CreateTaskTypeInputModel taskTypeInputModel)
+        public async Task<Result> Create(CreateTaskTypeModel taskTypeInputModel)
         {
             var taskTypeExists = await _taskTypeRepository.GetByNameAsync(taskTypeInputModel.name) is not null;
 
@@ -60,9 +60,16 @@ namespace ServiceTrackHub.Application.Services
                 Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.TaskTypeNotFound, id)));
         }
 
-        public Task<Result> Update(Guid? id, CreateTaskTypeInputModel taskTypeModel)
+        public async Task<Result> Update(Guid? id, UpdateTaskTypeModel taskTypeInput)
         {
-            throw new NotImplementedException();
+            var taskTypeEntity = await _taskTypeRepository.GetByIdAsync(id);
+            if(taskTypeEntity is null)
+                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.TaskTypeNotFound, id)));
+            _mapper.Map(taskTypeInput, taskTypeEntity);
+            await _taskTypeRepository.UpdateAsync(taskTypeEntity);
+            var taskTypeModel = _mapper.Map<TaskTypeViewModel>(taskTypeEntity);
+            return Result<TaskTypeViewModel?>.Success(taskTypeModel);
+            
         }
         
     }
