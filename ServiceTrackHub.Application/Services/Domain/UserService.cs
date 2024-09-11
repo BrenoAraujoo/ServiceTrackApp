@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using ServiceTrackHub.Application.InputViewModel.User;
 using ServiceTrackHub.Application.Interfaces;
+using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Application.ViewModel.User;
 using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
@@ -14,12 +16,15 @@ namespace ServiceTrackHub.Application.Services
         private IUserRepository _userRepository;
         private ITasksRepository _tasksRepository;
         private readonly IMapper _mapper;
+        private readonly IPasswordHasherService _passwordHasherService;
 
 
-        public UserService(IUserRepository userRepository, ITasksRepository tasksRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, ITasksRepository tasksRepository,
+            IMapper mapper, IPasswordHasherService passwordHasherService)
         {
             _userRepository = userRepository;
             _tasksRepository = tasksRepository;
+            _passwordHasherService = passwordHasherService;
             _mapper = mapper;
         }
 
@@ -47,8 +52,12 @@ namespace ServiceTrackHub.Application.Services
             if (userExists)
                 return Result.Failure(
                     CustomError.Conflict(string.Format(ErrorMessage.UserEmailAlreadyExists, userInput.Email)));
-
+            var passwordHash = _passwordHasherService.HashPassword(userInput.Password);
+            if (!passwordHash.IsSuccess)
+                return Result.Failure(CustomError.Conflict(ErrorMessage.UserInvalidPasswordHash));
             var userEntity = _mapper.Map<User>(userInput);
+            userEntity.ChangePassword(passwordHash.Data);
+            
             await _userRepository.CreateAsync(userEntity);
             var userModel = _mapper.Map<UserViewModel>(userEntity);
             return Result<UserViewModel?>.Success(userModel);

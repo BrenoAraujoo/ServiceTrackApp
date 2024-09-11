@@ -6,6 +6,7 @@
         public static readonly string UserNotFound = "O Usuário com  Id \"{0}\" não foi encontrado";
         public static readonly string UserEmailAlreadyExists = "O email \"{0}\" já existe. Tente usar outro.";
         public static readonly string UserInvalid = "Usuário inválido";
+        public static readonly string UserInvalidPasswordHash = "Erro ao gerar hash do password";
         public static readonly string UserCannotBeRemove = "O usuário com Id \"{0}\" não pode ser removido," +
                                                            "pois ele possui tarefas associadas.";
 

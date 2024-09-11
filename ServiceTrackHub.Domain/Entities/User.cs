@@ -7,18 +7,18 @@ namespace ServiceTrackHub.Domain.Entities
         public string Name { get;  private set; }
         public List<Tasks> Tasks { get;  private set; }
         public string Email { get; private set; }
-        public string Password { get; private set; }
+        public string PasswordHash { get; private set; }
         public string Phone { get; private set; }
         public bool Active { get; private set; }
         public User(){}
 
 
-        public User(string name,  string email, string password, string phone)
+        public User(string name,  string email, string passwordHash, string phone)
         {
             Name = name;
             Tasks = new List<Tasks>();
             Email = email;
-            Password = password;
+            PasswordHash = passwordHash;
             Phone = phone;
             Active = true;
         }
@@ -34,6 +34,11 @@ namespace ServiceTrackHub.Domain.Entities
         {
             base.Update();
             Active = false;
+        }
+
+        public void ChangePassword(string newPassword)
+        {
+            PasswordHash = newPassword;
         }
     }
 }

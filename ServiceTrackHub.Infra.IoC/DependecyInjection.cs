@@ -6,7 +6,9 @@ using ServiceTrackHub.Domain.Interfaces;
 using ServiceTrackHub.Infra.Data.Context;
 using ServiceTrackHub.Infra.Data.Repositories;
 using ServiceTrackHub.Application.Interfaces;
+using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Application.Mappings;
+using ServiceTrackHub.Application.Services.Auth;
 
 namespace ServiceTrackHub.Infra.IoC
 {
@@ -30,6 +32,8 @@ namespace ServiceTrackHub.Infra.IoC
             services.AddScoped<ITaskTypeService, TaskTypeService>();
             
             services.AddAutoMapper(typeof(AutomapConfig));
+            
+            services.AddScoped<IPasswordHasherService, PasswordHasherService>();
             return services;
         }
     }
