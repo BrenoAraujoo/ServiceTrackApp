@@ -1,11 +1,13 @@
-﻿using ServiceTrackHub.Domain.Entities;
+﻿using System.Linq.Expressions;
+using ServiceTrackHub.Domain.Entities;
 
 namespace ServiceTrackHub.Domain.Interfaces
 {
     public interface ITasksRepository
     {
         Task<List<Tasks>> GetAllAsync();
-        Task<Tasks> GetByIdAsync(Guid? id);
+        Task<List<Tasks>> GetFilteredAsync(Expression<Func<Tasks, bool>> predicate);
+        Task<Tasks?> GetByIdAsync(Guid? id);
 
         Task<List<Tasks>> GetTasksByUserIdAsync(Guid? userId);
         Task<Tasks> CreateAsync(Tasks task);

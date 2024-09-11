@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
 using ServiceTrackHub.Infra.Data.Context;
@@ -27,7 +28,12 @@ namespace ServiceTrackHub.Infra.Data.Repositories
                 .ToListAsync(); 
         }
 
-        public async Task<Tasks> GetByIdAsync(Guid? id)
+        public async Task<List<Tasks>> GetFilteredAsync(Expression<Func<Tasks, bool>> predicate)
+        {
+            return await _context.Tasks.Where(predicate).ToListAsync();
+        }
+
+        public async Task<Tasks?> GetByIdAsync(Guid? id)
         {
             return await _context.Tasks
                 .AsNoTracking()

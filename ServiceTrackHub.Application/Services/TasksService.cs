@@ -29,14 +29,14 @@ namespace ServiceTrackHub.Application.Services
             return Result<List<TasksViewModel>>.Success(taskModel);
         }
 
-        public async Task<Result> GetTasksByUserIdAsync(Guid userId)
+        public async Task<Result> GetTasksByUserId(Guid userId)
         {
             var tasks = await _tasksRepository.GetTasksByUserIdAsync(userId);
             var tasksViewModel = _mapper.Map<List<TasksViewModel>>(tasks);
             return Result<List<TasksViewModel>>.Success(tasksViewModel);
         }
 
-        public async Task<Result> Create(TasksInputModel taskInput)
+        public async Task<Result> Create(CreateTaskModel taskInput)
         {
 
 
@@ -63,31 +63,25 @@ namespace ServiceTrackHub.Application.Services
 
         public async Task<Result> Delete(Guid id)
         {
-            throw new NotImplementedException();
-            /*
-            var taskDomain = await _tasksRepository.GetByIdAsync(id);
-            if (taskDomain is null)
-                return  Result.Failure(ErrorMessages.NotFound(nameof(id)));
+            var task = await _tasksRepository.GetByIdAsync(id);
+            if (task is null)
+                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.TaskNotFound, id)));
 
-            await _tasksRepository.RemoveAsync(taskDomain);
+            await _tasksRepository.RemoveAsync(task);
             return Result.Success();
-            */
+            
         }
 
-        public async Task<Result> Update(Guid id, TasksInputModel taskInput)
+        public async Task<Result> Update(Guid id, UpdateTaskModel taskInput)
         {
-
-            throw new NotImplementedException();
-            /*
-            var taskDomain = await _tasksRepository.GetByIdAsync(id);
-            if(taskDomain is null)
-                return Result.Failure(ErrorMessages.NotFound(nameof(id)));
-
-            var taskModel = _mapper.Map(taskDomain, taskInput);
-
-            await _tasksRepository.UpdateAsync(taskDomain);
-            return Result.Success();
-            */
+            var task = await _tasksRepository.GetByIdAsync(id);
+            if (task is null)
+                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.TaskNotFound, id)));
+            _mapper.Map(taskInput, task);
+            task.Update();
+            await _tasksRepository.UpdateAsync(task);
+            var taskModel = _mapper.Map<TasksViewModel>(task);
+            return Result<TasksViewModel>.Success(taskModel);
         }
         
     }

@@ -35,7 +35,7 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             return user;
         }
 
-        public async Task<User?> GetByEmail(string email)
+        public async Task<User?> GetByEmailAsync(string email)
         {
             var user = await _context.Users
                 .AsNoTracking()
@@ -43,7 +43,7 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             return user;
         }
 
-        public async Task Remove(User user)
+        public async Task RemoveAsync(User user)
         {
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();

@@ -53,10 +53,9 @@ namespace ServiceTrackHub.Api.Controllers
         }
         
         [HttpPut("v1/users/{id:guid}")]
-        public async Task<IActionResult> Update([FromRoute]Guid? id, [FromBody]UpdateUserModel userInput)
+        public async Task<IActionResult> Update([FromRoute]Guid id, [FromBody]UpdateUserModel userInput)
         {
-            
-          
+
             if (!ModelState.IsValid) 
             {
                 var erros = ModelState.GetErrors();
@@ -72,7 +71,7 @@ namespace ServiceTrackHub.Api.Controllers
         }
 
         [HttpPut("v1/users/{id}/deactivate")]
-        public async Task<ActionResult> Deactivate([FromRoute] Guid? id)
+        public async Task<ActionResult> Deactivate([FromRoute] Guid id)
         {
             var result = await _userService.Deactivate(id);
                 return !result.IsSuccess ?
@@ -80,7 +79,7 @@ namespace ServiceTrackHub.Api.Controllers
                     NoContent();
         }
         [HttpPut("v1/users/{id}/activate")]
-        public async Task<ActionResult> Activate([FromRoute] Guid? id)
+        public async Task<ActionResult> Activate([FromRoute] Guid id)
         {
             var result = await _userService.Activate(id);
             if (!result.IsSuccess) 
@@ -91,7 +90,7 @@ namespace ServiceTrackHub.Api.Controllers
         }
 
         [HttpDelete("v1/users/{id}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid? id)
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var result = await _userService.Remove(id);
             return result.IsSuccess ? NoContent():

@@ -31,7 +31,7 @@ namespace ServiceTrackHub.Application.Services
             return Result<List<UserViewModel?>>.Success(users);
         }
 
-        public async Task<Result> GetById(Guid? id)
+        public async Task<Result> GetById(Guid id)
         {
             var user = await _userRepository.GetByIdAsync(id);
             var userModel = _mapper.Map<UserViewModel?>(user);
@@ -43,7 +43,7 @@ namespace ServiceTrackHub.Application.Services
 
         public async Task<Result> Create(CreateUserModel userInput)
         {
-            var userExists = await _userRepository.GetByEmail(userInput.Email) is not null;
+            var userExists = await _userRepository.GetByEmailAsync(userInput.Email) is not null;
             if (userExists)
                 return Result.Failure(
                     CustomError.Conflict(string.Format(ErrorMessage.UserEmailAlreadyExists, userInput.Email)));
@@ -54,7 +54,7 @@ namespace ServiceTrackHub.Application.Services
             return Result<UserViewModel?>.Success(userModel);
         }
 
-        public async Task<Result> Update(Guid? id, UpdateUserModel userInput)
+        public async Task<Result> Update(Guid id, UpdateUserModel userInput)
         {
             var userEntity = await _userRepository.GetByIdAsync(id);
             if (userEntity is null)
@@ -70,7 +70,7 @@ namespace ServiceTrackHub.Application.Services
             return Result<UserViewModel?>.Success(userModel);
         }
 
-        public async Task<Result> Deactivate(Guid? id)
+        public async Task<Result> Deactivate(Guid id)
         {
             var userEntity = await _userRepository.GetByIdAsync(id);
             if (userEntity is null)
@@ -80,7 +80,7 @@ namespace ServiceTrackHub.Application.Services
             return Result.Success();
         }
 
-        public async Task<Result> Activate(Guid? id)
+        public async Task<Result> Activate(Guid id)
         {
             var userEntity = await _userRepository.GetByIdAsync(id);
             if (userEntity is null)
@@ -90,7 +90,7 @@ namespace ServiceTrackHub.Application.Services
             return Result.Success();
         }
 
-        public async Task<Result> Remove(Guid? id)
+        public async Task<Result> Remove(Guid id)
         {
             var user = await _userRepository.GetByIdAsync(id);
             if (user is null)
@@ -98,7 +98,7 @@ namespace ServiceTrackHub.Application.Services
             var userTasks = await _tasksRepository.GetTasksByUserIdAsync(user.Id);
             if (userTasks.Count > 0)
                 return Result.Failure(CustomError.Conflict(string.Format(ErrorMessage.UserCannotBeRemove, id)));
-            await _userRepository.Remove(user);
+            await _userRepository.RemoveAsync(user);
             return Result.Success();
         }
     }

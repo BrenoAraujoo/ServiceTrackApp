@@ -21,6 +21,8 @@
         #region Task Type messages
         public static readonly string TaskTypeNotFound = "O tipo de tarefa com id \"{0}\" não foi encontrado";
         public static readonly string TaskTypeInvalid= "Tipo de tarefa inválido";
+        public static readonly string TaskTypeCantBeRemoved= "O tipo de tarefa {0} não pode ser removida pois está associada " +
+                                                             "a uma ou mais tarefas.";
         #endregion
 
 

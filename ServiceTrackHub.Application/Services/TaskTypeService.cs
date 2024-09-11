@@ -14,11 +14,13 @@ namespace ServiceTrackHub.Application.Services
     public class TaskTypeService : ITaskTypeService
     {
         private readonly ITaskTypeRepository _taskTypeRepository;
+        private readonly ITasksRepository _tasksRepository;
         private readonly IMapper _mapper;
 
-        public TaskTypeService(ITaskTypeRepository taskTypeRepository, IMapper mapper)
+        public TaskTypeService(ITaskTypeRepository taskTypeRepository, ITasksRepository tasksRepository,IMapper mapper)
         {
             _taskTypeRepository = taskTypeRepository;
+            _tasksRepository = tasksRepository;
             _mapper = mapper;
         }
         
@@ -35,9 +37,18 @@ namespace ServiceTrackHub.Application.Services
             return Result<TaskTypeViewModel?>.Success(taskViewModel);
         }
 
-        public Task<Result> Delete(Guid? id)
+        public async Task<Result> Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var taskType = await _taskTypeRepository.GetByIdAsync(id);
+            if (taskType is null)
+                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.TaskTypeNotFound, id)));
+
+            var tasks = await _tasksRepository.GetFilteredAsync(x => x.TaskTypeId == id);
+            if (tasks.Count > 0)
+                return Result.Failure(
+                    CustomError.Conflict(string.Format(ErrorMessage.TaskTypeCantBeRemoved, taskType.Name)));
+            await _taskTypeRepository.RemoveAsync(taskType);
+            return Result.Success();
         }
 
         public async Task<Result> GetAll()
@@ -49,7 +60,7 @@ namespace ServiceTrackHub.Application.Services
 
         }
 
-        public async Task<Result> GetById(Guid? id)
+        public async Task<Result> GetById(Guid id)
         {
             
             var taskTypeEntity = await _taskTypeRepository.GetByIdAsync(id);
@@ -60,7 +71,7 @@ namespace ServiceTrackHub.Application.Services
                 Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.TaskTypeNotFound, id)));
         }
 
-        public async Task<Result> Update(Guid? id, UpdateTaskTypeModel taskTypeInput)
+        public async Task<Result> Update(Guid id, UpdateTaskTypeModel taskTypeInput)
         {
             var taskTypeEntity = await _taskTypeRepository.GetByIdAsync(id);
             if(taskTypeEntity is null)

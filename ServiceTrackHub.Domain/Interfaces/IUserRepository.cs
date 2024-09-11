@@ -9,9 +9,9 @@ namespace ServiceTrackHub.Domain.Interfaces
         Task<User> CreateAsync(User user);
         Task<User> UpdateAsync(User user);
 
-        Task<User?> GetByEmail(string email);
+        Task<User?> GetByEmailAsync(string email);
 
-        Task Remove (User user);
+        Task RemoveAsync (User user);
         
     }
 }

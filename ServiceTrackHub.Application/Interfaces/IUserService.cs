@@ -8,11 +8,11 @@ namespace ServiceTrackHub.Application.Interfaces
     public interface IUserService
     {
         Task<Result> GetAll();
-        Task<Result> GetById(Guid? id);
-        Task<Result> Create(CreateUserModel UserDTO);
-        Task<Result> Update(Guid? id, UpdateUserModel UserDTO);
-        Task <Result>Deactivate(Guid? id);
-        Task <Result>Activate(Guid? id);
-        Task <Result>Remove(Guid? id);
+        Task<Result> GetById(Guid id);
+        Task<Result> Create(CreateUserModel createUserModel);
+        Task<Result> Update(Guid id, UpdateUserModel updateUserModel);
+        Task <Result>Deactivate(Guid id);
+        Task <Result>Activate(Guid id);
+        Task <Result>Remove(Guid id);
     }
 }

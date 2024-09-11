@@ -65,7 +65,12 @@ namespace ServiceTrackHub.Api.Controllers
             
         }
 
-       
+        [HttpDelete("v1/tasktypes/{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _taskTypeService.Delete(id);
+            return !result.IsSuccess?  ApiControllerHandleResult(result): NoContent() ;
+        }
     }
         
 }

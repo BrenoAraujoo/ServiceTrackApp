@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceTrackHub.Application.Extensions;
 using ServiceTrackHub.Application.InputViewModel.Task;
+using ServiceTrackHub.Application.InputViewModel.TaskType;
 using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.ViewModel;
 using ServiceTrackHub.Application.ViewModel.Task;
@@ -21,7 +22,7 @@ namespace ServiceTrackHub.Api.Controllers
         }
         
         [HttpGet("v1/tasks")]
-        public async Task<ActionResult> GetTasks()
+        public async Task<IActionResult> GetTasks()
         {
             var result = await _tasksService.GetAll();
             return Ok(result);
@@ -29,14 +30,14 @@ namespace ServiceTrackHub.Api.Controllers
 
 
         [HttpGet("v1/taksk/{id}")]
-        public async Task<ActionResult> GetTaskById(Guid id)
+        public async Task<IActionResult> GetTaskById(Guid id)
         {
             var result = await _tasksService.GetById(id);
             return Ok(result);
         }
 
         [HttpPost("v1/tasks")]
-        public async Task<IActionResult> Create([FromBody] TasksInputModel taskInput)
+        public async Task<IActionResult> Create([FromBody] CreateTaskModel taskInput)
         {
             if (!ModelState.IsValid) 
             {
@@ -55,23 +56,29 @@ namespace ServiceTrackHub.Api.Controllers
         [HttpGet("v1/tasks/userTasks/{id}")]
         public async Task<IActionResult> GetUserTasks(Guid id)
         {
-            var userTasks = await _tasksService.GetTasksByUserIdAsync(id);
+            var userTasks = await _tasksService.GetTasksByUserId(id);
             return Ok(userTasks);
         }
-        /*
+        
         [HttpPut("v1/tasks/{id}")]
-        public async Task<ActionResult> Update([FromRoute] Guid? id, [FromBody] TasksInputModel tasksDTORequest)
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateTaskModel inputTask)
         {
-            var task = await _tasksService.Update(id, tasksDTORequest);
-            return Ok(task);
+            if (!ModelState.IsValid)
+            {
+                var erros = ModelState.GetErrors();
+                var resultError = Result<TasksViewModel?>.Failure(CustomError.ValidationError(ErrorMessage.TaskNotFound, erros));
+                return ApiControllerHandleResult(resultError);
+            }
+            var result = await _tasksService.Update(id, inputTask);
+            return !result.IsSuccess? ApiControllerHandleResult(result) : NoContent();
         }
-
+ 
         [HttpDelete("v1/tasks/{id}")]
-        public async Task<ActionResult> Delete([FromRoute] Guid? id)
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            await _tasksService.Delete(id);
-            return NoContent();
+            var result = await _tasksService.Delete(id);
+            return !result.IsSuccess ? ApiControllerHandleResult(result) : NoContent();
         }
-        */
+       
     }
 }
