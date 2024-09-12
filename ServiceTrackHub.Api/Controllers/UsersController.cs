@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceTrackHub.Application.Extensions;
 using ServiceTrackHub.Application.InputViewModel.Auth;
@@ -7,6 +8,7 @@ using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Application.Services.Auth;
 using ServiceTrackHub.Application.ViewModel.User;
+using ServiceTrackHub.Domain;
 using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Common.Result;
 using ServiceTrackHub.Domain.Entities;
@@ -26,6 +28,7 @@ namespace ServiceTrackHub.Api.Controllers
             _authService = authService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("v1/users")]
         public async Task <ActionResult> GetUsers()
         {

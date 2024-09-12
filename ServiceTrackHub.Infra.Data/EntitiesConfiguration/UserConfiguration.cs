@@ -21,7 +21,12 @@ namespace ServiceTrackHub.Infra.Data.EntitiesConfiguration
                 .IsRequired();
             builder.Property(x => x.Id)
                 .ValueGeneratedNever();
-
+            
+            // Configurar a conversão do enum Role para ser armazenado como int
+            builder.Property(u => u.Role)
+                .HasConversion<byte>()
+                .IsRequired();
+            
             builder
                 .HasMany(x => x.Tasks)
                 .WithOne(x => x.User)

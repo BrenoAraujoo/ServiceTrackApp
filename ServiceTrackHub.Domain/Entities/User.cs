@@ -10,6 +10,7 @@ namespace ServiceTrackHub.Domain.Entities
         public string PasswordHash { get; private set; }
         public string Phone { get; private set; }
         public bool Active { get; private set; }
+        public Role Role { get; private set; } //EF nav property
         public User(){}
 
 
