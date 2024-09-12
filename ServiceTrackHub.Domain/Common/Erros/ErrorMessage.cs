@@ -11,6 +11,9 @@
                                                            "pois ele possui tarefas associadas.";
         public static readonly string UserInvalidEmailOrPassword = "Usuário ou senha inválidos";
 
+        public static readonly string UserIsAlreadyActivated = "O usuário já está ativo";
+        public static readonly string UserIsAlreadyInactivated = "O usuário já está inativo";
+
         #endregion
 
         #region Task messages

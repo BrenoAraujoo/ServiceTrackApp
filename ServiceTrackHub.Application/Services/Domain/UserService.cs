@@ -49,11 +49,10 @@ namespace ServiceTrackHub.Application.Services
         public async Task<Result> GetByEmail(string email)
         {
             var userEntity = await _userRepository.GetByEmail(email);
-            if(userEntity is null)
+            if (userEntity is null)
                 return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.UserNotFound, email)));
             var userModel = _mapper.Map<UserViewModel>(userEntity);
             return Result<UserViewModel?>.Success(userModel);
-            
         }
 
         public async Task<Result> Create(CreateUserModel userInput)
@@ -62,15 +61,26 @@ namespace ServiceTrackHub.Application.Services
             if (userExists)
                 return Result.Failure(
                     CustomError.Conflict(string.Format(ErrorMessage.UserEmailAlreadyExists, userInput.Email)));
+
             var passwordHash = _passwordHasherService.HashPassword(userInput.Password);
             if (!passwordHash.IsSuccess)
                 return Result.Failure(CustomError.Conflict(ErrorMessage.UserErrorPasswordHash));
-            var userEntity = _mapper.Map<User>(userInput);
-            userEntity.ChangePassword(passwordHash.Data);
-            
-            await _userRepository.CreateAsync(userEntity);
-            var userModel = _mapper.Map<UserViewModel>(userEntity);
-            return Result<UserViewModel?>.Success(userModel);
+
+            try
+            {
+                var userEntity = new User(userInput.Name, userInput.Email, userInput.Password, userInput.Phone);
+
+                userEntity.ChangePassword(passwordHash.Data);
+
+                await _userRepository.CreateAsync(userEntity);
+                var userModel = _mapper.Map<UserViewModel>(userEntity);
+
+                return Result<UserViewModel?>.Success(userModel);
+            }
+            catch (Exception e)
+            {
+                return Result.Failure(CustomError.ValidationError(e.Message));
+            }
         }
 
         public async Task<Result> Update(Guid id, UpdateUserModel userInput)
@@ -89,24 +99,40 @@ namespace ServiceTrackHub.Application.Services
             return Result<UserViewModel?>.Success(userModel);
         }
 
-        public async Task<Result> Deactivate(Guid id)
-        {
-            var userEntity = await _userRepository.GetByIdAsync(id);
-            if (userEntity is null)
-                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.UserNotFound, id)));
-            userEntity.Deactivate();
-            await _userRepository.UpdateAsync(userEntity);
-            return Result.Success();
-        }
-
         public async Task<Result> Activate(Guid id)
         {
             var userEntity = await _userRepository.GetByIdAsync(id);
             if (userEntity is null)
                 return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.UserNotFound, id)));
-            userEntity.Activate();
-            await _userRepository.UpdateAsync(userEntity);
-            return Result.Success();
+
+            try
+            {
+                userEntity.Activate();
+                await _userRepository.UpdateAsync(userEntity);
+                return Result.Success();
+            }
+            catch (InvalidOperationException e)
+            {
+                return Result.Failure(CustomError.ValidationError(e.Message));
+            }
+        }
+
+        public async Task<Result> Deactivate(Guid id)
+        {
+            var userEntity = await _userRepository.GetByIdAsync(id);
+            if (userEntity is null)
+                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.UserNotFound, id)));
+
+            try
+            {
+                userEntity.Deactivate();
+                await _userRepository.UpdateAsync(userEntity);
+                return Result.Success();
+            }
+            catch (Exception e)
+            {
+                return Result.Failure(CustomError.ValidationError(e.Message));
+            }
         }
 
         public async Task<Result> Remove(Guid id)

@@ -15,18 +15,18 @@ public class TokenService : ITokenService
 
     public TokenService(IConfiguration configuration)
     {
-        _configuration = configuration; 
+        _configuration = configuration;
     }
-    
+
     public Token GenerateToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration["jwt:Key"]);
         var claims = new List<Claim>
         {
-            new (ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new(ClaimTypes.Name, user.Name),
-            new (ClaimTypes.Role, user.Role.ToString())
+            new(ClaimTypes.Role, user.Role.ToString())
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -36,15 +36,12 @@ public class TokenService : ITokenService
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
         };
-        
+
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return new Token
         {
             AccessToken = tokenHandler.WriteToken(token),
             Expiration = tokenDescriptor.Expires,
         };
-
-
-
     }
 }
