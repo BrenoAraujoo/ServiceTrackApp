@@ -13,6 +13,7 @@ namespace ServiceTrackHub.Api.Controllers
                 1 => NotFound(result),
                 2 => BadRequest(result),
                 3 => Conflict(result),
+                4 => Unauthorized(result),
                 _ => StatusCode(500, "Internal Server Error")
 
             };

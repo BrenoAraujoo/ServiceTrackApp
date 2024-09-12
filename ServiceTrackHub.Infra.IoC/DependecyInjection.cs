@@ -32,8 +32,10 @@ namespace ServiceTrackHub.Infra.IoC
             services.AddScoped<ITaskTypeService, TaskTypeService>();
             
             services.AddAutoMapper(typeof(AutomapConfig));
-            
+            //Auth
             services.AddScoped<IPasswordHasherService, PasswordHasherService>();
+            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IAuthService, AuthService>();
             return services;
         }
     }

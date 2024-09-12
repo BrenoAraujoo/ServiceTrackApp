@@ -1,6 +1,7 @@
 ﻿using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Domain.Common.Result;
 using ServiceTrackHub.Domain.Common.Erros;
+using BCrypt.Net;
 
 namespace ServiceTrackHub.Application.Services.Auth;
 
@@ -23,7 +24,7 @@ public class PasswordHasherService : IPasswordHasherService
         try
         {
             var verify = BCrypt.Net.BCrypt.Verify(password, storedHash);
-            return verify ? Result.Success() : Result.Failure(CustomError.None);
+            return verify ? Result.Success() : Result.Failure(CustomError.AuthenticationError(ErrorMessage.UserInvalidEmailOrPassword));
         }
         catch 
         {

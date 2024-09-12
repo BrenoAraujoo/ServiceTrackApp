@@ -9,6 +9,7 @@ namespace ServiceTrackHub.Application.Interfaces
     {
         Task<Result> GetAll();
         Task<Result> GetById(Guid id);
+        Task<Result> GetByEmail(string email);
         Task<Result> Create(CreateUserModel createUserModel);
         Task<Result> Update(Guid id, UpdateUserModel updateUserModel);
         Task <Result>Deactivate(Guid id);

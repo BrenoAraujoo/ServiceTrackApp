@@ -12,6 +12,12 @@ namespace ServiceTrackHub.Infra.Data.Repositories
         {
             _context = context;
         }
+
+        public async Task<User?> GetByEmail(string email)
+        {
+            return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email);
+        }
+
         public async Task<User> CreateAsync(User user)
         {
             _context.Add(user);
@@ -27,13 +33,14 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             
         }
 
-        public async Task<User?> GetByIdAsync(Guid? id)
+        public async Task<User?> GetByIdAsync(Guid id)
         {
             var user = await _context.Users
                 .AsNoTracking()
                 .SingleOrDefaultAsync(p => p.Id==id);
             return user;
         }
+        
 
         public async Task<User?> GetByEmailAsync(string email)
         {

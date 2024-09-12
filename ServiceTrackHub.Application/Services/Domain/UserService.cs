@@ -46,6 +46,16 @@ namespace ServiceTrackHub.Application.Services
                 : Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.UserNotFound, id)));
         }
 
+        public async Task<Result> GetByEmail(string email)
+        {
+            var userEntity = await _userRepository.GetByEmail(email);
+            if(userEntity is null)
+                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.UserNotFound, email)));
+            var userModel = _mapper.Map<UserViewModel>(userEntity);
+            return Result<UserViewModel?>.Success(userModel);
+            
+        }
+
         public async Task<Result> Create(CreateUserModel userInput)
         {
             var userExists = await _userRepository.GetByEmailAsync(userInput.Email) is not null;
@@ -54,7 +64,7 @@ namespace ServiceTrackHub.Application.Services
                     CustomError.Conflict(string.Format(ErrorMessage.UserEmailAlreadyExists, userInput.Email)));
             var passwordHash = _passwordHasherService.HashPassword(userInput.Password);
             if (!passwordHash.IsSuccess)
-                return Result.Failure(CustomError.Conflict(ErrorMessage.UserInvalidPasswordHash));
+                return Result.Failure(CustomError.Conflict(ErrorMessage.UserErrorPasswordHash));
             var userEntity = _mapper.Map<User>(userInput);
             userEntity.ChangePassword(passwordHash.Data);
             

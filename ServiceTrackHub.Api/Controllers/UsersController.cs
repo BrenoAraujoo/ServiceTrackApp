@@ -1,10 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using ServiceTrackHub.Application.Extensions;
+using ServiceTrackHub.Application.InputViewModel.Auth;
 using ServiceTrackHub.Application.InputViewModel.User;
 using ServiceTrackHub.Application.Interfaces;
+using ServiceTrackHub.Application.Interfaces.Auth;
+using ServiceTrackHub.Application.Services.Auth;
 using ServiceTrackHub.Application.ViewModel.User;
 using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Common.Result;
+using ServiceTrackHub.Domain.Entities;
 
 namespace ServiceTrackHub.Api.Controllers
 {
@@ -12,9 +17,13 @@ namespace ServiceTrackHub.Api.Controllers
     public class UsersController : ApiControllerBase
     {
         private readonly IUserService _userService;
-        public UsersController(IUserService userService)
+        private readonly ITokenService _tokenService;
+        private readonly IAuthService _authService;
+        public UsersController(IUserService userService, ITokenService tokenService, IAuthService authService)
         {
             _userService = userService;
+            _tokenService = tokenService;
+            _authService = authService;
         }
 
         [HttpGet("v1/users")]
@@ -95,6 +104,19 @@ namespace ServiceTrackHub.Api.Controllers
             var result = await _userService.Remove(id);
             return result.IsSuccess ? NoContent():
                 ApiControllerHandleResult(result);
+        }
+
+        [HttpPost("v1/users/token")]
+        public async Task<IActionResult> GetUserToken([FromBody] LoginModel loginModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                var erros = ModelState.GetErrors();
+                var resultError = Result.Failure(CustomError.ValidationError(ErrorMessage.UserInvalidEmailOrPassword, erros));
+                return ApiControllerHandleResult(resultError);
+            }
+            var  result = await _authService.AuthenticateAsync(loginModel);
+            return !result.IsSuccess ? ApiControllerHandleResult(result) : Ok(result);
         }
  
     }
