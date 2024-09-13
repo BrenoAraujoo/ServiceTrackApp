@@ -39,10 +39,9 @@ namespace ServiceTrackHub.Application.Services
         public async Task<Result> GetById(Guid id)
         {
             var user = await _userRepository.GetByIdAsync(id);
-            var userModel = _mapper.Map<UserViewModel?>(user);
 
-            return userModel is not null
-                ? Result<UserViewModel?>.Success(userModel)
+            return user is not null
+                ? Result<UserViewModel?>.Success(UserViewModel.ToViewModel(user))
                 : Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.UserNotFound, id)));
         }
 

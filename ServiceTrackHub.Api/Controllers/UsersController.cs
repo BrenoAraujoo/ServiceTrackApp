@@ -54,6 +54,7 @@ namespace ServiceTrackHub.Api.Controllers
             {
                 var erros = ModelState.GetErrors();
                 var resultError = Result<UserViewModel?>.Failure(CustomError.ValidationError(ErrorMessage.UserInvalid, erros));
+                //var resultError = Result.Failure(CustomError.ValidationError(ErrorMessage.UserInvalid, erros)); // sem data[];
                 return ApiControllerHandleResult(resultError);
             }
             

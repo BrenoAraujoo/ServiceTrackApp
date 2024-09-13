@@ -22,14 +22,14 @@ namespace ServiceTrackHub.Domain.Entities
             Tasks = new List<Tasks>();
             Email = new Email(email).Value;
             PasswordHash = passwordHash;
-            Phone = phone;
+            Phone = new Phone(phone).Value;
             Active = true;
         }
 
         public void Activate()
         {
             if (Active)
-                throw new InvalidOperationException("Usuário já está ativo");
+                throw new InvalidOperationException(ErrorMessage.UserIsAlreadyActivated);
             Active = true;
             base.Update();
             
@@ -38,7 +38,7 @@ namespace ServiceTrackHub.Domain.Entities
         public void Deactivate()
         {
             if (!Active)
-                throw new InvalidOperationException("Usuário já está inativo");
+                throw new InvalidOperationException(ErrorMessage.UserIsAlreadyInactivated);
             base.Update();
             Active = false;
         }

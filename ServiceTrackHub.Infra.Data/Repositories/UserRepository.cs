@@ -37,7 +37,7 @@ namespace ServiceTrackHub.Infra.Data.Repositories
         {
             var user = await _context.Users
                 .AsNoTracking()
-                .SingleOrDefaultAsync(p => p.Id==id);
+                .FirstOrDefaultAsync(p => p.Id==id);
             return user;
         }
         
