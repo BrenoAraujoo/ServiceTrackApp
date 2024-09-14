@@ -42,14 +42,14 @@ namespace ServiceTrackHub.Application.Services
 
             return user is not null
                 ? Result<UserViewModel?>.Success(UserViewModel.ToViewModel(user))
-                : Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.UserNotFound, id)));
+                : Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
         }
 
         public async Task<Result> GetByEmail(string email)
         {
             var userEntity = await _userRepository.GetByEmail(email);
             if (userEntity is null)
-                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.UserNotFound, email)));
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
             var userModel = _mapper.Map<UserViewModel>(userEntity);
             return Result<UserViewModel?>.Success(userModel);
         }
@@ -59,7 +59,7 @@ namespace ServiceTrackHub.Application.Services
             var userExists = await _userRepository.GetByEmailAsync(userInput.Email) is not null;
             if (userExists)
                 return Result.Failure(
-                    CustomError.Conflict(string.Format(ErrorMessage.UserEmailAlreadyExists, userInput.Email)));
+                    CustomError.Conflict(ErrorMessage.UserEmailAlreadyExists));
 
             var passwordHash = _passwordHasherService.HashPassword(userInput.Password);
             if (!passwordHash.IsSuccess)
@@ -86,7 +86,7 @@ namespace ServiceTrackHub.Application.Services
         {
             var userEntity = await _userRepository.GetByIdAsync(id);
             if (userEntity is null)
-                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.UserNotFound, id)));
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
 
             _mapper.Map(userInput, userEntity);
             userEntity.Update();
@@ -102,7 +102,7 @@ namespace ServiceTrackHub.Application.Services
         {
             var userEntity = await _userRepository.GetByIdAsync(id);
             if (userEntity is null)
-                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.UserNotFound, id)));
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
 
             try
             {
@@ -120,7 +120,7 @@ namespace ServiceTrackHub.Application.Services
         {
             var userEntity = await _userRepository.GetByIdAsync(id);
             if (userEntity is null)
-                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.UserNotFound, id)));
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
 
             try
             {
@@ -138,10 +138,10 @@ namespace ServiceTrackHub.Application.Services
         {
             var user = await _userRepository.GetByIdAsync(id);
             if (user is null)
-                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.UserNotFound, id)));
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
             var userTasks = await _tasksRepository.GetTasksByUserIdAsync(user.Id);
             if (userTasks.Count > 0)
-                return Result.Failure(CustomError.Conflict(string.Format(ErrorMessage.UserCannotBeRemove, id)));
+                return Result.Failure(CustomError.Conflict(ErrorMessage.UserCannotBeRemove));
             await _userRepository.RemoveAsync(user);
             return Result.Success();
         }

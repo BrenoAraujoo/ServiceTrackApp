@@ -3,11 +3,11 @@
     public sealed class ErrorMessage
     {
         #region User messages
-        public const string UserNotFound = "O Usuário com  Id \"{0}\" não foi encontrado";
-        public const string UserEmailAlreadyExists = "O email \"{0}\" já existe. Tente usar outro.";
+        public const string UserNotFound = $"O Usuário não encontrado";
+        public const string UserEmailAlreadyExists = "Email já está em uso. Tente usar outro.";
         public const string UserInvalid = "Usuário inválido";
         public const string UserErrorPasswordHash = "Erro ao gerar hash do password";
-        public const string UserCannotBeRemove = "O usuário com Id \"{0}\" não pode ser removido," +
+        public const string UserCannotBeRemove = "O usuário não pode ser removido," +
                                                            "pois ele possui tarefas associadas.";
         public const string UserInvalidEmailOrPassword = "Usuário ou senha inválidos";
 
@@ -17,16 +17,19 @@
         #endregion
 
         #region Task messages
-        public const string TaskNotFound = "A tarefa com o id \"{0}\"não foi encontrada";
+        public const string TaskNotFound = "Tarefa não foi encontrada";
         public const string TaskInvalid = "Tarefa inválida";
-        public const string TaskNameAlreadyExists = "Já existe uma tarefa com o nome \"{0}\"." +
+        public const string TaskNameAlreadyExists = "Já existe uma tarefa com esse nome." +
                                                     " Por favor, tente com outro nome";
+
+        public const string TaskAlreadyActivated = "A tarefa já está ativa";
+        public const string TaskAlreadyInactivated = "A tarefa já está inaativa";
         #endregion
 
         #region Task Type messages
-        public const string TaskTypeNotFound = "O tipo de tarefa com id \"{0}\" não foi encontrado";
+        public const string TaskTypeNotFound = "Tipo de tarefa não encontrado";
         public const string TaskTypeInvalid= "Tipo de tarefa inválido";
-        public const string TaskTypeCantBeRemoved= "O tipo de tarefa {0} não pode ser removida pois está associada " +
+        public const string TaskTypeCantBeRemoved= "Esse tipo de tarefa não pode ser removida pois está associada " +
                                                    "a uma ou mais tarefas.";
         #endregion
 

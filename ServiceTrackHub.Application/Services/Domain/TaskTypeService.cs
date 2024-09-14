@@ -29,7 +29,7 @@ namespace ServiceTrackHub.Application.Services
             var taskTypeExists = await _taskTypeRepository.GetByNameAsync(taskTypeInputModel.name) is not null;
 
              if(taskTypeExists)
-                return Result.Failure(CustomError.Conflict(string.Format(ErrorMessage.TaskNameAlreadyExists, taskTypeInputModel.name)));
+                return Result.Failure(CustomError.Conflict(ErrorMessage.TaskNameAlreadyExists));
 
             var taskTypeEntity = _mapper.Map<TaskType>(taskTypeInputModel);
             await _taskTypeRepository.CreateAsync(taskTypeEntity);
@@ -41,12 +41,12 @@ namespace ServiceTrackHub.Application.Services
         {
             var taskType = await _taskTypeRepository.GetByIdAsync(id);
             if (taskType is null)
-                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.TaskTypeNotFound, id)));
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
 
             var tasks = await _tasksRepository.GetFilteredAsync(x => x.TaskTypeId == id);
             if (tasks.Count > 0)
                 return Result.Failure(
-                    CustomError.Conflict(string.Format(ErrorMessage.TaskTypeCantBeRemoved, taskType.Name)));
+                    CustomError.Conflict(ErrorMessage.TaskTypeCantBeRemoved));
             await _taskTypeRepository.RemoveAsync(taskType);
             return Result.Success();
         }
@@ -68,14 +68,14 @@ namespace ServiceTrackHub.Application.Services
 
             return taskTypeEntity is not null ?
                 Result<TaskTypeViewModel?>.Success(taskTypeEntityViewModel) :
-                Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.TaskTypeNotFound, id)));
+                Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
         }
 
         public async Task<Result> Update(Guid id, UpdateTaskTypeModel taskTypeInput)
         {
             var taskTypeEntity = await _taskTypeRepository.GetByIdAsync(id);
             if(taskTypeEntity is null)
-                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.TaskTypeNotFound, id)));
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
             _mapper.Map(taskTypeInput, taskTypeEntity);
             await _taskTypeRepository.UpdateAsync(taskTypeEntity);
             var taskTypeModel = _mapper.Map<TaskTypeViewModel>(taskTypeEntity);

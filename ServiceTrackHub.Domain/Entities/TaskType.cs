@@ -1,4 +1,5 @@
-﻿using ServiceTrackHub.Domain.Interfaces;
+﻿using ServiceTrackHub.Domain.Common.Erros;
+using ServiceTrackHub.Domain.Interfaces;
 
 namespace ServiceTrackHub.Domain.Entities
 {
@@ -23,12 +24,16 @@ namespace ServiceTrackHub.Domain.Entities
 
         public void Activate()
         {
+            if (Active)
+                throw new InvalidOperationException(ErrorMessage.TaskAlreadyActivated);
             Active = true;
             base.Update();
         }
 
         public void Deactivate()
         {
+            if (!Active)
+                throw new InvalidOperationException(ErrorMessage.TaskAlreadyInactivated);
             Active = false;
             base.Update();
         }

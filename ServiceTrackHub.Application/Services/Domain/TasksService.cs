@@ -56,7 +56,7 @@ namespace ServiceTrackHub.Application.Services
 
             return tasks is not null ?
                 Result<TasksViewModel?>.Success(taksViewModel) :
-                Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.TaskNotFound, id)));
+                Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskNotFound));
 
         }
 
@@ -65,7 +65,7 @@ namespace ServiceTrackHub.Application.Services
         {
             var task = await _tasksRepository.GetByIdAsync(id);
             if (task is null)
-                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.TaskNotFound, id)));
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskNotFound));
 
             await _tasksRepository.RemoveAsync(task);
             return Result.Success();
@@ -76,7 +76,7 @@ namespace ServiceTrackHub.Application.Services
         {
             var task = await _tasksRepository.GetByIdAsync(id);
             if (task is null)
-                return Result.Failure(CustomError.RecordNotFound(string.Format(ErrorMessage.TaskNotFound, id)));
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskNotFound));
             _mapper.Map(taskInput, task);
             task.Update();
             await _tasksRepository.UpdateAsync(task);
