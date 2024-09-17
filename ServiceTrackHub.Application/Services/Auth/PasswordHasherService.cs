@@ -1,6 +1,6 @@
 ﻿using ServiceTrackHub.Application.Interfaces.Auth;
-using ServiceTrackHub.Domain.Common.Result;
-using ServiceTrackHub.Domain.Common.Erros;
+using ServiceTrackHub.Domain.Enums.Common.Result;
+using ServiceTrackHub.Domain.Enums.Common.Erros;
 using BCrypt.Net;
 
 namespace ServiceTrackHub.Application.Services.Auth;

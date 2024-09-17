@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Enums.Entities;
 
 namespace ServiceTrackHub.Infra.Data.Context
 {

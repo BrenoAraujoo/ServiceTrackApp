@@ -3,9 +3,9 @@ using ServiceTrackHub.Application.InputViewModel.Auth;
 using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Application.ViewModel.Auth;
-using ServiceTrackHub.Domain.Common.Erros;
-using ServiceTrackHub.Domain.Common.Result;
-using ServiceTrackHub.Domain.Interfaces;
+using ServiceTrackHub.Domain.Enums.Common.Erros;
+using ServiceTrackHub.Domain.Enums.Common.Result;
+using ServiceTrackHub.Domain.Enums.Interfaces;
 
 namespace ServiceTrackHub.Application.Services.Auth;
 

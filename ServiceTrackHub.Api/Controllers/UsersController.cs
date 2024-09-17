@@ -8,10 +8,10 @@ using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Application.Services.Auth;
 using ServiceTrackHub.Application.ViewModel.User;
-using ServiceTrackHub.Domain;
-using ServiceTrackHub.Domain.Common.Erros;
-using ServiceTrackHub.Domain.Common.Result;
-using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Enums;
+using ServiceTrackHub.Domain.Enums.Common.Erros;
+using ServiceTrackHub.Domain.Enums.Common.Result;
+using ServiceTrackHub.Domain.Enums.Entities;
 
 namespace ServiceTrackHub.Api.Controllers
 {
@@ -58,27 +58,20 @@ namespace ServiceTrackHub.Api.Controllers
         public async Task<IActionResult> Update([FromRoute]Guid id, [FromBody]UpdateUserModel userInput)
         {
             var result = await _userService.Update(id, userInput);
-            return result.IsSuccess?
-                NoContent():
-                ApiControllerHandleResult(result);
+            return result.IsSuccess? NoContent(): ApiControllerHandleResult(result);
         }
 
         [HttpPut("v1/users/{id}/deactivate")]
-        public async Task<ActionResult> Deactivate([FromRoute] Guid id)
+        public async Task<IActionResult> Deactivate([FromRoute] Guid id)
         {
             var result = await _userService.Deactivate(id);
-                return !result.IsSuccess ?
-                    BadRequest(Result.Failure(result.Error)): 
-                    NoContent();
+                return !result.IsSuccess ? ApiControllerHandleResult(result): NoContent();
         }
         [HttpPut("v1/users/{id}/activate")]
-        public async Task<ActionResult> Activate([FromRoute] Guid id)
+        public async Task<IActionResult> Activate([FromRoute] Guid id)
         {
             var result = await _userService.Activate(id);
-            if (!result.IsSuccess) 
-                return BadRequest(Result.Failure(result.Error));
-            
-            return NoContent();
+            return !result.IsSuccess ? ApiControllerHandleResult(result): NoContent();
 
         }
 
@@ -86,19 +79,12 @@ namespace ServiceTrackHub.Api.Controllers
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var result = await _userService.Remove(id);
-            return result.IsSuccess ? NoContent():
-                ApiControllerHandleResult(result);
+            return !result.IsSuccess ? ApiControllerHandleResult(result) : NoContent();
         }
 
         [HttpPost("v1/users/token")]
         public async Task<IActionResult> GetUserToken([FromBody] LoginModel loginModel)
         {
-            if (!ModelState.IsValid)
-            {
-                var erros = ModelState.GetErrors();
-                var resultError = Result.Failure(CustomError.ValidationError(ErrorMessage.UserInvalidEmailOrPassword, erros));
-                return ApiControllerHandleResult(resultError);
-            }
             var  result = await _authService.AuthenticateAsync(loginModel);
             return !result.IsSuccess ? ApiControllerHandleResult(result) : Ok(result);
         }

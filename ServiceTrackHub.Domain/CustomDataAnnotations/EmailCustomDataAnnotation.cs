@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ServiceTrackHub.Domain.ValueObjects;
+using ServiceTrackHub.Domain.Enums.ValueObjects;
 
-namespace ServiceTrackHub.Domain.CustomDataAnnotations;
+namespace ServiceTrackHub.Domain.Enums.CustomDataAnnotations;
 
 public class EmailCustomDataAnnotation : ValidationAttribute
 {

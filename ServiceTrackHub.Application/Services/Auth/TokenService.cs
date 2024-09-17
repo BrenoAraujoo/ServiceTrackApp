@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Application.ViewModel.Auth;
-using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Enums.Entities;
 
 namespace ServiceTrackHub.Application.Services.Auth;
 
@@ -22,6 +22,7 @@ public class TokenService : ITokenService
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration["jwt:Key"]);
+        var expiresMinutes = double.Parse(_configuration["jwt:ExpiresMinutes"]);
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -32,7 +33,8 @@ public class TokenService : ITokenService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims, "Bearer"),
-            Expires = DateTime.UtcNow.AddHours(1),
+            NotBefore = DateTime.UtcNow.AddHours(-3),
+            Expires = DateTime.UtcNow.AddHours(-3).AddMinutes(expiresMinutes),
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
         };

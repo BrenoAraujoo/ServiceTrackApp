@@ -1,8 +1,8 @@
-﻿namespace ServiceTrackHub.Domain;
+﻿namespace ServiceTrackHub.Domain.Enums;
 
 public enum Role : byte
 {
-    Admin = 1,
-    Manager = 2,
-    User = 3
+    User = 0,
+    Manager = 1,
+    Admin = 2
 }

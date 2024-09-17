@@ -1,6 +1,6 @@
-﻿using ServiceTrackHub.Domain.Entities;
+﻿using ServiceTrackHub.Domain.Enums.Entities;
 
-namespace ServiceTrackHub.Domain.Interfaces
+namespace ServiceTrackHub.Domain.Enums.Interfaces
 {
     public interface IUserRepository
     {

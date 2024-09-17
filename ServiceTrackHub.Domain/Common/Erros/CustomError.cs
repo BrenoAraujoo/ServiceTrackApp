@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Domain.Common.Erros
+﻿namespace ServiceTrackHub.Domain.Enums.Common.Erros
 {
 
 

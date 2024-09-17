@@ -5,7 +5,7 @@ using ServiceTrackHub.Application.InputViewModel.User;
 using ServiceTrackHub.Application.ViewModel.Tasks;
 using ServiceTrackHub.Application.ViewModel.TaskType;
 using ServiceTrackHub.Application.ViewModel.User;
-using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Enums.Entities;
 
 namespace ServiceTrackHub.Application.Mappings
 {

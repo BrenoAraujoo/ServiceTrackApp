@@ -1,5 +1,5 @@
 ﻿using ServiceTrackHub.Application.InputViewModel.Auth;
-using ServiceTrackHub.Domain.Common.Result;
+using ServiceTrackHub.Domain.Enums.Common.Result;
 
 namespace ServiceTrackHub.Application.Interfaces.Auth;
 

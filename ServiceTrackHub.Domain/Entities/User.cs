@@ -1,8 +1,8 @@
-﻿using ServiceTrackHub.Domain.Common.Erros;
-using ServiceTrackHub.Domain.Interfaces;
-using ServiceTrackHub.Domain.ValueObjects;
+﻿using ServiceTrackHub.Domain.Enums.Common.Erros;
+using ServiceTrackHub.Domain.Enums.Interfaces;
+using ServiceTrackHub.Domain.Enums.ValueObjects;
 
-namespace ServiceTrackHub.Domain.Entities
+namespace ServiceTrackHub.Domain.Enums.Entities
 {
     public sealed class User : BaseEntity, IEntityActivable    
     {
@@ -33,14 +33,14 @@ namespace ServiceTrackHub.Domain.Entities
             if (Active)
                 throw new InvalidOperationException(ErrorMessage.UserIsAlreadyActivated);
             Active = true;
-            Update();
+            base.Update();
         }
 
         public void Deactivate()
         {
             if (!Active)
                 throw new InvalidOperationException(ErrorMessage.UserIsAlreadyInactivated);
-            Update();
+            base.Update();
             Active = false;
         }
 

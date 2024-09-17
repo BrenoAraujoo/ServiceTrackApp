@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Enums.Entities;
 
 namespace ServiceTrackHub.Infra.Data.EntitiesConfiguration
 {

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceTrackHub.Application.Services;
-using ServiceTrackHub.Domain.Interfaces;
+using ServiceTrackHub.Domain.Enums.Interfaces;
 using ServiceTrackHub.Infra.Data.Context;
 using ServiceTrackHub.Infra.Data.Repositories;
 using ServiceTrackHub.Application.Interfaces;

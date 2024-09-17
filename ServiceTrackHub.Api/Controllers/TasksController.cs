@@ -5,8 +5,8 @@ using ServiceTrackHub.Application.InputViewModel.TaskType;
 using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.ViewModel;
 using ServiceTrackHub.Application.ViewModel.Tasks;
-using ServiceTrackHub.Domain.Common.Erros;
-using ServiceTrackHub.Domain.Common.Result;
+using ServiceTrackHub.Domain.Enums.Common.Erros;
+using ServiceTrackHub.Domain.Enums.Common.Result;
 
 namespace ServiceTrackHub.Api.Controllers
 {

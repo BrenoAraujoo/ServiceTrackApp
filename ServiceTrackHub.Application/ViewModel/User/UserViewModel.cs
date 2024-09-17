@@ -9,7 +9,7 @@
         public string? JobPosition { get; set; }
         public bool Active { get; set; }
 
-        public static UserViewModel ToViewModel(Domain.Entities.User user)
+        public static UserViewModel ToViewModel(Domain.Enums.Entities.User user)
         {
             return new UserViewModel
             {
@@ -22,7 +22,7 @@
             };
         }
 
-        public static List<UserViewModel> ToViewModel(List<Domain.Entities.User> users)
+        public static List<UserViewModel> ToViewModel(List<Domain.Enums.Entities.User> users)
         {
             return users.Select(ToViewModel).ToList();
         }

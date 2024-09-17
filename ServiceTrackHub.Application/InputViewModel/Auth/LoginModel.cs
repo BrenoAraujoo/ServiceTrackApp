@@ -1,9 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ServiceTrackHub.Domain.Enums.ValueObjects;
 
 namespace ServiceTrackHub.Application.InputViewModel.Auth;
 
-public record LoginModel(
-    [EmailAddress(ErrorMessage = "Deve ser informado um e-mail válido")]
-    string Email,
-    string Password
-);
+public record LoginModel
+{
+    public string Email { get; private set; }
+    public string Password { get; private set; }
+
+    public LoginModel(string email, string password)
+    {
+        Email = new Email(email).Value;
+        Password = new Password(password).Value;
+    }
+}

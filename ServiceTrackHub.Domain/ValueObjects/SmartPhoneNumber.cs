@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using ServiceTrackHub.Domain.Common.Erros;
+using ServiceTrackHub.Domain.Enums.Common.Erros;
 
-namespace ServiceTrackHub.Domain.ValueObjects;
+namespace ServiceTrackHub.Domain.Enums.ValueObjects;
 
 public class SmartPhoneNumber : ValueObject
 {

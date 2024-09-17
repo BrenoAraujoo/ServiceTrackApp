@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ServiceTrackHub.Domain.Common.Result;
+using ServiceTrackHub.Domain.Enums.Common.Result;
 
 namespace ServiceTrackHub.Api.Controllers
 {

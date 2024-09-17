@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using ServiceTrackHub.Domain.Entities;
-using ServiceTrackHub.Domain.Interfaces;
+using ServiceTrackHub.Domain.Enums.Entities;
+using ServiceTrackHub.Domain.Enums.Interfaces;
 using ServiceTrackHub.Infra.Data.Context;
 
 namespace ServiceTrackHub.Infra.Data.Repositories
