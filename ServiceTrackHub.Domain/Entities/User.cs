@@ -10,19 +10,21 @@ namespace ServiceTrackHub.Domain.Entities
         public List<Tasks> Tasks { get;  private set; }
         public string Email { get; private set; }
         public string PasswordHash { get; private set; }
-        public string Phone { get; private set; }
+        public string SmartPhoneNumber { get; private set; }
         public bool Active { get; private set; }
+        public string? JobPosition { get; private set; }
         public Role Role { get; private set; } //EF nav property
         protected User(){} // ORM constructor
 
 
-        public User(string name,  string email, string passwordHash, string phone)
+        public User(string name,  string email, string passwordHash, string smartPhoneNumber, string? jobPosition = null)
         {
             Name = name;
-            Tasks = new List<Tasks>();
+            Tasks = [];
             Email = new Email(email).Value;
             PasswordHash = passwordHash;
-            Phone = new Phone(phone).Value;
+            SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber).Value;
+            JobPosition = new JobPosition(jobPosition).Value;
             Active = true;
         }
 
@@ -31,21 +33,30 @@ namespace ServiceTrackHub.Domain.Entities
             if (Active)
                 throw new InvalidOperationException(ErrorMessage.UserIsAlreadyActivated);
             Active = true;
-            base.Update();
-            
+            Update();
         }
 
         public void Deactivate()
         {
             if (!Active)
                 throw new InvalidOperationException(ErrorMessage.UserIsAlreadyInactivated);
-            base.Update();
+            Update();
             Active = false;
         }
 
         public void ChangePassword(string newPassword)
         {
             PasswordHash = newPassword;
+        }
+
+        public void Update(string? name = null, string? email = null,  string? smartPhoneNumber = null,
+            string? jobPosition = null)
+        {
+            Name =  name?? Name;
+            Email = new Email(email?? Email).Value;
+            SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber?? SmartPhoneNumber).Value;
+            JobPosition = new JobPosition(jobPosition?? JobPosition).Value;
+            base.Update();
         }
     }
 }

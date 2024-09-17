@@ -1,5 +1,5 @@
 ﻿using ServiceTrackHub.Application.InputViewModel.Task;
-using ServiceTrackHub.Application.ViewModel.Task;
+using ServiceTrackHub.Application.ViewModel.Tasks;
 using ServiceTrackHub.Domain.Common.Result;
 
 namespace ServiceTrackHub.Application.Interfaces

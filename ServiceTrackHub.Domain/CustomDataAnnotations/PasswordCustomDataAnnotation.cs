@@ -11,6 +11,6 @@ public class PasswordCustomDataAnnotation : ValidationAttribute
     }
     public override bool IsValid(object? value)
     {
-        return Email.IsValidEmail(value as string);
+        return Password.IsValidPassword(value as string);
     }
 }

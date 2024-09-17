@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ServiceTrackHub.Application.InputViewModel.TaskType;
 using ServiceTrackHub.Application.Interfaces;
-using ServiceTrackHub.Application.ViewModel.Task;
+using ServiceTrackHub.Application.ViewModel.Tasks;
 using ServiceTrackHub.Application.ViewModel.TaskType;
 using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Common.Result;

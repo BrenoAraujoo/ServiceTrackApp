@@ -3,9 +3,9 @@ using ServiceTrackHub.Domain.ValueObjects;
 
 namespace ServiceTrackHub.Domain.CustomDataAnnotations;
 
-public class PhoneCustomDataAnnotation : ValidationAttribute
+public class SmartPhoneCustomDataAnnotation : ValidationAttribute
 {
-    public PhoneCustomDataAnnotation()
+    public SmartPhoneCustomDataAnnotation()
     {
         ErrorMessage = Common.Erros.ErrorMessage.InvalidPhone;
     }
@@ -13,6 +13,6 @@ public class PhoneCustomDataAnnotation : ValidationAttribute
     public override bool IsValid(object? value)
     {
         var strValue = value as string;
-        return Phone.IsValidPhone(strValue);
+        return SmartPhoneNumber.IsValidPhone(strValue);
     }
 }

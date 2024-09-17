@@ -41,6 +41,7 @@
         
         public const string InvalidPassword = "O campo obrigatório 'password' não foi enviado ou está em um formato inválido.";
 
+        public const string InvalidJobPosition = "O cargo deve ter no máximo 40 caracteres.";
 
         #endregion
     }

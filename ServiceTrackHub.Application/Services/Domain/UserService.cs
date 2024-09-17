@@ -8,32 +8,31 @@ using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
 using ServiceTrackHub.Domain.Common.Result;
 using ServiceTrackHub.Domain.Common.Erros;
+using ServiceTrackHub.Domain.ValueObjects;
 
-namespace ServiceTrackHub.Application.Services
+namespace ServiceTrackHub.Application.Services.Domain
 {
     public class UserService : IUserService
     {
         private IUserRepository _userRepository;
         private ITasksRepository _tasksRepository;
-        private readonly IMapper _mapper;
         private readonly IPasswordHasherService _passwordHasherService;
 
 
-        public UserService(IUserRepository userRepository, ITasksRepository tasksRepository,
-            IMapper mapper, IPasswordHasherService passwordHasherService)
+        public UserService(IUserRepository userRepository, ITasksRepository tasksRepository, 
+            IPasswordHasherService passwordHasherService)
         {
             _userRepository = userRepository;
             _tasksRepository = tasksRepository;
             _passwordHasherService = passwordHasherService;
-            _mapper = mapper;
         }
 
         public async Task<Result> GetAll()
         {
             var usersEntity = await _userRepository.GetAllAsync();
-            var users = _mapper.Map<List<UserViewModel?>>(usersEntity);
+            var users = UserViewModel.ToViewModel(usersEntity);
 
-            return Result<List<UserViewModel?>>.Success(users);
+            return Result<List<UserViewModel>>.Success(users);
         }
 
         public async Task<Result> GetById(Guid id)
@@ -50,8 +49,8 @@ namespace ServiceTrackHub.Application.Services
             var userEntity = await _userRepository.GetByEmail(email);
             if (userEntity is null)
                 return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
-            var userModel = _mapper.Map<UserViewModel>(userEntity);
-            return Result<UserViewModel?>.Success(userModel);
+            var userModel = UserViewModel.ToViewModel(userEntity);
+            return Result<UserViewModel>.Success(userModel);
         }
 
         public async Task<Result> Create(CreateUserModel userInput)
@@ -67,14 +66,15 @@ namespace ServiceTrackHub.Application.Services
 
             try
             {
-                var userEntity = new User(userInput.Name, userInput.Email, userInput.Password, userInput.Phone);
+                var userEntity = new User(userInput.Name, userInput.Email,
+                    userInput.Password, userInput.SmartPhoneNumber, userInput.JobPosition);
 
                 userEntity.ChangePassword(passwordHash.Data);
 
                 await _userRepository.CreateAsync(userEntity);
-                var userModel = _mapper.Map<UserViewModel>(userEntity);
+                var userModel = UserViewModel.ToViewModel(userEntity);
 
-                return Result<UserViewModel?>.Success(userModel);
+                return Result<UserViewModel>.Success(userModel);
             }
             catch (Exception e)
             {
@@ -87,15 +87,21 @@ namespace ServiceTrackHub.Application.Services
             var userEntity = await _userRepository.GetByIdAsync(id);
             if (userEntity is null)
                 return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
+            
+            try
+            {
+                userEntity.Update(userInput.Name, userInput.Email, userInput.SmartPhoneNumber, 
+                    userInput.JobPosition);
+                
+                await _userRepository.UpdateAsync(userEntity);
+                var userModel = UserViewModel.ToViewModel(userEntity);
+                return Result<UserViewModel>.Success(userModel);
+            }
+            catch (Exception e)
+            {
+                return Result.Failure(CustomError.ValidationError(e.Message));
+            }
 
-            _mapper.Map(userInput, userEntity);
-            userEntity.Update();
-            await _userRepository.UpdateAsync(userEntity);
-
-            var userModel = _mapper.Map<UserViewModel>(userEntity);
-
-
-            return Result<UserViewModel?>.Success(userModel);
         }
 
         public async Task<Result> Activate(Guid id)

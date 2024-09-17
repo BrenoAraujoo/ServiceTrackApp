@@ -10,14 +10,14 @@ public class Email : ValueObject
 
     public Email(string value)
     {
-        if (!IsValidEmail(value))
+        if (string.IsNullOrEmpty(value)|| !IsValidEmail(value))
             throw new ArgumentException(ErrorMessage.InvalidEmail);
         Value = value;
     }
 
     public static bool IsValidEmail(string value)
     {
-        if (string.IsNullOrWhiteSpace(value) || value.Length > 40 || value.Length < 8)
+        if (value.Length is > 40 or < 8)
             return false;
 
         string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";

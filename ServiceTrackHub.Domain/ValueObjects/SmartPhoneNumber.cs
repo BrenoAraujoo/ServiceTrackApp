@@ -3,13 +3,13 @@ using ServiceTrackHub.Domain.Common.Erros;
 
 namespace ServiceTrackHub.Domain.ValueObjects;
 
-public class Phone : ValueObject
+public class SmartPhoneNumber : ValueObject
 {
     public string Value { get; private set; }
 
-    public Phone(string value)
+    public SmartPhoneNumber(string value)
     {
-        if (!IsValidPhone(value))
+        if (string.IsNullOrEmpty(value)||!IsValidPhone(value))
             throw new ArgumentException(ErrorMessage.InvalidPhone);
         Value = value;
     }

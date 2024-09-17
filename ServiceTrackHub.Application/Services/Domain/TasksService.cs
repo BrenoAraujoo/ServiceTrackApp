@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ServiceTrackHub.Application.InputViewModel.Task;
 using ServiceTrackHub.Application.Interfaces;
-using ServiceTrackHub.Application.ViewModel.Task;
+using ServiceTrackHub.Application.ViewModel.Tasks;
 using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Common.Result;
 using ServiceTrackHub.Domain.Entities;
@@ -11,8 +11,8 @@ namespace ServiceTrackHub.Application.Services
 {
     public class TasksService : ITasksService
     {
-        private ITasksRepository _tasksRepository;
-        private IUserRepository _userRepository;
+        private readonly ITasksRepository _tasksRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         public TasksService(ITasksRepository taskRepository, IMapper mapper, IUserRepository userRepository)
         {

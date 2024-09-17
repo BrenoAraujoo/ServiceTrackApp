@@ -2,7 +2,7 @@
 using ServiceTrackHub.Application.InputViewModel.Task;
 using ServiceTrackHub.Application.InputViewModel.TaskType;
 using ServiceTrackHub.Application.InputViewModel.User;
-using ServiceTrackHub.Application.ViewModel.Task;
+using ServiceTrackHub.Application.ViewModel.Tasks;
 using ServiceTrackHub.Application.ViewModel.TaskType;
 using ServiceTrackHub.Application.ViewModel.User;
 using ServiceTrackHub.Domain.Entities;

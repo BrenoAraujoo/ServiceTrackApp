@@ -28,13 +28,12 @@ namespace ServiceTrackHub.Api.Controllers
             _authService = authService;
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("v1/users")]
         public async Task <ActionResult> GetUsers()
         {
             var result = await _userService.GetAll();
             return Ok(result);
-
         }
 
         [HttpGet("v1/users/{id}")]
@@ -49,38 +48,19 @@ namespace ServiceTrackHub.Api.Controllers
         [HttpPost("v1/users")]
         public async Task<IActionResult> Create([FromBody] CreateUserModel userInputModel)
         {
-
-            if (!ModelState.IsValid)
-            {
-                var erros = ModelState.GetErrors();
-                var resultError = Result<UserViewModel?>.Failure(CustomError.ValidationError(ErrorMessage.UserInvalid, erros));
-                //var resultError = Result.Failure(CustomError.ValidationError(ErrorMessage.UserInvalid, erros)); // sem data[];
-                return ApiControllerHandleResult(resultError);
-            }
-            
             var result = await _userService.Create(userInputModel);
-
-            return result.IsSuccess? 
-                CreatedAtAction(nameof(Create),result):
-                ApiControllerHandleResult(result);
+            return !result.IsSuccess ? 
+                ApiControllerHandleResult(result) : 
+                CreatedAtAction(nameof(Create), result);
         }
         
         [HttpPut("v1/users/{id:guid}")]
         public async Task<IActionResult> Update([FromRoute]Guid id, [FromBody]UpdateUserModel userInput)
         {
-
-            if (!ModelState.IsValid) 
-            {
-                var erros = ModelState.GetErrors();
-
-                var resultError = Result<UserViewModel?>.Failure(CustomError.ValidationError("erro update",erros));
-                return ApiControllerHandleResult(resultError);
-            }
             var result = await _userService.Update(id, userInput);
             return result.IsSuccess?
                 NoContent():
                 ApiControllerHandleResult(result);
-            
         }
 
         [HttpPut("v1/users/{id}/deactivate")]

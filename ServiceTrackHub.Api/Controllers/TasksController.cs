@@ -4,7 +4,7 @@ using ServiceTrackHub.Application.InputViewModel.Task;
 using ServiceTrackHub.Application.InputViewModel.TaskType;
 using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.ViewModel;
-using ServiceTrackHub.Application.ViewModel.Task;
+using ServiceTrackHub.Application.ViewModel.Tasks;
 using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Common.Result;
 
