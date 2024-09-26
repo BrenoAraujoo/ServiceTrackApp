@@ -13,9 +13,9 @@ public class PasswordHasherService : IPasswordHasherService
         {
             return Result<string>.Success(BCrypt.Net.BCrypt.HashPassword(password));
         }
-        catch
+        catch (Exception e)
         {
-            return Result<string>.Failure(CustomError.None);
+            return Result<string>.Failure(CustomError.ValidationError(e.Message));
         }
     }
 

@@ -71,9 +71,19 @@ builder.Services.AddAuthentication(x =>
 });
 builder.Services.AddAuthorization();
 
+//cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policyBuilder => policyBuilder.WithOrigins("http://localhost:4200")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
 var app = builder.Build();
 app.MapControllers();
 app.UseExceptionHandler();
+app.UseCors("AllowSpecificOrigin");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
