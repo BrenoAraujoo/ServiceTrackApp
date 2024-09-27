@@ -59,16 +59,16 @@ namespace ServiceTrackHub.Application.Services.Domain
             if (userExists)
                 return Result.Failure(
                     CustomError.Conflict(ErrorMessage.UserEmailAlreadyExists));
-
-            var passwordHash = _passwordHasherService.HashPassword(userInput.Password);
-            if (!passwordHash.IsSuccess)
-                return Result.Failure(CustomError.Conflict(ErrorMessage.UserErrorPasswordHash));
-
+            
             try
             {
                 var userEntity = new User(userInput.Name, userInput.Email,
                     userInput.Password, userInput.SmartPhoneNumber, userInput.JobPosition);
 
+                var passwordHash = _passwordHasherService.HashPassword(userInput.Password);
+                if (!passwordHash.IsSuccess)
+                    return Result.Failure(CustomError.Conflict(ErrorMessage.UserErrorPasswordHash));
+                
                 userEntity.ChangePassword(passwordHash.Data);
 
                 await _userRepository.CreateAsync(userEntity);

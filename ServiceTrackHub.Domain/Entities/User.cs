@@ -17,12 +17,12 @@ namespace ServiceTrackHub.Domain.Enums.Entities
         protected User(){} // ORM constructor
 
 
-        public User(string name,  string email, string passwordHash, string smartPhoneNumber, string? jobPosition = null)
+        public User(string name,  string email, string password, string smartPhoneNumber, string? jobPosition = null)
         {
             Name = name;
             Tasks = [];
             Email = new Email(email).Value;
-            PasswordHash = passwordHash;
+            PasswordHash = new  Password(password).Value;
             SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber).Value;
             JobPosition = new JobPosition(jobPosition).Value;
             Active = true;
