@@ -1,17 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using ServiceTrackHub.Application.Extensions;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServiceTrackHub.Application.InputViewModel.Auth;
 using ServiceTrackHub.Application.InputViewModel.User;
 using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.Interfaces.Auth;
-using ServiceTrackHub.Application.Services.Auth;
-using ServiceTrackHub.Application.ViewModel.User;
-using ServiceTrackHub.Domain.Enums;
-using ServiceTrackHub.Domain.Enums.Common.Erros;
-using ServiceTrackHub.Domain.Enums.Common.Result;
-using ServiceTrackHub.Domain.Enums.Entities;
 
 namespace ServiceTrackHub.Api.Controllers
 {

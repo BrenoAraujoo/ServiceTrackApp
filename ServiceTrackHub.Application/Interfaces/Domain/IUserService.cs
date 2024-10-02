@@ -1,7 +1,5 @@
 ﻿using ServiceTrackHub.Application.InputViewModel.User;
-using ServiceTrackHub.Application.ViewModel;
-using ServiceTrackHub.Application.ViewModel.User;
-using ServiceTrackHub.Domain.Enums.Common.Result;
+using ServiceTrackHub.Domain.Common.Result;
 
 namespace ServiceTrackHub.Application.Interfaces
 {

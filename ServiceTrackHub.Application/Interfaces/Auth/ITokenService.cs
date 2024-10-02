@@ -1,5 +1,5 @@
 ﻿using ServiceTrackHub.Application.ViewModel.Auth;
-using ServiceTrackHub.Domain.Enums.Entities;
+using ServiceTrackHub.Domain.Entities;
 
 namespace ServiceTrackHub.Application.Interfaces.Auth;
 

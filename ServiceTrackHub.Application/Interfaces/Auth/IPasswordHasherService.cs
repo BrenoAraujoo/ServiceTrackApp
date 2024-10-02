@@ -1,4 +1,4 @@
-﻿using ServiceTrackHub.Domain.Enums.Common.Result;
+﻿using ServiceTrackHub.Domain.Common.Result;
 
 namespace ServiceTrackHub.Application.Interfaces.Auth;
 

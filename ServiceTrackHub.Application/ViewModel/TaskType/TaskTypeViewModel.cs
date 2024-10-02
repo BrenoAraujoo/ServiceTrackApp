@@ -8,7 +8,7 @@
         public string? Description { get;  set; }
         public bool Active { get;  set; }
 
-        public static TaskTypeViewModel ToViewModel(Domain.Enums.Entities.TaskType taskType)
+        public static TaskTypeViewModel ToViewModel(Domain.Entities.TaskType taskType)
         {
             return new TaskTypeViewModel
             {

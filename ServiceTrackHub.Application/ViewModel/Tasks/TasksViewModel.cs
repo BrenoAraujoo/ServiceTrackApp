@@ -1,4 +1,4 @@
-﻿using ServiceTrackHub.Domain.Enums.Entities;
+﻿using ServiceTrackHub.Domain.Entities;
 
 namespace ServiceTrackHub.Application.ViewModel.Tasks
 {
@@ -12,7 +12,7 @@ namespace ServiceTrackHub.Application.ViewModel.Tasks
         public DateTime CreationDate { get;  set; }
         public DateTime UpdateDate{ get;  set; }
 
-        public static TasksViewModel ToViewModel(Domain.Enums.Entities.Tasks task)
+        public static TasksViewModel ToViewModel(Domain.Entities.Tasks task)
         {
             return new TasksViewModel
             {
@@ -25,5 +25,11 @@ namespace ServiceTrackHub.Application.ViewModel.Tasks
                 TaskTypeId = task.TaskTypeId,
             };
         }
+
+        public static List<TasksViewModel> ToViewModel(List<Domain.Entities.Tasks> task)
+        {
+            return task.Select(ToViewModel).ToList();
+        }
+        
     }
 }

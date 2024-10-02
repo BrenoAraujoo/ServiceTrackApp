@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ServiceTrackHub.Domain.Enums.ValueObjects;
+using ServiceTrackHub.Domain.ValueObjects;
 
 namespace ServiceTrackHub.Application.InputViewModel.Auth;
 

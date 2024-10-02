@@ -1,6 +1,6 @@
-﻿using ServiceTrackHub.Domain.Enums.Common.Erros;
+﻿using ServiceTrackHub.Domain.Common.Erros;
 
-namespace ServiceTrackHub.Domain.Enums.ValueObjects;
+namespace ServiceTrackHub.Domain.ValueObjects;
 
 public class JobPosition : ValueObject
 {

@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Domain.Enums.ValueObjects;
+﻿namespace ServiceTrackHub.Domain.ValueObjects;
 
 public abstract class ValueObject
 {

@@ -1,8 +1,8 @@
 ﻿using ServiceTrackHub.Application.InputViewModel.Task;
 using ServiceTrackHub.Application.ViewModel.Tasks;
-using ServiceTrackHub.Domain.Enums.Common.Result;
+using ServiceTrackHub.Domain.Common.Result;
 
-namespace ServiceTrackHub.Application.Interfaces
+namespace ServiceTrackHub.Application.Interfaces.Domain
 {
     public interface ITasksService
     {

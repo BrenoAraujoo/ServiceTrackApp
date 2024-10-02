@@ -1,7 +1,7 @@
-﻿using ServiceTrackHub.Domain.Enums.Common.Erros;
-using ServiceTrackHub.Domain.Enums.Interfaces;
+﻿using ServiceTrackHub.Domain.Common.Erros;
+using ServiceTrackHub.Domain.Interfaces;
 
-namespace ServiceTrackHub.Domain.Enums.Entities
+namespace ServiceTrackHub.Domain.Entities
 {
     public class TaskType : BaseEntity, IEntityActivable
     {

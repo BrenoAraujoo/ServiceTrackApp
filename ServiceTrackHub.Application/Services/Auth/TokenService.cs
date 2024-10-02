@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Application.ViewModel.Auth;
-using ServiceTrackHub.Domain.Enums.Entities;
+using ServiceTrackHub.Domain.Entities;
 
 namespace ServiceTrackHub.Application.Services.Auth;
 

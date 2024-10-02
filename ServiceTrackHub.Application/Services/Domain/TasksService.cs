@@ -1,50 +1,59 @@
 ﻿using AutoMapper;
 using ServiceTrackHub.Application.InputViewModel.Task;
-using ServiceTrackHub.Application.Interfaces;
+using ServiceTrackHub.Application.Interfaces.Domain;
 using ServiceTrackHub.Application.ViewModel.Tasks;
-using ServiceTrackHub.Domain.Enums.Common.Erros;
-using ServiceTrackHub.Domain.Enums.Common.Result;
-using ServiceTrackHub.Domain.Enums.Entities;
-using ServiceTrackHub.Domain.Enums.Interfaces;
+using ServiceTrackHub.Domain.Common.Erros;
+using ServiceTrackHub.Domain.Common.Result;
+using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Interfaces;
 
-namespace ServiceTrackHub.Application.Services
+namespace ServiceTrackHub.Application.Services.Domain
 {
     public class TasksService : ITasksService
     {
         private readonly ITasksRepository _tasksRepository;
+        private readonly ITaskTypeRepository _taskTypeRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        public TasksService(ITasksRepository taskRepository, IMapper mapper, IUserRepository userRepository)
+        public TasksService(ITasksRepository taskRepository, ITaskTypeRepository taskTypeRepository,IMapper mapper, IUserRepository userRepository)
         {
             _tasksRepository = taskRepository;
             _userRepository = userRepository;
             _mapper = mapper;
+            _taskTypeRepository = taskTypeRepository;
         }
 
         
         public async Task<Result> GetAll()
         {
-            var taskDomain = await _tasksRepository.GetAllAsync();
-            var taskModel = _mapper.Map<List<TasksViewModel>>(taskDomain);
-            return Result<List<TasksViewModel>>.Success(taskModel);
+            var tasks = await _tasksRepository.GetAllAsync();
+            var tasksModel = TasksViewModel.ToViewModel(tasks);
+            return Result<List<TasksViewModel>>.Success(tasksModel);
         }
 
         public async Task<Result> GetTasksByUserId(Guid userId)
         {
             var tasks = await _tasksRepository.GetTasksByUserIdAsync(userId);
-            var tasksViewModel = _mapper.Map<List<TasksViewModel>>(tasks);
+            var tasksViewModel = TasksViewModel.ToViewModel(tasks);
             return Result<List<TasksViewModel>>.Success(tasksViewModel);
         }
 
         public async Task<Result> Create(CreateTaskModel taskInput)
         {
+            var taskTypeExists = await _taskTypeRepository.GetByIdAsync(taskInput.TaskTypeId) is not null;
 
+            if(!taskTypeExists)
+                return Result<TasksViewModel>.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
 
-            var taskDomain = _mapper.Map<Tasks>(taskInput);
-            await _tasksRepository.CreateAsync(taskDomain);
-            var taskModel = _mapper.Map<TasksViewModel>(taskDomain);
-            return Result<TasksViewModel?>.Success(taskModel);
+            Tasks taskDomain = new(
+                taskInput.TaskTypeId,
+                taskInput.UserId,
+                taskInput.UserId,
+                taskInput.Description);
             
+            await _tasksRepository.CreateAsync(taskDomain);
+            var taskModel = TasksViewModel.ToViewModel(taskDomain);
+            return Result<TasksViewModel?>.Success(taskModel);
             
         }
 

@@ -1,6 +1,6 @@
-﻿using ServiceTrackHub.Domain.Enums.Common.Erros;
+﻿using ServiceTrackHub.Domain.Common.Erros;
 
-namespace ServiceTrackHub.Domain.Enums.Common.Result
+namespace ServiceTrackHub.Domain.Common.Result
 {
     public class Result
     {

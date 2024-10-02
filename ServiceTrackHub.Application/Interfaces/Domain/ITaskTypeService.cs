@@ -1,7 +1,7 @@
 ﻿using ServiceTrackHub.Application.InputViewModel.TaskType;
-using ServiceTrackHub.Domain.Enums.Common.Result;
+using ServiceTrackHub.Domain.Common.Result;
 
-namespace ServiceTrackHub.Application.Interfaces
+namespace ServiceTrackHub.Application.Interfaces.Domain
 {
     public interface ITaskTypeService
     {

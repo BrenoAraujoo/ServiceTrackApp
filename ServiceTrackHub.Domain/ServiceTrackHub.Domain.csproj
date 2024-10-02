@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="CustomDataAnnotations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="CustomDataAnnotations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="CustomDataAnnotations\**" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ServiceTrackHub.Domain.Enums.Entities;
-using ServiceTrackHub.Domain.Enums.Interfaces;
+using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Interfaces;
 using ServiceTrackHub.Infra.Data.Context;
 using ServiceTrackHub.Infra.Data.Migrations;
 

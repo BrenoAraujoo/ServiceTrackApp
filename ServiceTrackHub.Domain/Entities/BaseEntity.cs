@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Domain.Enums.Entities
+﻿namespace ServiceTrackHub.Domain.Entities
 {
     public abstract class BaseEntity
     {

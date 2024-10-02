@@ -1,12 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ServiceTrackHub.Application.Extensions;
 using ServiceTrackHub.Application.InputViewModel.Task;
-using ServiceTrackHub.Application.InputViewModel.TaskType;
-using ServiceTrackHub.Application.Interfaces;
-using ServiceTrackHub.Application.ViewModel;
-using ServiceTrackHub.Application.ViewModel.Tasks;
-using ServiceTrackHub.Domain.Enums.Common.Erros;
-using ServiceTrackHub.Domain.Enums.Common.Result;
+using ServiceTrackHub.Application.Interfaces.Domain;
 
 namespace ServiceTrackHub.Api.Controllers
 {
@@ -39,18 +33,10 @@ namespace ServiceTrackHub.Api.Controllers
         [HttpPost("v1/tasks")]
         public async Task<IActionResult> Create([FromBody] CreateTaskModel taskInput)
         {
-            if (!ModelState.IsValid) 
-            {
-                var erros = ModelState.GetErrors();
-                var resultError = Result<TasksViewModel?>.Failure(CustomError.ValidationError(ErrorMessage.TaskNotFound, erros));
-                return ApiControllerHandleResult(resultError);
-            }
             var result = await _tasksService.Create(taskInput);
             return result.IsSuccess ?
                 CreatedAtAction(nameof(Create),result) :
                 ApiControllerHandleResult(result);
-
-
         }
 
         [HttpGet("v1/tasks/userTasks/{id}")]
@@ -63,12 +49,6 @@ namespace ServiceTrackHub.Api.Controllers
         [HttpPut("v1/tasks/{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateTaskModel inputTask)
         {
-            if (!ModelState.IsValid)
-            {
-                var erros = ModelState.GetErrors();
-                var resultError = Result<TasksViewModel?>.Failure(CustomError.ValidationError(ErrorMessage.TaskNotFound, erros));
-                return ApiControllerHandleResult(resultError);
-            }
             var result = await _tasksService.Update(id, inputTask);
             return !result.IsSuccess? ApiControllerHandleResult(result) : NoContent();
         }

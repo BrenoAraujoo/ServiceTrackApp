@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceTrackHub.Application.Extensions;
 using ServiceTrackHub.Application.InputViewModel.TaskType;
-using ServiceTrackHub.Application.Interfaces;
+using ServiceTrackHub.Application.Interfaces.Domain;
 using ServiceTrackHub.Application.ViewModel.TaskType;
-using ServiceTrackHub.Domain.Enums.Common.Erros;
-using ServiceTrackHub.Domain.Enums.Common.Result;
+using ServiceTrackHub.Domain.Common.Erros;
+using ServiceTrackHub.Domain.Common.Result;
 
 namespace ServiceTrackHub.Api.Controllers
 {

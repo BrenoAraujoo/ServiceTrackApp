@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ServiceTrackHub.Application.Services;
-using ServiceTrackHub.Domain.Enums.Interfaces;
+using ServiceTrackHub.Domain.Interfaces;
 using ServiceTrackHub.Infra.Data.Context;
 using ServiceTrackHub.Infra.Data.Repositories;
 using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.Interfaces.Auth;
+using ServiceTrackHub.Application.Interfaces.Domain;
 using ServiceTrackHub.Application.Mappings;
 using ServiceTrackHub.Application.Services.Auth;
 using ServiceTrackHub.Application.Services.Domain;

@@ -1,8 +1,10 @@
-﻿using ServiceTrackHub.Domain.Enums.Common.Erros;
-using ServiceTrackHub.Domain.Enums.Interfaces;
-using ServiceTrackHub.Domain.Enums.ValueObjects;
+﻿using ServiceTrackHub.Domain.Enums;
+using ServiceTrackHub.Domain.Common.Erros;
+using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Interfaces;
+using ServiceTrackHub.Domain.ValueObjects;
 
-namespace ServiceTrackHub.Domain.Enums.Entities
+namespace ServiceTrackHub.Domain.Entities
 {
     public sealed class User : BaseEntity, IEntityActivable    
     {

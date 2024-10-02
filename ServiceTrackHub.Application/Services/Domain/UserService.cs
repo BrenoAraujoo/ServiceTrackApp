@@ -1,14 +1,12 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Logging;
+﻿
 using ServiceTrackHub.Application.InputViewModel.User;
 using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Application.ViewModel.User;
-using ServiceTrackHub.Domain.Enums.Entities;
-using ServiceTrackHub.Domain.Enums.Interfaces;
-using ServiceTrackHub.Domain.Enums.Common.Result;
-using ServiceTrackHub.Domain.Enums.Common.Erros;
-using ServiceTrackHub.Domain.Enums.ValueObjects;
+using ServiceTrackHub.Domain.Common.Erros;
+using ServiceTrackHub.Domain.Common.Result;
+using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Interfaces;
 
 namespace ServiceTrackHub.Application.Services.Domain
 {
