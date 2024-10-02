@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ServiceTrackHub.Application.InputViewModel.TaskType;
+﻿using ServiceTrackHub.Application.InputViewModel.TaskType;
 using ServiceTrackHub.Application.Interfaces.Domain;
 using ServiceTrackHub.Application.ViewModel.TaskType;
 using ServiceTrackHub.Domain.Common.Erros;
@@ -13,13 +12,11 @@ namespace ServiceTrackHub.Application.Services.Domain
     {
         private readonly ITaskTypeRepository _taskTypeRepository;
         private readonly ITasksRepository _tasksRepository;
-        private readonly IMapper _mapper;
 
-        public TaskTypeService(ITaskTypeRepository taskTypeRepository, ITasksRepository tasksRepository,IMapper mapper)
+        public TaskTypeService(ITaskTypeRepository taskTypeRepository, ITasksRepository tasksRepository)
         {
             _taskTypeRepository = taskTypeRepository;
             _tasksRepository = tasksRepository;
-            _mapper = mapper;
         }
         
         public async Task<Result> Create(CreateTaskTypeModel taskTypeInputModel)
@@ -29,10 +26,14 @@ namespace ServiceTrackHub.Application.Services.Domain
              if(taskTypeExists)
                 return Result.Failure(CustomError.Conflict(ErrorMessage.TaskNameAlreadyExists));
 
-            var taskTypeEntity = _mapper.Map<TaskType>(taskTypeInputModel);
+             var taskTypeEntity = new TaskType(
+                 taskTypeInputModel.creatorId,
+                 taskTypeInputModel.name,
+                 taskTypeInputModel.description);
+             
             await _taskTypeRepository.CreateAsync(taskTypeEntity);
-            var taskViewModel = _mapper.Map<TaskTypeViewModel>(taskTypeInputModel);
-            return Result<TaskTypeViewModel?>.Success(taskViewModel);
+            var taskViewModel = TaskTypeViewModel.ToViewModel(taskTypeEntity);
+            return Result<TaskTypeViewModel>.Success(taskViewModel);
         }
 
         public async Task<Result> Delete(Guid id)
@@ -53,8 +54,8 @@ namespace ServiceTrackHub.Application.Services.Domain
         {
             
             var tasksEntity = await _taskTypeRepository.GetAllAsync();
-            var tasksModel = _mapper.Map<List<TaskTypeViewModel?>>(tasksEntity);    
-            return Result<List<TaskTypeViewModel?>> .Success(tasksModel);
+            var tasksModel = TaskTypeViewModel.ToViewModel(tasksEntity);    
+            return Result<List<TaskTypeViewModel>> .Success(tasksModel);
 
         }
 
@@ -62,11 +63,13 @@ namespace ServiceTrackHub.Application.Services.Domain
         {
             
             var taskTypeEntity = await _taskTypeRepository.GetByIdAsync(id);
-            var taskTypeEntityViewModel = _mapper.Map<TaskTypeViewModel>(taskTypeEntity);
+            if(taskTypeEntity is null)
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
+            
+            var taskTypeEntityViewModel = TaskTypeViewModel.ToViewModel(taskTypeEntity);
 
-            return taskTypeEntity is not null ?
-                Result<TaskTypeViewModel?>.Success(taskTypeEntityViewModel) :
-                Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
+            return Result<TaskTypeViewModel?>.Success(taskTypeEntityViewModel);
+
         }
 
         public async Task<Result> Update(Guid id, UpdateTaskTypeModel taskTypeInput)
@@ -74,9 +77,11 @@ namespace ServiceTrackHub.Application.Services.Domain
             var taskTypeEntity = await _taskTypeRepository.GetByIdAsync(id);
             if(taskTypeEntity is null)
                 return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
-            _mapper.Map(taskTypeInput, taskTypeEntity);
+            
+            taskTypeEntity.Update(taskTypeInput.name, taskTypeInput.description);
+            
             await _taskTypeRepository.UpdateAsync(taskTypeEntity);
-            var taskTypeModel = _mapper.Map<TaskTypeViewModel>(taskTypeEntity);
+            var taskTypeModel = TaskTypeViewModel.ToViewModel(taskTypeEntity);
             return Result<TaskTypeViewModel?>.Success(taskTypeModel);
             
         }

@@ -53,7 +53,7 @@ namespace ServiceTrackHub.Infra.Data.Repositories
         public async Task<TaskType> UpdateAsync(TaskType taskType)
         {
            _context.TaskType.Update(taskType);
-            await _context.SaveChangesAsync();
+           await _context.SaveChangesAsync();
             return taskType;
         }
     }

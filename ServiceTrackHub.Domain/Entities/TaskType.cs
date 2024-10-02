@@ -14,7 +14,7 @@ namespace ServiceTrackHub.Domain.Entities
         public User User{ get; private set; } //EF nav property
         public TaskType(){}
 
-        public TaskType(string name, string? description, Guid creatorId)
+        public TaskType(Guid creatorId,string name, string? description)
         {
             Name = name;
             Description = description;
@@ -35,6 +35,13 @@ namespace ServiceTrackHub.Domain.Entities
             if (!Active)
                 throw new InvalidOperationException(ErrorMessage.TaskAlreadyInactivated);
             Active = false;
+            base.Update();
+        }
+
+        public void Update(string? name, string? description)
+        {
+            Name = name ?? Name;
+            Description = description ?? Description;
             base.Update();
         }
     }

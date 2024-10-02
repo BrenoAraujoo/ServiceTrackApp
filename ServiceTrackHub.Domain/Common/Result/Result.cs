@@ -32,10 +32,6 @@ namespace ServiceTrackHub.Domain.Common.Result
         {
             Data = value;
         }       
-        private Result(T value, bool isSuccess, CustomError error, List<string> erros) : base(isSuccess, error)
-        {
-            Data = value;
-        }
         
         public static Result<T> Success(T value) => new (value, true, CustomError.None);
         public new static Result<T> Failure(CustomError error) => new (default, false, error);

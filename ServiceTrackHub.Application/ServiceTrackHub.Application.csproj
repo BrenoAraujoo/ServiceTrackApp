@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
@@ -16,6 +15,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ServiceTrackHub.Domain\ServiceTrackHub.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Mappings\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Mappings\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Mappings\**" />
   </ItemGroup>
 
 </Project>

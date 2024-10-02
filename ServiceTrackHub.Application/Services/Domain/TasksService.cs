@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ServiceTrackHub.Application.InputViewModel.Task;
+﻿using ServiceTrackHub.Application.InputViewModel.Task;
 using ServiceTrackHub.Application.Interfaces.Domain;
 using ServiceTrackHub.Application.ViewModel.Tasks;
 using ServiceTrackHub.Domain.Common.Erros;
@@ -13,17 +12,11 @@ namespace ServiceTrackHub.Application.Services.Domain
     {
         private readonly ITasksRepository _tasksRepository;
         private readonly ITaskTypeRepository _taskTypeRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
-        public TasksService(ITasksRepository taskRepository, ITaskTypeRepository taskTypeRepository,IMapper mapper, IUserRepository userRepository)
+        public TasksService(ITasksRepository taskRepository, ITaskTypeRepository taskTypeRepository)
         {
             _tasksRepository = taskRepository;
-            _userRepository = userRepository;
-            _mapper = mapper;
             _taskTypeRepository = taskTypeRepository;
         }
-
-        
         public async Task<Result> GetAll()
         {
             var tasks = await _tasksRepository.GetAllAsync();
@@ -40,10 +33,10 @@ namespace ServiceTrackHub.Application.Services.Domain
 
         public async Task<Result> Create(CreateTaskModel taskInput)
         {
-            var taskTypeExists = await _taskTypeRepository.GetByIdAsync(taskInput.TaskTypeId) is not null;
-
+            var taskTypeExists = await _taskTypeRepository.GetByIdAsync(taskInput.TaskTypeId) is  null;
+            
             if(!taskTypeExists)
-                return Result<TasksViewModel>.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
 
             Tasks taskDomain = new(
                 taskInput.TaskTypeId,
@@ -53,19 +46,18 @@ namespace ServiceTrackHub.Application.Services.Domain
             
             await _tasksRepository.CreateAsync(taskDomain);
             var taskModel = TasksViewModel.ToViewModel(taskDomain);
-            return Result<TasksViewModel?>.Success(taskModel);
+            return Result<TasksViewModel>.Success(taskModel);
             
         }
 
         public async Task<Result> GetById(Guid id)
         {
-            var tasks = await _tasksRepository.GetByIdAsync(id);
-            var taksViewModel = _mapper.Map<TasksViewModel>(tasks);
+            var task = await _tasksRepository.GetByIdAsync(id);
+            if(task is null)
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskNotFound));
 
-
-            return tasks is not null ?
-                Result<TasksViewModel?>.Success(taksViewModel) :
-                Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskNotFound));
+            var taskModel = TasksViewModel.ToViewModel(task);
+            return Result<TasksViewModel>.Success(taskModel);
 
         }
 
@@ -78,7 +70,6 @@ namespace ServiceTrackHub.Application.Services.Domain
 
             await _tasksRepository.RemoveAsync(task);
             return Result.Success();
-            
         }
 
         public async Task<Result> Update(Guid id, UpdateTaskModel taskInput)
@@ -86,10 +77,10 @@ namespace ServiceTrackHub.Application.Services.Domain
             var task = await _tasksRepository.GetByIdAsync(id);
             if (task is null)
                 return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskNotFound));
-            _mapper.Map(taskInput, task);
-            task.Update();
+           
+            task.Update(taskInput.UserToId,taskInput.Description);
             await _tasksRepository.UpdateAsync(task);
-            var taskModel = _mapper.Map<TasksViewModel>(task);
+            var taskModel = TasksViewModel.ToViewModel(task);
             return Result<TasksViewModel>.Success(taskModel);
         }
         

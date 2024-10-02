@@ -19,5 +19,10 @@
                 Active = taskType.Active
             };
         }
+
+        public static List<TaskTypeViewModel> ToViewModel(List<Domain.Entities.TaskType> taskTypes)
+        {
+            return taskTypes.Select(ToViewModel).ToList();
+        }
     }
 }

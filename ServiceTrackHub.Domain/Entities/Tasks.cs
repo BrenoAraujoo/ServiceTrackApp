@@ -18,5 +18,12 @@
             UserToId = userToId;
             Description = description;
         }
+
+        public void Update(Guid? userToId, string? description)
+        {
+            UserToId = userToId ?? UserToId;
+            Description = description ?? Description;
+            base.Update();
+        }
     }
 }
