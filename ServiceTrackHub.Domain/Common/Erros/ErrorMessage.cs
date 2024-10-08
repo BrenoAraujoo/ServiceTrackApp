@@ -22,6 +22,12 @@
         public const string TaskNameAlreadyExists = "Já existe uma tarefa com esse nome." +
                                                     " Por favor, tente com outro nome";
 
+        public const string TaskInvalidUser = "A tarefa só pode ser atribuída a um usuário ativo.";
+
+        public const string TaskUserNotFound = "O usuário cujo a tarefa está sendo atribuida não foi existe.";
+
+        public const string TaskMaxDescription = "A descrição da tarefa deve ter no máximo 100 caracteres.";
+        public const string TaskMinDescription = "A descrição da tarefa deve ter no mínimo 10 caracteres.";
         public const string TaskAlreadyActivated = "A tarefa já está ativa";
         public const string TaskAlreadyInactivated = "A tarefa já está inaativa";
         #endregion
@@ -31,6 +37,8 @@
         public const string TaskTypeInvalid= "Tipo de tarefa inválido";
         public const string TaskTypeCantBeRemoved= "Esse tipo de tarefa não pode ser removida pois está associada " +
                                                    "a uma ou mais tarefas.";
+        public const string TaskTypeMaxName = "O nome do tipo de tarefa deve ter no máximo 100 caracteres.";
+        public const string TaskTypeMinName = "O nome do tipo de tarefa deve ter no mínimo  3 caracteres";
         #endregion
 
         #region Value objects messages

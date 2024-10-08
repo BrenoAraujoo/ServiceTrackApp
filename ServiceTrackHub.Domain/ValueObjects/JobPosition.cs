@@ -6,9 +6,9 @@ public class JobPosition : ValueObject
 {
     public string? Value { get; set; }
 
-    public JobPosition(string value)
+    public JobPosition(string? value)
     {
-        if(string.IsNullOrEmpty(value) &&!IsValid(value))
+        if(string.IsNullOrEmpty(value) || !IsValid(value))
             throw new ArgumentException(ErrorMessage.InvalidJobPosition);
         Value = value;
     }

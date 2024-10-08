@@ -1,4 +1,5 @@
 ﻿using ServiceTrackHub.Application.InputViewModel.Task;
+using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.Interfaces.Domain;
 using ServiceTrackHub.Application.ViewModel.Tasks;
 using ServiceTrackHub.Domain.Common.Erros;
@@ -12,11 +13,21 @@ namespace ServiceTrackHub.Application.Services.Domain
     {
         private readonly ITasksRepository _tasksRepository;
         private readonly ITaskTypeRepository _taskTypeRepository;
-        public TasksService(ITasksRepository taskRepository, ITaskTypeRepository taskTypeRepository)
+        private readonly IUserService _userService;
+        private readonly IUserRepository _userRepository;
+
+        public TasksService(
+            ITasksRepository taskRepository,
+            ITaskTypeRepository taskTypeRepository,
+            IUserService userService,
+            IUserRepository userRepository)
         {
             _tasksRepository = taskRepository;
             _taskTypeRepository = taskTypeRepository;
+            _userService = userService;
+            _userRepository = userRepository;
         }
+
         public async Task<Result> GetAll()
         {
             var tasks = await _tasksRepository.GetAllAsync();
@@ -33,32 +44,49 @@ namespace ServiceTrackHub.Application.Services.Domain
 
         public async Task<Result> Create(CreateTaskModel taskInput)
         {
-            var taskTypeExists = await _taskTypeRepository.GetByIdAsync(taskInput.TaskTypeId) is  null;
-            
-            if(!taskTypeExists)
-                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
+            try
+            {
+                User? userTo = null;
+                if (taskInput.UserToId is not null)
+                {
+                    userTo = await _userRepository.GetByIdAsync((Guid)taskInput.UserToId);
+                    if (userTo is null)
+                        return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskUserNotFound));
+                }
 
-            Tasks taskDomain = new(
-                taskInput.TaskTypeId,
-                taskInput.UserId,
-                taskInput.UserId,
-                taskInput.Description);
-            
-            await _tasksRepository.CreateAsync(taskDomain);
-            var taskModel = TasksViewModel.ToViewModel(taskDomain);
-            return Result<TasksViewModel>.Success(taskModel);
-            
+                var taskTypeExists = await _taskTypeRepository.GetByIdAsync(taskInput.TaskTypeId) is null;
+                if (!taskTypeExists)
+                    return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
+
+                Tasks taskDomain = new(
+                    taskInput.TaskTypeId,
+                    taskInput.UserId,
+                    taskInput.UserToId,
+                    taskInput.Description,
+                    userTo?.Active ?? false);
+
+                await _tasksRepository.CreateAsync(taskDomain);
+                var taskModel = TasksViewModel.ToViewModel(taskDomain);
+                return Result<TasksViewModel>.Success(taskModel);
+            }
+            catch (InvalidOperationException e)
+            {
+                return Result.Failure(CustomError.ValidationError(e.Message));
+            }
+            catch (Exception)
+            {
+                return Result.Failure(CustomError.ServerError("Erro inesperado ao criar tarefa."));
+            }
         }
 
         public async Task<Result> GetById(Guid id)
         {
             var task = await _tasksRepository.GetByIdAsync(id);
-            if(task is null)
+            if (task is null)
                 return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskNotFound));
 
             var taskModel = TasksViewModel.ToViewModel(task);
             return Result<TasksViewModel>.Success(taskModel);
-
         }
 
 
@@ -74,15 +102,40 @@ namespace ServiceTrackHub.Application.Services.Domain
 
         public async Task<Result> Update(Guid id, UpdateTaskModel taskInput)
         {
-            var task = await _tasksRepository.GetByIdAsync(id);
-            if (task is null)
-                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskNotFound));
-           
-            task.Update(taskInput.UserToId,taskInput.Description);
-            await _tasksRepository.UpdateAsync(task);
-            var taskModel = TasksViewModel.ToViewModel(task);
-            return Result<TasksViewModel>.Success(taskModel);
+            try
+            {
+                User? userTo = null;
+                if (taskInput.UserToId is not null)
+                {
+                    userTo = await _userRepository.GetByIdAsync((Guid)taskInput.UserToId);
+                    if (userTo is null)
+                        return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskUserNotFound));
+                }
+                
+                var task = await _tasksRepository.GetByIdAsync(id);
+                if (task is null)
+                    return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskNotFound));
+
+                if (taskInput.UserToId is not null)
+                {
+                    var userToResult = await _userService.GetById((Guid)taskInput.UserToId);
+                    if (!userToResult.IsSuccess)
+                        return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskUserNotFound));
+                }
+
+                task.Update(taskInput.UserToId, userTo?.Active??false,taskInput.Description);
+                await _tasksRepository.UpdateAsync(task);
+                var taskModel = TasksViewModel.ToViewModel(task);
+                return Result<TasksViewModel>.Success(taskModel);
+            }
+            catch (ArgumentException e)
+            {
+                return Result.Failure(CustomError.ValidationError(e.Message));
+            }
+            catch (Exception e)
+            {
+                return Result.Failure(CustomError.ServerError("Ococorreu um erro inesperado ao criar uma tarefa"));
+            }
         }
-        
     }
 }

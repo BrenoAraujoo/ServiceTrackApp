@@ -6,6 +6,7 @@
         string Email,
         string SmartPhoneNumber,
         string Password,
-        string? JobPosition
+        string? JobPosition,
+        string UserRole
         );
 }

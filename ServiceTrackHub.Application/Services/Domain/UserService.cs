@@ -74,9 +74,13 @@ namespace ServiceTrackHub.Application.Services.Domain
 
                 return Result<UserViewModel>.Success(userModel);
             }
-            catch (Exception e)
+            catch (ArgumentException e)
             {
                 return Result.Failure(CustomError.ValidationError(e.Message));
+            }
+            catch (Exception e)
+            {
+                return Result.Failure(CustomError.ServerError("Ocorreu um erro inesperado ao criar o usuário."));
             }
         }
 
@@ -89,7 +93,7 @@ namespace ServiceTrackHub.Application.Services.Domain
             try
             {
                 userEntity.Update(userInput.Name, userInput.Email, userInput.SmartPhoneNumber, 
-                    userInput.JobPosition);
+                    userInput.JobPosition, userInput.UserRole);
                 
                 await _userRepository.UpdateAsync(userEntity);
                 var userModel = UserViewModel.ToViewModel(userEntity);

@@ -19,13 +19,14 @@ namespace ServiceTrackHub.Domain.Entities
         protected User(){} // ORM constructor
 
 
-        public User(string name,  string email, string password, string smartPhoneNumber, string? jobPosition = null)
+        public User(string name,  string email, string password, string smartPhoneNumber, string userRole, string? jobPosition = null)
         {
             Name = name;
             Tasks = [];
             Email = new Email(email).Value;
             PasswordHash = new  Password(password).Value;
             SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber).Value;
+            SetUserRole(userRole);
             JobPosition = new JobPosition(jobPosition).Value;
             Active = true;
         }
@@ -51,13 +52,28 @@ namespace ServiceTrackHub.Domain.Entities
             PasswordHash = newPassword;
         }
 
-        public void Update(string? name = null, string? email = null,  string? smartPhoneNumber = null, string? jobPosition = null)
+        public void Update(
+            string? name = null,
+            string? email = null,
+            string? smartPhoneNumber = null,
+            string? jobPosition = null,
+            string? userRole = null)
         {
             Name =  name?? Name;
             Email = new Email(email?? Email).Value;
             SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber?? SmartPhoneNumber).Value;
             JobPosition = new JobPosition(jobPosition?? JobPosition).Value;
+            SetUserRole(userRole);
             base.Update();
         }
+
+        private void SetUserRole(string? role)
+        {
+            var existsRole = Enum.TryParse(role, out Role roleEnum);
+            if (!existsRole)
+                throw new ArgumentException("Role nao identificado");
+
+            Role = roleEnum;
+        }  
     }
 }

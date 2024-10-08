@@ -22,17 +22,17 @@ namespace ServiceTrackHub.Application.Services.Domain
         public async Task<Result> Create(CreateTaskTypeModel taskTypeInputModel)
         {
             
-            var taskType = new TaskType(taskTypeInputModel.creatorId,taskTypeInputModel.name,taskTypeInputModel.description);
+            var taskType = new TaskType(taskTypeInputModel.CreatorId,taskTypeInputModel.Name,taskTypeInputModel.Description);
             
-            var taskTypeExists = await _taskTypeRepository.GetByNameAsync(taskTypeInputModel.name) is not null;
+            var taskTypeExists = await _taskTypeRepository.GetByNameAsync(taskTypeInputModel.Name) is not null;
 
              if(taskTypeExists)
                 return Result.Failure(CustomError.Conflict(ErrorMessage.TaskNameAlreadyExists));
 
              var taskTypeEntity = new TaskType(
-                 taskTypeInputModel.creatorId,
-                 taskTypeInputModel.name,
-                 taskTypeInputModel.description);
+                 taskTypeInputModel.CreatorId,
+                 taskTypeInputModel.Name,
+                 taskTypeInputModel.Description);
              
             await _taskTypeRepository.CreateAsync(taskTypeEntity);
             var taskViewModel = TaskTypeViewModel.ToViewModel(taskTypeEntity);
@@ -81,7 +81,7 @@ namespace ServiceTrackHub.Application.Services.Domain
             if(taskTypeEntity is null)
                 return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
             
-            taskTypeEntity.Update(taskTypeInput.name, taskTypeInput.description);
+            taskTypeEntity.Update(taskTypeInput.Name, taskTypeInput.Description);
             
             await _taskTypeRepository.UpdateAsync(taskTypeEntity);
             var taskTypeModel = TaskTypeViewModel.ToViewModel(taskTypeEntity);

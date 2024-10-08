@@ -6,6 +6,7 @@ namespace ServiceTrackHub.Application.InputViewModel.User
         string? Name,
         string? Email,
         string? SmartPhoneNumber,
-        string? JobPosition
+        string? JobPosition,
+        string? UserRole
     );
 }
