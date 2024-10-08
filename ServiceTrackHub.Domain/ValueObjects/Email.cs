@@ -10,22 +10,19 @@ public class Email : ValueObject
 
     public Email(string value)
     {
-        if (string.IsNullOrEmpty(value)|| !IsValidEmail(value))
+        if (string.IsNullOrEmpty(value)|| !IsValid(value))
             throw new ArgumentException(ErrorMessage.InvalidEmail);
         Value = value;
     }
 
-    public static bool IsValidEmail(string value)
+    public override bool IsValid(object value)
     {
-        if (value.Length is > 40 or < 8)
+        var valueString = value as string;
+        if (valueString.Length is > 40 or < 8)
             return false;
 
         string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-        return Regex.IsMatch(value, pattern);
+        return Regex.IsMatch(valueString, pattern);
     }
-
-    public override bool IsValid(object value)
-    {
-        return IsValidEmail(value as string);
-    }
+    
 }

@@ -9,22 +9,19 @@ public class SmartPhoneNumber : ValueObject
 
     public SmartPhoneNumber(string value)
     {
-        if (string.IsNullOrEmpty(value)||!IsValidPhone(value))
+        if (string.IsNullOrEmpty(value)||!IsValid(value))
             throw new ArgumentException(ErrorMessage.InvalidPhone);
         Value = value;
     }
 
-    public static bool IsValidPhone(string value)
+    public override bool IsValid(object value)
     {
-        if (value.Length != 11)
+        var valueString = value as string;
+        if (valueString is  null && valueString.Length != 11)
             return false;
 
         string pattern = @"^\d{11}$";
-        return Regex.IsMatch(value, pattern);
+        return Regex.IsMatch(valueString, pattern);
     }
-
-    public override bool IsValid(object value)
-    {
-        return IsValidPhone(value as string);
-    }
+    
 }

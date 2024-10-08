@@ -51,8 +51,7 @@ namespace ServiceTrackHub.Domain.Entities
             PasswordHash = newPassword;
         }
 
-        public void Update(string? name = null, string? email = null,  string? smartPhoneNumber = null,
-            string? jobPosition = null)
+        public void Update(string? name = null, string? email = null,  string? smartPhoneNumber = null, string? jobPosition = null)
         {
             Name =  name?? Name;
             Email = new Email(email?? Email).Value;

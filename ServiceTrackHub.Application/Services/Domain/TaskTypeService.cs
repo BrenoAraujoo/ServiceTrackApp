@@ -21,6 +21,9 @@ namespace ServiceTrackHub.Application.Services.Domain
         
         public async Task<Result> Create(CreateTaskTypeModel taskTypeInputModel)
         {
+            
+            var taskType = new TaskType(taskTypeInputModel.creatorId,taskTypeInputModel.name,taskTypeInputModel.description);
+            
             var taskTypeExists = await _taskTypeRepository.GetByNameAsync(taskTypeInputModel.name) is not null;
 
              if(taskTypeExists)
