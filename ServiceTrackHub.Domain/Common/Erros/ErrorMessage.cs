@@ -3,16 +3,21 @@
     public sealed class ErrorMessage
     {
         #region User messages
+
         public const string UserNotFound = $"O Usuário não encontrado";
         public const string UserEmailAlreadyExists = "Email já está em uso. Tente usar outro.";
         public const string UserInvalid = "Usuário inválido";
         public const string UserErrorPasswordHash = "Erro ao gerar hash do password";
+
         public const string UserCannotBeRemove = "O usuário não pode ser removido," +
-                                                           "pois ele possui tarefas associadas.";
+                                                 "pois ele possui tarefas associadas.";
+
         public const string UserInvalidEmailOrPassword = "Usuário ou senha inválidos";
 
         public const string UserIsAlreadyActivated = "O usuário já está ativo";
         public const string UserIsAlreadyInactivated = "O usuário já está inativo";
+
+        public const string UserRoleNotFound = "Tipo de usuário não encontrado";
 
         #endregion
 
@@ -27,9 +32,8 @@
         public const string TaskUserNotFound = "O usuário cujo a tarefa está sendo atribuida não foi existe.";
 
         public const string TaskMaxDescription = "A descrição da tarefa deve ter no máximo 100 caracteres.";
-        public const string TaskMinDescription = "A descrição da tarefa deve ter no mínimo 10 caracteres.";
-        public const string TaskAlreadyActivated = "A tarefa já está ativa";
-        public const string TaskAlreadyInactivated = "A tarefa já está inaativa";
+        public const string TaskMinDescription = "A descrição da tarefa deve ter no mínimo 3 caracteres.";
+
         #endregion
 
         #region Task Type messages
@@ -39,6 +43,9 @@
                                                    "a uma ou mais tarefas.";
         public const string TaskTypeMaxName = "O nome do tipo de tarefa deve ter no máximo 100 caracteres.";
         public const string TaskTypeMinName = "O nome do tipo de tarefa deve ter no mínimo  3 caracteres";
+        
+        public const string TaskTypeAlreadyActivated = "O Tipo de tarefa já está ativo";
+        public const string TaskTypeAlreadyInactivated = "O Tipo de tarefa já está inativo";
         #endregion
 
         #region Value objects messages

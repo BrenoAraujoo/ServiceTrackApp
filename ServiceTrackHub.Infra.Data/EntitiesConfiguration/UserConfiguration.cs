@@ -18,7 +18,7 @@ namespace ServiceTrackHub.Infra.Data.EntitiesConfiguration
             builder.Property(x => x.PasswordHash).HasMaxLength(100)
                 .IsRequired();
             builder.Property(x => x.SmartPhoneNumber).HasMaxLength(11)
-                .IsRequired();
+                .IsRequired(false);
             builder.Property(x => x.Id)
                 .ValueGeneratedNever();
             

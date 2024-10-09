@@ -6,11 +6,11 @@ namespace ServiceTrackHub.Domain.ValueObjects;
 public class Password : ValueObject
 {
 
-    public string Value { get; set; }
+    public string? Value { get; set; }
 
-    public Password(string value)
+    public Password(string? value)
     {
-        if (!IsValid(value))
+        if (!string.IsNullOrEmpty(value) && !IsValid(value))
             throw new ArgumentException(ErrorMessage.InvalidPassword);
         Value = value;
     }

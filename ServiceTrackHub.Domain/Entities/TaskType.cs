@@ -29,7 +29,7 @@ namespace ServiceTrackHub.Domain.Entities
         public void Activate()
         {
             if (Active)
-                throw new InvalidOperationException(ErrorMessage.TaskAlreadyActivated);
+                throw new InvalidOperationException(ErrorMessage.TaskTypeAlreadyActivated);
             Active = true;
             base.Update();
         }
@@ -37,7 +37,7 @@ namespace ServiceTrackHub.Domain.Entities
         public void Deactivate()
         {
             if (!Active)
-                throw new InvalidOperationException(ErrorMessage.TaskAlreadyInactivated);
+                throw new InvalidOperationException(ErrorMessage.TaskTypeAlreadyInactivated);
             Active = false;
             base.Update();
         }

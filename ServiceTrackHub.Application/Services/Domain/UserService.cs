@@ -61,7 +61,7 @@ namespace ServiceTrackHub.Application.Services.Domain
             try
             {
                 var userEntity = new User(userInput.Name, userInput.Email,
-                    userInput.Password, userInput.SmartPhoneNumber, userInput.JobPosition);
+                    userInput.Password, userInput.UserRole, userInput.JobPosition, userInput.SmartPhoneNumber);
 
                 var passwordHash = _passwordHasherService.HashPassword(userInput.Password);
                 if (!passwordHash.IsSuccess)
@@ -94,7 +94,16 @@ namespace ServiceTrackHub.Application.Services.Domain
             {
                 userEntity.Update(userInput.Name, userInput.Email, userInput.SmartPhoneNumber, 
                     userInput.JobPosition, userInput.UserRole);
+
+                if (userInput.Password is not null)
+                {
+                    var passwordHash = _passwordHasherService.HashPassword(userInput.Password);
+                    if (!passwordHash.IsSuccess)
+                        return Result.Failure(CustomError.Conflict(ErrorMessage.UserErrorPasswordHash));
                 
+                    userEntity.ChangePassword(passwordHash.Data);
+                }
+
                 await _userRepository.UpdateAsync(userEntity);
                 var userModel = UserViewModel.ToViewModel(userEntity);
                 return Result<UserViewModel>.Success(userModel);

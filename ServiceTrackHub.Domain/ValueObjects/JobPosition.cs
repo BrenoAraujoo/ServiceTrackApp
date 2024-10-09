@@ -8,16 +8,15 @@ public class JobPosition : ValueObject
 
     public JobPosition(string? value)
     {
-        if(string.IsNullOrEmpty(value) || !IsValid(value))
+        if(!string.IsNullOrEmpty(value) && !IsValid(value))
             throw new ArgumentException(ErrorMessage.InvalidJobPosition);
         Value = value;
     }
     
     public override bool IsValid(object value)
     {
-        var valueString = value as string;
-        if (valueString == null) return false;
-        return valueString.Length is  <= 40;
+        if (value is not string valueString) return false;
+        return valueString.Length is <= 40;
     }
     
 

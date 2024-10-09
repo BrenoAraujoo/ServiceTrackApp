@@ -1,6 +1,5 @@
 ﻿using ServiceTrackHub.Domain.Enums;
 using ServiceTrackHub.Domain.Common.Erros;
-using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
 using ServiceTrackHub.Domain.ValueObjects;
 
@@ -12,14 +11,14 @@ namespace ServiceTrackHub.Domain.Entities
         public List<Tasks> Tasks { get;  private set; }
         public string Email { get; private set; }
         public string PasswordHash { get; private set; }
-        public string SmartPhoneNumber { get; private set; }
+        public string? SmartPhoneNumber { get; private set; }
         public bool Active { get; private set; }
         public string? JobPosition { get; private set; }
         public Role Role { get; private set; } //EF nav property
         protected User(){} // ORM constructor
 
 
-        public User(string name,  string email, string password, string smartPhoneNumber, string userRole, string? jobPosition = null)
+        public User(string name,  string email, string password, string userRole, string? jobPosition = null, string? smartPhoneNumber = null)
         {
             Name = name;
             Tasks = [];
@@ -47,10 +46,6 @@ namespace ServiceTrackHub.Domain.Entities
             Active = false;
         }
 
-        public void ChangePassword(string newPassword)
-        {
-            PasswordHash = newPassword;
-        }
 
         public void Update(
             string? name = null,
@@ -66,12 +61,18 @@ namespace ServiceTrackHub.Domain.Entities
             SetUserRole(userRole);
             base.Update();
         }
+        
+        public void ChangePassword(string newPassword)
+        {
+            PasswordHash = newPassword;
+        }
+
 
         private void SetUserRole(string? role)
         {
             var existsRole = Enum.TryParse(role, out Role roleEnum);
             if (!existsRole)
-                throw new ArgumentException("Role nao identificado");
+                throw new ArgumentException(ErrorMessage.UserRoleNotFound);
 
             Role = roleEnum;
         }  

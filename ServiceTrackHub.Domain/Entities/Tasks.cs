@@ -5,7 +5,7 @@ namespace ServiceTrackHub.Domain.Entities
     public sealed class Tasks : BaseEntity
     {
         
-        private const int MinDescriptionLength = 10;
+        private const int MinDescriptionLength = 3;
         private const int MaxDescriptionLength = 100;
         public Guid TaskTypeId{ get; private set; }
         public TaskType TaskType { get; private set; }
