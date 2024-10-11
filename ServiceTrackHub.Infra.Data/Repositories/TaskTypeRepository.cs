@@ -8,7 +8,7 @@ namespace ServiceTrackHub.Infra.Data.Repositories
 {
     public class TaskTypeRepository : ITaskTypeRepository
     {
-        ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
         public TaskTypeRepository(ApplicationDbContext context)
         {
             _context = context;

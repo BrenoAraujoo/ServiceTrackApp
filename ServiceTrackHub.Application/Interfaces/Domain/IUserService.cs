@@ -1,11 +1,12 @@
 ﻿using ServiceTrackHub.Application.InputViewModel.User;
+using ServiceTrackHub.Application.Parameters;
 using ServiceTrackHub.Domain.Common.Result;
 
-namespace ServiceTrackHub.Application.Interfaces
+namespace ServiceTrackHub.Application.Interfaces.Domain
 {
     public interface IUserService
     {
-        Task<Result> GetAll();
+        Task<Result> GetAll(UserRequestParameters userRequestParameters);
         Task<Result> GetById(Guid id);
         Task<Result> GetByEmail(string email);
         Task<Result> Create(CreateUserModel createUserModel);

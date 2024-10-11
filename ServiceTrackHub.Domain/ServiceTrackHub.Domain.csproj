@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Remove="CustomDataAnnotations\**" />
+    <Compile Remove="Pagination.cs" />
   </ItemGroup>
 
   <ItemGroup>

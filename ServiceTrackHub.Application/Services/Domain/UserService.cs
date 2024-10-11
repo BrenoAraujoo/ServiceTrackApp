@@ -1,12 +1,14 @@
 ﻿
 using ServiceTrackHub.Application.InputViewModel.User;
-using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.Interfaces.Auth;
+using ServiceTrackHub.Application.Interfaces.Domain;
+using ServiceTrackHub.Application.Parameters;
 using ServiceTrackHub.Application.ViewModel.User;
 using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Common.Result;
 using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
+using ServiceTrackHub.Domain.Pagination;
 
 namespace ServiceTrackHub.Application.Services.Domain
 {
@@ -25,12 +27,25 @@ namespace ServiceTrackHub.Application.Services.Domain
             _passwordHasherService = passwordHasherService;
         }
 
-        public async Task<Result> GetAll()
+        public async Task<Result> GetAll(UserRequestParameters userRequestParameters)
         {
-            var usersEntity = await _userRepository.GetAllAsync();
-            var users = UserViewModel.ToViewModel(usersEntity);
+            
+            var pagedUsersEntity = await _userRepository.GetAllAsync(userRequestParameters);
+            
+            
+            if (!string.IsNullOrEmpty(userRequestParameters.Name))
+            {
+                pagedUsersEntity.Result = pagedUsersEntity.Result.Where
+                    (u => u.Name.Contains(userRequestParameters.Name, StringComparison.OrdinalIgnoreCase));
+            }
+            
 
-            return Result<List<UserViewModel>>.Success(users);
+            var usersViewModel = UserViewModel.ToViewModel(pagedUsersEntity.Result);
+
+            var pagedUsers = new PagedList<UserViewModel>
+                (usersViewModel, pagedUsersEntity.PageNumber, pagedUsersEntity.PageSize, pagedUsersEntity.TotalItems);
+            
+            return Result<PagedList<UserViewModel>>.Success(pagedUsers);
         }
 
         public async Task<Result> GetById(Guid id)

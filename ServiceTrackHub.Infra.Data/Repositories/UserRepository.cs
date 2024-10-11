@@ -1,13 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ServiceTrackHub.Domain.Parameters;
 using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
+using ServiceTrackHub.Domain.Pagination;
 using ServiceTrackHub.Infra.Data.Context;
+using ServiceTrackHub.Infra.Data.Helpers;
 
 namespace ServiceTrackHub.Infra.Data.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
         public UserRepository(ApplicationDbContext context)
         {
             _context = context;
@@ -25,11 +28,18 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             return user;
         }
 
-        public async Task<List<User>> GetAllAsync()
-        {
-           return await _context.Users
-                .AsNoTracking()
-                .ToListAsync();
+        public async Task<PagedList<User>> GetAllAsync(RequestParameters requestParameters)
+        { 
+            var query = _context.Users.AsQueryable();
+
+            /*
+            if (!string.IsNullOrEmpty(requestParameters.SearchTerm))
+            {
+                query = query.Where(u => u.Email.Contains(requestParameters.SearchTerm)||
+                                    u.Name.Contains(requestParameters.SearchTerm)); ;
+            }
+            */
+            return await PaginationHelper.ToPagedListAsync(query, requestParameters.PageNumber, requestParameters.PageSize);
             
         }
 

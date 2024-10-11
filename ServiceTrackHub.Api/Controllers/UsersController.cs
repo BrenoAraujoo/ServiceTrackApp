@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceTrackHub.Application.InputViewModel.Auth;
 using ServiceTrackHub.Application.InputViewModel.User;
-using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.Interfaces.Auth;
+using ServiceTrackHub.Application.Interfaces.Domain;
+using ServiceTrackHub.Application.Parameters;
 
 namespace ServiceTrackHub.Api.Controllers
 {
@@ -21,9 +22,9 @@ namespace ServiceTrackHub.Api.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpGet("v1/users")]
-        public async Task <ActionResult> GetUsers()
+        public async Task <ActionResult> GetUsers([FromQuery] UserRequestParameters userRequestParameters)
         {
-            var result = await _userService.GetAll();
+            var result = await _userService.GetAll(userRequestParameters);
             return Ok(result);
         }
 

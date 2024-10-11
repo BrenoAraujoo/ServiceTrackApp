@@ -25,9 +25,10 @@
             };
         }
 
-        public static List<UserViewModel> ToViewModel(List<Domain.Entities.User> users)
+        public static List<UserViewModel> ToViewModel(IEnumerable<Domain.Entities.User> users)
         {
             return users.Select(ToViewModel).ToList();
         }
+
     }
 }
