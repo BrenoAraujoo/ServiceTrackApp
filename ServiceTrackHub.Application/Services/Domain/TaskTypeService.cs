@@ -5,6 +5,7 @@ using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Common.Result;
 using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
+using ServiceTrackHub.Domain.Pagination;
 
 namespace ServiceTrackHub.Application.Services.Domain
 {
@@ -53,12 +54,14 @@ namespace ServiceTrackHub.Application.Services.Domain
             return Result.Success();
         }
 
-        public async Task<Result> GetAll()
+        public async Task<Result> GetAll(PaginationRequest paginationRequest)
         {
             
-            var tasksEntity = await _taskTypeRepository.GetAllAsync();
-            var tasksModel = TaskTypeViewModel.ToViewModel(tasksEntity);    
-            return Result<List<TaskTypeViewModel>> .Success(tasksModel);
+            var pagedList = await _taskTypeRepository.GetAllAsync(paginationRequest);
+            var tasksModel = TaskTypeViewModel.ToViewModel(pagedList.EntityList); 
+            var pagedViewModel = new PagedList<TaskTypeViewModel>
+                (tasksModel, pagedList.PageNumber, paginationRequest.PageSize, pagedList.TotalItems);
+            return Result<PagedList<TaskTypeViewModel>> .Success(pagedViewModel);
 
         }
 

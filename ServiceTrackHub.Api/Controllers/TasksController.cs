@@ -23,7 +23,7 @@ namespace ServiceTrackHub.Api.Controllers
         }
 
 
-        [HttpGet("v1/taksk/{id}")]
+        [HttpGet("v1/tasks/{id}")]
         public async Task<IActionResult> GetTaskById(Guid id)
         {
             var result = await _tasksService.GetById(id);

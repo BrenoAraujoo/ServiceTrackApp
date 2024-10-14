@@ -21,7 +21,7 @@ public class AuthService : IAuthService
     }
     public async Task<Result> AuthenticateAsync(LoginModel loginModel)
     {
-        var user = await _userRepository.GetByEmail(loginModel.Email);
+        var user = await _userRepository.GetByEmailAsync(loginModel.Email);
         if(user is null)
             return Result.Failure(CustomError.RecordNotFound(loginModel.Email));
         

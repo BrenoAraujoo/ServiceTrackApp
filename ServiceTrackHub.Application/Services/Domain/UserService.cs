@@ -1,12 +1,11 @@
-﻿
-using ServiceTrackHub.Application.InputViewModel.User;
+﻿using ServiceTrackHub.Application.InputViewModel.User;
 using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Application.Interfaces.Domain;
-using ServiceTrackHub.Application.Parameters;
 using ServiceTrackHub.Application.ViewModel.User;
 using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Common.Result;
 using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Filters;
 using ServiceTrackHub.Domain.Interfaces;
 using ServiceTrackHub.Domain.Pagination;
 
@@ -27,25 +26,15 @@ namespace ServiceTrackHub.Application.Services.Domain
             _passwordHasherService = passwordHasherService;
         }
 
-        public async Task<Result> GetAll(UserRequestParameters userRequestParameters)
+        public async Task<Result> GetAll(UserFilter filter, PaginationRequest userPaginationRequest)
         {
             
-            var pagedUsersEntity = await _userRepository.GetAllAsync(userRequestParameters);
+            var pagedList = await _userRepository.GetAllAsync(filter, userPaginationRequest);
+            var usersViewModel = UserViewModel.ToViewModel(pagedList.EntityList);
+            var pagedViewModel = new PagedList<UserViewModel>
+                (usersViewModel, pagedList.PageNumber, pagedList.PageSize, pagedList.TotalItems);
             
-            
-            if (!string.IsNullOrEmpty(userRequestParameters.Name))
-            {
-                pagedUsersEntity.Result = pagedUsersEntity.Result.Where
-                    (u => u.Name.Contains(userRequestParameters.Name, StringComparison.OrdinalIgnoreCase));
-            }
-            
-
-            var usersViewModel = UserViewModel.ToViewModel(pagedUsersEntity.Result);
-
-            var pagedUsers = new PagedList<UserViewModel>
-                (usersViewModel, pagedUsersEntity.PageNumber, pagedUsersEntity.PageSize, pagedUsersEntity.TotalItems);
-            
-            return Result<PagedList<UserViewModel>>.Success(pagedUsers);
+            return Result<PagedList<UserViewModel>>.Success(pagedViewModel);
         }
 
         public async Task<Result> GetById(Guid id)
@@ -59,7 +48,7 @@ namespace ServiceTrackHub.Application.Services.Domain
 
         public async Task<Result> GetByEmail(string email)
         {
-            var userEntity = await _userRepository.GetByEmail(email);
+            var userEntity = await _userRepository.GetByEmailAsync(email);
             if (userEntity is null)
                 return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
             var userModel = UserViewModel.ToViewModel(userEntity);

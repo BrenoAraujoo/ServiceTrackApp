@@ -1,12 +1,13 @@
 ﻿using ServiceTrackHub.Application.InputViewModel.User;
-using ServiceTrackHub.Application.Parameters;
 using ServiceTrackHub.Domain.Common.Result;
+using ServiceTrackHub.Domain.Filters;
+using ServiceTrackHub.Domain.Pagination;
 
 namespace ServiceTrackHub.Application.Interfaces.Domain
 {
     public interface IUserService
     {
-        Task<Result> GetAll(UserRequestParameters userRequestParameters);
+        Task<Result> GetAll(UserFilter filter, PaginationRequest userPaginationRequest);
         Task<Result> GetById(Guid id);
         Task<Result> GetByEmail(string email);
         Task<Result> Create(CreateUserModel createUserModel);

@@ -3,7 +3,8 @@ using ServiceTrackHub.Application.InputViewModel.Auth;
 using ServiceTrackHub.Application.InputViewModel.User;
 using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Application.Interfaces.Domain;
-using ServiceTrackHub.Application.Parameters;
+using ServiceTrackHub.Domain.Filters;
+using ServiceTrackHub.Domain.Pagination;
 
 namespace ServiceTrackHub.Api.Controllers
 {
@@ -22,9 +23,10 @@ namespace ServiceTrackHub.Api.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpGet("v1/users")]
-        public async Task <ActionResult> GetUsers([FromQuery] UserRequestParameters userRequestParameters)
+        public async Task <ActionResult> GetUsers([FromQuery] PaginationRequest paginationRequest,
+            [FromQuery] UserFilter filter)
         {
-            var result = await _userService.GetAll(userRequestParameters);
+            var result = await _userService.GetAll(filter, paginationRequest);
             return Ok(result);
         }
 

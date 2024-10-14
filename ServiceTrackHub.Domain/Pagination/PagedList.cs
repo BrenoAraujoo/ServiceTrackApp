@@ -2,7 +2,7 @@
 
 public class PagedList<T>
 {
-    public IEnumerable<T> Result { get; set; }
+    public IEnumerable<T> EntityList { get; set; }
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
     public int TotalItems { get; set; }
@@ -10,9 +10,9 @@ public class PagedList<T>
     public bool HasNextPage => PageNumber < TotalPages;
     public bool HasPreviousPage => PageNumber > 1;
 
-    public PagedList(IEnumerable<T> result, int pageNumber, int pageSize, int totalItems)
+    public PagedList(IEnumerable<T> entityList, int pageNumber, int pageSize, int totalItems)
     {
-        Result = result;
+        EntityList = entityList;
         PageNumber = pageNumber;
         PageSize = pageSize;
         TotalItems = totalItems;

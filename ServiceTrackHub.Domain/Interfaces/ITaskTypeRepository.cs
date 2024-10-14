@@ -1,10 +1,11 @@
 ﻿using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Pagination;
 
 namespace ServiceTrackHub.Domain.Interfaces
 {
     public interface ITaskTypeRepository
     {
-        Task<List<TaskType>> GetAllAsync();
+        Task<PagedList<TaskType>> GetAllAsync(PaginationRequest paginationRequest);
         Task<TaskType?> GetByIdAsync(Guid? id);
         Task<TaskType?> GetByNameAsync(string name);
         Task<TaskType> CreateAsync(TaskType taskType);

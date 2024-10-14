@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
+using ServiceTrackHub.Domain.Pagination;
 using ServiceTrackHub.Infra.Data.Context;
-using ServiceTrackHub.Infra.Data.Migrations;
+using ServiceTrackHub.Infra.Data.Helpers;
+using System.Linq.Dynamic.Core;
 
 namespace ServiceTrackHub.Infra.Data.Repositories
 {
@@ -20,11 +22,13 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             return taskType;
         }
 
-        public async Task<List<TaskType>> GetAllAsync()
+        public async Task<PagedList<TaskType>> GetAllAsync(PaginationRequest paginationRequest)
         {
-            return await _context.TaskType
-                .AsNoTracking()
-                .ToListAsync();
+            var query =  _context.TaskType.AsQueryable().AsNoTracking();
+            
+            query = !string.IsNullOrEmpty(paginationRequest.OrderBy) ? query.OrderBy(paginationRequest.OrderBy) :
+                query.OrderBy(x => x.CreationDate);
+            return await PaginationHelper.ToPagedListAsync(query, paginationRequest.PageNumber, paginationRequest.PageSize);
             
         }
 
