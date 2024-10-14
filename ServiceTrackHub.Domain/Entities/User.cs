@@ -8,7 +8,7 @@ namespace ServiceTrackHub.Domain.Entities
     public sealed class User : BaseEntity, IEntityActivable    
     {
         public string Name { get;  private set; }
-        public List<Tasks> Tasks { get;  private set; }
+        public IEnumerable<Tasks> Tasks { get;  private set; }
         public string Email { get; private set; }
         public string PasswordHash { get; private set; }
         public string? SmartPhoneNumber { get; private set; }

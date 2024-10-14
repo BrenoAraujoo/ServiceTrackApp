@@ -19,14 +19,17 @@
 
   <ItemGroup>
     <Compile Remove="Mappings\**" />
+    <Compile Remove="Parameters\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Remove="Mappings\**" />
+    <EmbeddedResource Remove="Parameters\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Mappings\**" />
+    <None Remove="Parameters\**" />
   </ItemGroup>
 
 </Project>

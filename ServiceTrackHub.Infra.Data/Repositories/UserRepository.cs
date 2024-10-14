@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ServiceTrackHub.Domain.Parameters;
 using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
 using ServiceTrackHub.Domain.Pagination;
 using ServiceTrackHub.Infra.Data.Context;
 using ServiceTrackHub.Infra.Data.Helpers;
+using System.Linq.Dynamic.Core;
+using ServiceTrackHub.Domain.Filters;
 
 namespace ServiceTrackHub.Infra.Data.Repositories
 {
@@ -15,12 +16,7 @@ namespace ServiceTrackHub.Infra.Data.Repositories
         {
             _context = context;
         }
-
-        public async Task<User?> GetByEmail(string email)
-        {
-            return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == email);
-        }
-
+        
         public async Task<User> CreateAsync(User user)
         {
             _context.Add(user);
@@ -28,19 +24,19 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             return user;
         }
 
-        public async Task<PagedList<User>> GetAllAsync(RequestParameters requestParameters)
-        { 
-            var query = _context.Users.AsQueryable();
-
-            /*
-            if (!string.IsNullOrEmpty(requestParameters.SearchTerm))
-            {
-                query = query.Where(u => u.Email.Contains(requestParameters.SearchTerm)||
-                                    u.Name.Contains(requestParameters.SearchTerm)); ;
-            }
-            */
-            return await PaginationHelper.ToPagedListAsync(query, requestParameters.PageNumber, requestParameters.PageSize);
+        public async Task<PagedList<User>> GetAllAsync(IFilterCriteria<User> filter, PaginationRequest paginationRequest)
+        {
             
+            var query = _context.Users.AsQueryable();
+            query = filter.Apply(query);
+            
+            //TODO Tratar Order By usando propriedades inexistentes, para evitar erro.
+            query = !string.IsNullOrEmpty(paginationRequest.OrderBy) ? query.OrderBy(paginationRequest.OrderBy) :
+                query.OrderBy(x => x.Email);
+
+            
+            return await PaginationHelper.ToPagedListAsync(query, paginationRequest.PageNumber, paginationRequest.PageSize);
+
         }
 
         public async Task<User?> GetByIdAsync(Guid id)

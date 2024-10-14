@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceTrackHub.Application.InputViewModel.TaskType;
 using ServiceTrackHub.Application.Interfaces.Domain;
+using ServiceTrackHub.Domain.Pagination;
 
 namespace ServiceTrackHub.Api.Controllers
 {
@@ -14,9 +15,9 @@ namespace ServiceTrackHub.Api.Controllers
         }
 
         [HttpGet("v1/tasktypes")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] PaginationRequest paginationRequest)
         {
-            var result = await _taskTypeService.GetAll();
+            var result = await _taskTypeService.GetAll(paginationRequest);
             return Ok(result);
         }
 

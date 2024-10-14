@@ -20,7 +20,7 @@
             };
         }
 
-        public static List<TaskTypeViewModel> ToViewModel(List<Domain.Entities.TaskType> taskTypes)
+        public static List<TaskTypeViewModel> ToViewModel(IEnumerable<Domain.Entities.TaskType> taskTypes)
         {
             return taskTypes.Select(ToViewModel).ToList();
         }

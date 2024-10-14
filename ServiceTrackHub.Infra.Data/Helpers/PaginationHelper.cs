@@ -9,7 +9,9 @@ public static class PaginationHelper
         (IQueryable<T> query, int pageNumber, int pageSize) where T : class
     {
         var count = await query.CountAsync();
-        var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-        return new PagedList<T>(items, pageNumber, pageSize,count);
+        var items = await query.Skip((pageNumber - 1) * pageSize)
+            .AsNoTracking()
+            .Take(pageSize).ToListAsync();
+        return new PagedList<T>(items, pageNumber, pageSize, count);
     }
 }

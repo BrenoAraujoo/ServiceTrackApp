@@ -1,8 +1,8 @@
-﻿using ServiceTrackHub.Domain.Parameters;
+﻿using ServiceTrackHub.Domain.Pagination;
 
 namespace ServiceTrackHub.Application.Parameters;
 
-public class UserRequestParameters : RequestParameters
+public class UserPaginationRequest 
 {
     public string Name { get; set; } = string.Empty;
 }
