@@ -1,12 +1,14 @@
 ﻿using ServiceTrackHub.Application.InputViewModel.TaskType;
 using ServiceTrackHub.Domain.Common.Result;
+using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Filters;
 using ServiceTrackHub.Domain.Pagination;
 
 namespace ServiceTrackHub.Application.Interfaces.Domain
 {
     public interface ITaskTypeService
     {
-        Task<Result> GetAll(PaginationRequest paginationRequest);
+        Task<Result> GetAll(IFilterCriteria<TaskType> filter, PaginationRequest paginationRequest);
         Task<Result> GetById(Guid id);
         Task<Result> Create(CreateTaskTypeModel taskTypeModel);
         Task<Result> Update(Guid id, UpdateTaskTypeModel taskTypeInput);

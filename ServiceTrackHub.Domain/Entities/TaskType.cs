@@ -6,8 +6,8 @@ namespace ServiceTrackHub.Domain.Entities
     public class TaskType : BaseEntity, IEntityActivable
     {
 
-        private  const int MaxTaskTypeNameLenght = 50;
-        private  const int MinTaskTypeNameLenght = 3;
+        private const int MaxTaskTypeNameLenght = 50;
+        private const int MinTaskTypeNameLenght = 3;
         private const int MinDescriptionLength = 10;
         private const int MaxDescriptionLength = 100;
         public Guid CreatorId { get; private set; }

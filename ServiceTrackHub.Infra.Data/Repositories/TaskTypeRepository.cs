@@ -5,6 +5,7 @@ using ServiceTrackHub.Domain.Pagination;
 using ServiceTrackHub.Infra.Data.Context;
 using ServiceTrackHub.Infra.Data.Helpers;
 using System.Linq.Dynamic.Core;
+using ServiceTrackHub.Domain.Filters;
 
 namespace ServiceTrackHub.Infra.Data.Repositories
 {
@@ -22,12 +23,13 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             return taskType;
         }
 
-        public async Task<PagedList<TaskType>> GetAllAsync(PaginationRequest paginationRequest)
+        public async Task<PagedList<TaskType>> GetAllAsync(IFilterCriteria<TaskType> filter,PaginationRequest paginationRequest)
         {
             var query =  _context.TaskType.AsQueryable().AsNoTracking();
+            query = filter.Apply(query);
             
             query = !string.IsNullOrEmpty(paginationRequest.OrderBy) ? query.OrderBy(paginationRequest.OrderBy) :
-                query.OrderBy(x => x.CreationDate);
+                query.OrderByDescending(x => x.CreationDate);
             return await PaginationHelper.ToPagedListAsync(query, paginationRequest.PageNumber, paginationRequest.PageSize);
             
         }

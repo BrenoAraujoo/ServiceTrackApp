@@ -1,8 +1,11 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Filters;
 using ServiceTrackHub.Domain.Interfaces;
+using ServiceTrackHub.Domain.Pagination;
 using ServiceTrackHub.Infra.Data.Context;
+using ServiceTrackHub.Infra.Data.Helpers;
 
 namespace ServiceTrackHub.Infra.Data.Repositories
 {
@@ -21,11 +24,11 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             return tasks;
         }
 
-        public async Task<List<Tasks>> GetAllAsync()
+        public async Task<PagedList<Tasks>> GetAllAsync(IFilterCriteria<Tasks> filter, PaginationRequest pagination)
         {
-            return await _context.Tasks
-                .AsNoTracking()
-                .ToListAsync(); 
+            var query = _context.Tasks.AsQueryable();
+            query = filter.Apply(query);
+            return await PaginationHelper.ToPagedListAsync(query,pagination.PageNumber, pagination.PageSize);
         }
 
         public async Task<List<Tasks>> GetFilteredAsync(Expression<Func<Tasks, bool>> predicate)
