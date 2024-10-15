@@ -1,11 +1,13 @@
 ﻿using System.Linq.Expressions;
 using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Filters;
+using ServiceTrackHub.Domain.Pagination;
 
 namespace ServiceTrackHub.Domain.Interfaces
 {
     public interface ITasksRepository
     {
-        Task<List<Tasks>> GetAllAsync();
+        Task<PagedList<Tasks>> GetAllAsync(IFilterCriteria<Tasks> filter, PaginationRequest pagination);
         Task<List<Tasks>> GetFilteredAsync(Expression<Func<Tasks, bool>> predicate);
         Task<Tasks?> GetByIdAsync(Guid? id);
 

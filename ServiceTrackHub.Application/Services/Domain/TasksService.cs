@@ -5,7 +5,9 @@ using ServiceTrackHub.Application.ViewModel.Tasks;
 using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Common.Result;
 using ServiceTrackHub.Domain.Entities;
+using ServiceTrackHub.Domain.Filters;
 using ServiceTrackHub.Domain.Interfaces;
+using ServiceTrackHub.Domain.Pagination;
 
 namespace ServiceTrackHub.Application.Services.Domain
 {
@@ -28,11 +30,12 @@ namespace ServiceTrackHub.Application.Services.Domain
             _userRepository = userRepository;
         }
 
-        public async Task<Result> GetAll()
+        public async Task<Result> GetAll(IFilterCriteria<Tasks> filter, PaginationRequest pagination)
         {
-            var tasks = await _tasksRepository.GetAllAsync();
-            var tasksModel = TasksViewModel.ToViewModel(tasks);
-            return Result<List<TasksViewModel>>.Success(tasksModel);
+            var pagedList = await _tasksRepository.GetAllAsync(filter, pagination);
+            var tasksModel = TasksViewModel.ToViewModel(pagedList.EntityList);
+            var pagedViewModel = new PagedList<TasksViewModel>(tasksModel, pagedList.PageNumber, pagedList.PageSize, pagedList.TotalItems);
+            return Result<PagedList<TasksViewModel>>.Success(pagedViewModel);
         }
 
         public async Task<Result> GetTasksByUserId(Guid userId)
@@ -54,7 +57,7 @@ namespace ServiceTrackHub.Application.Services.Domain
                         return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskUserNotFound));
                 }
 
-                var taskTypeExists = await _taskTypeRepository.GetByIdAsync(taskInput.TaskTypeId) is null;
+                var taskTypeExists = await _taskTypeRepository.GetByIdAsync(taskInput.TaskTypeId) is not null;
                 if (!taskTypeExists)
                     return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
 

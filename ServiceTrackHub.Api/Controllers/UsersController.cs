@@ -23,8 +23,7 @@ namespace ServiceTrackHub.Api.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpGet("v1/users")]
-        public async Task <ActionResult> GetUsers([FromQuery] PaginationRequest paginationRequest,
-            [FromQuery] UserFilter filter)
+        public async Task <ActionResult> GetUsers([FromQuery] UserFilter filter,[FromQuery] PaginationRequest paginationRequest)
         {
             var result = await _userService.GetAll(filter, paginationRequest);
             return Ok(result);

@@ -26,7 +26,7 @@ namespace ServiceTrackHub.Application.ViewModel.Tasks
             };
         }
 
-        public static List<TasksViewModel> ToViewModel(List<Domain.Entities.Tasks> task)
+        public static List<TasksViewModel> ToViewModel(IEnumerable<Domain.Entities.Tasks> task)
         {
             return task.Select(ToViewModel).ToList();
         }
