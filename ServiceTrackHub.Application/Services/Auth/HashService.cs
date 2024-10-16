@@ -1,17 +1,16 @@
 ﻿using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Domain.Common.Result;
 using ServiceTrackHub.Domain.Common.Erros;
-using BCrypt.Net;
 
 namespace ServiceTrackHub.Application.Services.Auth;
 
-public class PasswordHasherService : IPasswordHasherService
+public class HashService : IHashService
 {
-    public Result<string> HashPassword(string password)
+    public Result<string> Hash(string input)
     {
         try
         {
-            return Result<string>.Success(BCrypt.Net.BCrypt.HashPassword(password));
+            return Result<string>.Success(BCrypt.Net.BCrypt.HashPassword(input));
         }
         catch (Exception e)
         {
@@ -19,12 +18,12 @@ public class PasswordHasherService : IPasswordHasherService
         }
     }
 
-    public Result VerifyPassword(string password, string storedHash)
+    public Result Verify(string input, string storedHash)
     {
         try
         {
-            var verify = BCrypt.Net.BCrypt.Verify(password, storedHash);
-            return verify ? Result.Success() : Result.Failure(CustomError.AuthenticationError(ErrorMessage.UserInvalidEmailOrPassword));
+            var verify = BCrypt.Net.BCrypt.Verify(input, storedHash);
+            return verify ? Result.Success() : Result.Failure(CustomError.None);
         }
         catch 
         {

@@ -11,14 +11,17 @@ namespace ServiceTrackHub.Domain.Entities
         public IEnumerable<Tasks> Tasks { get;  private set; }
         public string Email { get; private set; }
         public string PasswordHash { get; private set; }
+        public string? RefreshTokenHash { get; private set; }
         public string? SmartPhoneNumber { get; private set; }
         public bool Active { get; private set; }
         public string? JobPosition { get; private set; }
+        
         public Role Role { get; private set; } //EF nav property
         protected User(){} // ORM constructor
 
 
-        public User(string name,  string email, string password, string userRole, string? jobPosition = null, string? smartPhoneNumber = null)
+        public User(string name,  string email, string password, string userRole, 
+            string? jobPosition = null, string? smartPhoneNumber = null)
         {
             Name = name;
             Tasks = [];
@@ -62,9 +65,14 @@ namespace ServiceTrackHub.Domain.Entities
             base.Update();
         }
         
-        public void ChangePassword(string newPassword)
+        public void SetPassword(string newPassword)
         {
             PasswordHash = newPassword;
+        }
+
+        public void SetRefreshToken(string newRefreshToken)
+        {
+            RefreshTokenHash = newRefreshToken;
         }
 
 

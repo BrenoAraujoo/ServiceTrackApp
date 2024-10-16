@@ -15,15 +15,15 @@ namespace ServiceTrackHub.Application.Services.Domain
     {
         private IUserRepository _userRepository;
         private ITasksRepository _tasksRepository;
-        private readonly IPasswordHasherService _passwordHasherService;
+        private readonly IHashService _hashService;
 
 
         public UserService(IUserRepository userRepository, ITasksRepository tasksRepository, 
-            IPasswordHasherService passwordHasherService)
+            IHashService hashService)
         {
             _userRepository = userRepository;
             _tasksRepository = tasksRepository;
-            _passwordHasherService = passwordHasherService;
+            _hashService = hashService;
         }
 
         public async Task<Result> GetAll(UserFilter filter, PaginationRequest userPaginationRequest)
@@ -67,11 +67,11 @@ namespace ServiceTrackHub.Application.Services.Domain
                 var userEntity = new User(userInput.Name, userInput.Email,
                     userInput.Password, userInput.UserRole, userInput.JobPosition, userInput.SmartPhoneNumber);
 
-                var passwordHash = _passwordHasherService.HashPassword(userInput.Password);
+                var passwordHash = _hashService.Hash(userInput.Password);
                 if (!passwordHash.IsSuccess)
                     return Result.Failure(CustomError.Conflict(ErrorMessage.UserErrorPasswordHash));
                 
-                userEntity.ChangePassword(passwordHash.Data);
+                userEntity.SetPassword(passwordHash.Data);
 
                 await _userRepository.CreateAsync(userEntity);
                 var userModel = UserViewModel.ToViewModel(userEntity);
@@ -101,11 +101,11 @@ namespace ServiceTrackHub.Application.Services.Domain
 
                 if (userInput.Password is not null)
                 {
-                    var passwordHash = _passwordHasherService.HashPassword(userInput.Password);
+                    var passwordHash = _hashService.Hash(userInput.Password);
                     if (!passwordHash.IsSuccess)
                         return Result.Failure(CustomError.Conflict(ErrorMessage.UserErrorPasswordHash));
                 
-                    userEntity.ChangePassword(passwordHash.Data);
+                    userEntity.SetPassword(passwordHash.Data);
                 }
 
                 await _userRepository.UpdateAsync(userEntity);
@@ -165,6 +165,20 @@ namespace ServiceTrackHub.Application.Services.Domain
                 return Result.Failure(CustomError.Conflict(ErrorMessage.UserCannotBeRemove));
             await _userRepository.RemoveAsync(user);
             return Result.Success();
+        }
+
+        public async Task<Result> SetUserRefreshTokenHash(User user, string refreshTokenHash)
+        {
+            try
+            {
+                user.SetRefreshToken(refreshTokenHash);
+                await _userRepository.UpdateAsync(user);
+                return Result.Success();
+            }
+            catch (Exception e)
+            {
+                return Result.Failure(CustomError.ServerError(e.Message));
+            } 
         }
     }
 }

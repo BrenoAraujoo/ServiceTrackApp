@@ -33,7 +33,7 @@ namespace ServiceTrackHub.Infra.IoC
             
 
             //Auth
-            services.AddScoped<IPasswordHasherService, PasswordHasherService>();
+            services.AddScoped<IHashService, HashService>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IAuthService, AuthService>();
             return services;

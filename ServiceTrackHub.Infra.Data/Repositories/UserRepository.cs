@@ -38,7 +38,7 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             return await PaginationHelper.ToPagedListAsync(query, paginationRequest.PageNumber, paginationRequest.PageSize);
 
         }
-
+        
         public async Task<User?> GetByIdAsync(Guid id)
         {
             var user = await _context.Users
