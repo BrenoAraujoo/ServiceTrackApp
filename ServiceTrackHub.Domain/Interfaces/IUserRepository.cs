@@ -9,7 +9,7 @@ namespace ServiceTrackHub.Domain.Interfaces
         Task<PagedList<User>> GetAllAsync(IFilterCriteria<User> filter, PaginationRequest paginationRequest);
         Task<User?> GetByIdAsync(Guid id);
         Task<User> CreateAsync(User user);
-        Task<User> UpdateAsync(User user);
+        Task<User> UpdateAsync(User trackedUser);
 
         Task<User?> GetByEmailAsync(string email);
 

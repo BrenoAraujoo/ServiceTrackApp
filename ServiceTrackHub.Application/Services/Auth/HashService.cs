@@ -23,11 +23,11 @@ public class HashService : IHashService
         try
         {
             var verify = BCrypt.Net.BCrypt.Verify(input, storedHash);
-            return verify ? Result.Success() : Result.Failure(CustomError.None);
+            return verify ? Result.Success() : Result.Failure(CustomError.ValidationError("Invalid hash"));
         }
-        catch 
+        catch (Exception ex)
         {
-            return Result.Failure(CustomError.None);
+            return Result.Failure(CustomError.ValidationError(ex.Message));
         }
     }
 }

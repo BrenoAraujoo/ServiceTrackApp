@@ -17,13 +17,13 @@ namespace ServiceTrackHub.Domain.Entities
         public string? JobPosition { get; private set; }
         
         public Role Role { get; private set; } //EF nav property
-        protected User(){} // ORM constructor
+        public User(){} // ORM constructor
 
 
         public User(string name,  string email, string password, string userRole, 
             string? jobPosition = null, string? smartPhoneNumber = null)
         {
-            Name = name;
+            SetName(name);
             Tasks = [];
             Email = new Email(email).Value;
             PasswordHash = new  Password(password).Value;
@@ -57,11 +57,12 @@ namespace ServiceTrackHub.Domain.Entities
             string? jobPosition = null,
             string? userRole = null)
         {
-            Name =  name?? Name;
+            //Name =  name?? Name;
+            if (name != null) UpdateName(name);
             Email = new Email(email?? Email).Value;
             SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber?? SmartPhoneNumber).Value;
             JobPosition = new JobPosition(jobPosition?? JobPosition).Value;
-            SetUserRole(userRole);
+            if(userRole != null) SetUserRole(userRole);
             base.Update();
         }
         
@@ -76,13 +77,32 @@ namespace ServiceTrackHub.Domain.Entities
         }
 
 
-        private void SetUserRole(string? role)
+        private void SetUserRole(string role)
         {
             var existsRole = Enum.TryParse(role, out Role roleEnum);
             if (!existsRole)
                 throw new ArgumentException(ErrorMessage.UserRoleNotFound);
 
             Role = roleEnum;
-        }  
+        }
+
+        public void UpdateEmail(string newEmail)
+        {
+            Email = new Email(newEmail).Value;
+        }
+
+        private void SetName(string name)
+        {
+            if(string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException("O nome nao pode ser vazio ou null");
+            if(name.Length <2)
+                throw new ArgumentException("O nome precisa conter pelo ao menos 2 caracteres");
+            Name = name;
+        }
+
+        public void UpdateName(string name)
+        {
+            SetName(name);
+        }
     }
 }

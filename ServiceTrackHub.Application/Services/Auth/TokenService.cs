@@ -68,14 +68,20 @@ public class TokenService : ITokenService
         }
         return principal;
     }
-
+    
     public string GenerateRefreshToken()
     {
-        var randomNumber = new byte[32];
+        int length = 30;
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var random = new Random();
+        var stringBuilder = new StringBuilder(length);
 
-        using var rng = RandomNumberGenerator.Create();
-        rng.GetBytes(randomNumber);
-        return Convert.ToBase64String(randomNumber);
+        for (int i = 0; i < length; i++)
+        {
+            char c = chars[random.Next(chars.Length)];
+            stringBuilder.Append(c);
+        }
+        return stringBuilder.ToString();
     }
 
     private static List<(string, string)> _refreshTokens = new();

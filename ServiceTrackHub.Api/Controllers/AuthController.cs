@@ -12,12 +12,10 @@ namespace ServiceTrackHub.Api.Controllers;
 public class AuthController : ApiControllerBase
 {
     private readonly IAuthService _authService;
-    private readonly ITokenService _tokenService;
 
-    public AuthController(IAuthService authService, ITokenService tokenService)
+    public AuthController(IAuthService authService)
     {
         _authService = authService;
-        _tokenService = tokenService;
     }
     [HttpPost("v1/login")]
     public async Task<IActionResult> Authenticate([FromBody] LoginModel loginModel)

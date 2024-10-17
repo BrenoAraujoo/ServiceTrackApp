@@ -5,7 +5,9 @@ using ServiceTrackHub.Domain.Pagination;
 using ServiceTrackHub.Infra.Data.Context;
 using ServiceTrackHub.Infra.Data.Helpers;
 using System.Linq.Dynamic.Core;
+using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Filters;
+using ServiceTrackHub.Domain.ValueObjects;
 
 namespace ServiceTrackHub.Infra.Data.Repositories
 {
@@ -68,6 +70,5 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             await _context.SaveChangesAsync();
             return user;
         }
-
     }
 }

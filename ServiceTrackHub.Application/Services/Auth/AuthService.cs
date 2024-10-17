@@ -32,7 +32,8 @@ public class AuthService : IAuthService
         
         var token = _tokenService.GenerateToken(user);
         var refreshTokenHash = _hashService.Hash(token.RefreshToken);
-        
+        Console.WriteLine($"Refresh token: {token.RefreshToken}");
+        Console.WriteLine($"Refresh token hash: {refreshTokenHash}");
         if(!refreshTokenHash.IsSuccess)
             return Result.Failure(CustomError.AuthenticationError(ErrorMessage.InvalidRefreshToken));
         
@@ -56,11 +57,15 @@ public class AuthService : IAuthService
             return Result.Failure(CustomError.ValidationError("Refresh token is invalid"));
         
         var newToken = _tokenService.GenerateToken(user);
+        Console.WriteLine($"new token AccessToken {newToken.AccessToken}");
+        Console.WriteLine($"new token RefreshToken {newToken.RefreshToken}");
         var newRefreshTokenHash = _hashService.Hash(newToken.RefreshToken);
+        Console.WriteLine($"newRefreshTokenHash.Data {newRefreshTokenHash.Data}");
         if(!newRefreshTokenHash.IsSuccess)
             return Result.Failure(CustomError.ValidationError("Refresh token is invalid - hash"));
         user.SetRefreshToken(newRefreshTokenHash.Data);
         await _userRepository.UpdateAsync(user);
+
         return Result<Token>.Success(newToken);
     }
 }
