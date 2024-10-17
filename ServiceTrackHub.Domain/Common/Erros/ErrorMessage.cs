@@ -61,7 +61,7 @@
         #region Auth messages
 
         public const string InvalidEmailOrPassword = "Usuário ou senha inválidos";
-        public const string InvalidRefreshToken = "Não foi possivel gerar um novo Refresh Token";
+        public const string InvalidRefreshToken = "Refresh Token está inválido ou vencido";
         
         #endregion
     }

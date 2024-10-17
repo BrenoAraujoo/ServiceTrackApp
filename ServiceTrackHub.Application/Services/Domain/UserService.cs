@@ -171,7 +171,7 @@ namespace ServiceTrackHub.Application.Services.Domain
         {
             try
             {
-                user.SetRefreshToken(refreshTokenHash);
+                user.UpdateRefreshToken(refreshTokenHash);
                 await _userRepository.UpdateAsync(user);
                 return Result.Success();
             }

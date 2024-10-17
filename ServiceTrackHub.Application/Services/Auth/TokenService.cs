@@ -32,6 +32,8 @@ public class TokenService : ITokenService
         var refreshTokenExpirationDays = int.Parse(_configuration["jwt:RefreshTokenExpirationDays"]
                         ?? throw new ArgumentNullException());
         
+        var refreshTokenExpirationTime = DateTime.UtcNow.AddHours(-3).AddDays(refreshTokenExpirationDays);
+        var accessTokenExpirationTime = DateTime.UtcNow.AddHours(-3).AddMinutes(accessTokenExpirationMinutes);
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -43,7 +45,7 @@ public class TokenService : ITokenService
         {
             Subject = new ClaimsIdentity(claims, "Bearer"),
             NotBefore = DateTime.UtcNow.AddHours(-3),
-            Expires = DateTime.UtcNow.AddHours(-3).AddMinutes(accessTokenExpirationMinutes),
+            Expires = accessTokenExpirationTime,
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
         };
@@ -51,7 +53,7 @@ public class TokenService : ITokenService
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var refreshToken = GenerateRefreshToken();
 
-        return new Token(tokenHandler.WriteToken(token), refreshToken, tokenDescriptor.Expires);
+        return new Token(tokenHandler.WriteToken(token), refreshToken, accessTokenExpirationTime, refreshTokenExpirationTime);
     }
 
     public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)

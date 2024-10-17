@@ -64,6 +64,21 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateRefreshTokenAsync(User user, string refreshToken, DateTime? refreshTokenExpiresAt)
+        {
+
+            var entry = _context.Entry(user);
+            
+            if (user.RefreshTokenHash != refreshToken)
+            {
+                entry.Property(x => x.RefreshTokenHash).IsModified = true;
+                user.UpdateRefreshToken(refreshToken);
+                user.UpdateRefreshTokenExpiresAt(refreshTokenExpiresAt);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<User> UpdateAsync(User user)
         {
             _context.Users.Update(user);

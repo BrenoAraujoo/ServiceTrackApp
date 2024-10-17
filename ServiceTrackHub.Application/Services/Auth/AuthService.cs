@@ -4,6 +4,7 @@ using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Application.ViewModel.Auth;
 using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Common.Result;
+using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Interfaces;
 
 namespace ServiceTrackHub.Application.Services.Auth;
@@ -36,7 +37,7 @@ public class AuthService : IAuthService
             return Result.Failure(CustomError.AuthenticationError(ErrorMessage.InvalidRefreshToken));
         
         //Mudar result para result <string> no uso do hash
-        user.SetRefreshToken(refreshTokenHash.Data);
+        user.UpdateRefreshToken(refreshTokenHash.Data);
         await _userRepository.UpdateAsync(user);
         
         return Result<Token>.Success(token);
@@ -51,19 +52,34 @@ public class AuthService : IAuthService
         
         var user = await _userRepository.GetByIdAsync(Guid.Parse(userId));
         if (user is null) return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
-
-        var savedRefreshToken = user.RefreshTokenHash;
-        if (savedRefreshToken != null && !_hashService.Verify(tokenRequest.RefreshToken, savedRefreshToken).IsSuccess)
-            return Result.Failure(CustomError.AuthenticationError(ErrorMessage.InvalidRefreshToken));
+        
+        var refreshTokenValidationResult = ValidateRefreshToken(user, tokenRequest.RefreshToken);
+        if (!refreshTokenValidationResult.IsSuccess)
+            return refreshTokenValidationResult;
         
         var newToken = _tokenService.GenerateToken(user);
         var newRefreshTokenHash = _hashService.Hash(newToken.RefreshToken);
         if(!newRefreshTokenHash.IsSuccess)
             return Result.Failure(CustomError.AuthenticationError(ErrorMessage.InvalidRefreshToken));
         
-        user.SetRefreshToken(newRefreshTokenHash.Data);
-        await _userRepository.UpdateAsync(user);
+        
+        await _userRepository.UpdateRefreshTokenAsync(user, newRefreshTokenHash.Data, newToken.RefreshTokenExpiresAt);
 
         return Result<Token>.Success(newToken);
+    }
+
+    public Result ValidateRefreshToken(User user, string providedeRefreshToken)
+    {
+        if (user.RefreshTokenExpiresAt < DateTime.UtcNow)
+            return Result.Failure(CustomError.AuthenticationError(ErrorMessage.InvalidRefreshToken));
+
+        if (string.IsNullOrEmpty(user.RefreshTokenHash) ||
+            !_hashService.Verify(providedeRefreshToken, user.RefreshTokenHash).IsSuccess)
+        {
+            return Result.Failure(CustomError.AuthenticationError(ErrorMessage.InvalidRefreshToken));
+        }
+
+        return Result.Success();
+
     }
 }

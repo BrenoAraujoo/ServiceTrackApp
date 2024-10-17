@@ -12,6 +12,8 @@ namespace ServiceTrackHub.Domain.Entities
         public string Email { get; private set; }
         public string PasswordHash { get; private set; }
         public string? RefreshTokenHash { get; private set; }
+
+        public DateTime? RefreshTokenExpiresAt { get; set; }
         public string? SmartPhoneNumber { get; private set; }
         public bool Active { get; private set; }
         public string? JobPosition { get; private set; }
@@ -68,12 +70,17 @@ namespace ServiceTrackHub.Domain.Entities
         
         public void SetPassword(string newPassword)
         {
-            PasswordHash = newPassword;
+            PasswordHash = new Password(newPassword).Value;
         }
 
-        public void SetRefreshToken(string newRefreshToken)
+        private void SetRefreshToken(string newRefreshToken)
         {
             RefreshTokenHash = newRefreshToken;
+        }
+
+        public void UpdateRefreshToken(string newRefreshToken)
+        {
+            SetRefreshToken(newRefreshToken);
         }
 
 
@@ -103,6 +110,17 @@ namespace ServiceTrackHub.Domain.Entities
         public void UpdateName(string name)
         {
             SetName(name);
+        }
+
+        private void SetRefreshTokenExpiresAt(DateTime? newRefreshTokenExpiresAt)
+        {
+            RefreshTokenExpiresAt = newRefreshTokenExpiresAt;
+        }
+
+        public void UpdateRefreshTokenExpiresAt(DateTime? newRefreshTokenExpiresAt)
+        {
+            //TODO validar data/hora
+            SetRefreshTokenExpiresAt(newRefreshTokenExpiresAt);
         }
     }
 }
