@@ -12,8 +12,6 @@
         public const string UserCannotBeRemove = "O usuário não pode ser removido," +
                                                  "pois ele possui tarefas associadas.";
 
-        public const string UserInvalidEmailOrPassword = "Usuário ou senha inválidos";
-
         public const string UserIsAlreadyActivated = "O usuário já está ativo";
         public const string UserIsAlreadyInactivated = "O usuário já está inativo";
 
@@ -54,10 +52,17 @@
                                                      "Verifique o formato e o tamanho, que deve possui 11 digitos.";
         public const string InvalidEmail = "O campo obrigatório 'email' não foi enviado ou está em um formato inválido.";
         
-        public const string InvalidPassword = "O campo obrigatório 'password' não foi enviado ou está em um formato inválido.";
+        public const string InvalidPassword = "O campo obrigatório 'senha' não foi enviado ou está em um formato inválido.";
 
         public const string InvalidJobPosition = "O cargo deve ter no máximo 40 caracteres.";
 
+        #endregion
+
+        #region Auth messages
+
+        public const string InvalidEmailOrPassword = "Usuário ou senha inválidos";
+        public const string InvalidRefreshToken = "Refresh Token está inválido ou vencido";
+        
         #endregion
     }
 }

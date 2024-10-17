@@ -5,7 +5,9 @@ using ServiceTrackHub.Domain.Pagination;
 using ServiceTrackHub.Infra.Data.Context;
 using ServiceTrackHub.Infra.Data.Helpers;
 using System.Linq.Dynamic.Core;
+using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Filters;
+using ServiceTrackHub.Domain.ValueObjects;
 
 namespace ServiceTrackHub.Infra.Data.Repositories
 {
@@ -38,7 +40,7 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             return await PaginationHelper.ToPagedListAsync(query, paginationRequest.PageNumber, paginationRequest.PageSize);
 
         }
-
+        
         public async Task<User?> GetByIdAsync(Guid id)
         {
             var user = await _context.Users
@@ -62,12 +64,26 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateRefreshTokenAsync(User user, string refreshToken, DateTime? refreshTokenExpiresAt)
+        {
+
+            var entry = _context.Entry(user);
+            
+            if (user.RefreshTokenHash != refreshToken)
+            {
+                entry.Property(x => x.RefreshTokenHash).IsModified = true;
+                user.UpdateRefreshToken(refreshToken);
+                user.UpdateRefreshTokenExpiresAt(refreshTokenExpiresAt);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<User> UpdateAsync(User user)
         {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
             return user;
         }
-
     }
 }
