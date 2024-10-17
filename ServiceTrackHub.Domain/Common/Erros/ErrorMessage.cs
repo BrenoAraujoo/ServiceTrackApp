@@ -52,7 +52,7 @@
                                                      "Verifique o formato e o tamanho, que deve possui 11 digitos.";
         public const string InvalidEmail = "O campo obrigatório 'email' não foi enviado ou está em um formato inválido.";
         
-        public const string InvalidPassword = "O campo obrigatório 'password' não foi enviado ou está em um formato inválido.";
+        public const string InvalidPassword = "O campo obrigatório 'senha' não foi enviado ou está em um formato inválido.";
 
         public const string InvalidJobPosition = "O cargo deve ter no máximo 40 caracteres.";
 

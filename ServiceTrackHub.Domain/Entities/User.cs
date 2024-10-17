@@ -5,30 +5,28 @@ using ServiceTrackHub.Domain.ValueObjects;
 
 namespace ServiceTrackHub.Domain.Entities
 {
-    public sealed class User : BaseEntity, IEntityActivable    
+    public sealed class User : BaseEntity, IEntityActivable
     {
-        public string Name { get;  private set; }
-        public IEnumerable<Tasks> Tasks { get;  private set; }
+        public string Name { get; private set; }
+        public IReadOnlyCollection<Tasks> Tasks { get; private set; } = new List<Tasks>();
         public string Email { get; private set; }
         public string PasswordHash { get; private set; }
         public string? RefreshTokenHash { get; private set; }
-
-        public DateTime? RefreshTokenExpiresAt { get; set; }
+        public DateTime? RefreshTokenExpiresAt { get; private set; }
         public string? SmartPhoneNumber { get; private set; }
         public bool Active { get; private set; }
         public string? JobPosition { get; private set; }
-        
-        public Role Role { get; private set; } //EF nav property
-        public User(){} // ORM constructor
+        public Role Role { get; private set; } // EF navigation property
 
+        // ORM constructor
+        public User() { }
 
-        public User(string name,  string email, string password, string userRole, 
+        public User(string name, string email, string password, string userRole, 
             string? jobPosition = null, string? smartPhoneNumber = null)
         {
             SetName(name);
-            Tasks = [];
             Email = new Email(email).Value;
-            PasswordHash = new  Password(password).Value;
+            PasswordHash = new Password(password).Value;
             SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber).Value;
             SetUserRole(userRole);
             JobPosition = new JobPosition(jobPosition).Value;
@@ -47,10 +45,9 @@ namespace ServiceTrackHub.Domain.Entities
         {
             if (!Active)
                 throw new InvalidOperationException(ErrorMessage.UserIsAlreadyInactivated);
-            base.Update();
             Active = false;
+            base.Update();
         }
-
 
         public void Update(
             string? name = null,
@@ -59,35 +56,34 @@ namespace ServiceTrackHub.Domain.Entities
             string? jobPosition = null,
             string? userRole = null)
         {
-            //Name =  name?? Name;
             if (name != null) UpdateName(name);
-            Email = new Email(email?? Email).Value;
-            SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber?? SmartPhoneNumber).Value;
-            JobPosition = new JobPosition(jobPosition?? JobPosition).Value;
-            if(userRole != null) SetUserRole(userRole);
+            if (email != null) UpdateEmail(email);
+            if (smartPhoneNumber != null) UpdateSmartPhoneNumber(smartPhoneNumber);
+            if (jobPosition != null) UpdateJobPosition(jobPosition);
+            if (userRole != null) SetUserRole(userRole);
             base.Update();
         }
-        
+
         public void SetPassword(string newPassword)
         {
-            PasswordHash = new Password(newPassword).Value;
-        }
-
-        private void SetRefreshToken(string newRefreshToken)
-        {
-            RefreshTokenHash = newRefreshToken;
+            PasswordHash = newPassword;
         }
 
         public void UpdateRefreshToken(string newRefreshToken)
         {
-            SetRefreshToken(newRefreshToken);
+            RefreshTokenHash = newRefreshToken;
         }
 
+        public void UpdateRefreshTokenExpiresAt(DateTime? newRefreshTokenExpiresAt)
+        {
+            if(newRefreshTokenExpiresAt == null || newRefreshTokenExpiresAt < DateTime.Now)
+                throw new InvalidOperationException("A data de expiração do Refresh Token está inválida");
+            RefreshTokenExpiresAt = newRefreshTokenExpiresAt;
+        }
 
         private void SetUserRole(string role)
         {
-            var existsRole = Enum.TryParse(role, out Role roleEnum);
-            if (!existsRole)
+            if (!Enum.TryParse<Role>(role, out var roleEnum))
                 throw new ArgumentException(ErrorMessage.UserRoleNotFound);
 
             Role = roleEnum;
@@ -100,10 +96,10 @@ namespace ServiceTrackHub.Domain.Entities
 
         private void SetName(string name)
         {
-            if(string.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException("O nome nao pode ser vazio ou null");
-            if(name.Length <2)
-                throw new ArgumentException("O nome precisa conter pelo ao menos 2 caracteres");
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException(nameof(name), "O nome não pode ser vazio ou null");
+            if (name.Length < 2)
+                throw new ArgumentException("O nome precisa conter pelo menos 2 caracteres", nameof(name));
             Name = name;
         }
 
@@ -112,15 +108,14 @@ namespace ServiceTrackHub.Domain.Entities
             SetName(name);
         }
 
-        private void SetRefreshTokenExpiresAt(DateTime? newRefreshTokenExpiresAt)
+        private void UpdateSmartPhoneNumber(string? smartPhoneNumber)
         {
-            RefreshTokenExpiresAt = newRefreshTokenExpiresAt;
+            SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber).Value;
         }
 
-        public void UpdateRefreshTokenExpiresAt(DateTime? newRefreshTokenExpiresAt)
+        private void UpdateJobPosition(string? jobPosition)
         {
-            //TODO validar data/hora
-            SetRefreshTokenExpiresAt(newRefreshTokenExpiresAt);
+            JobPosition = new JobPosition(jobPosition).Value;
         }
     }
 }
