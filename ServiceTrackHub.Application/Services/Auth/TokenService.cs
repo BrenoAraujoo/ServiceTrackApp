@@ -22,8 +22,16 @@ public class TokenService : ITokenService
     public Token GenerateToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_configuration["jwt:Key"]);
-        var expiresMinutes = double.Parse(_configuration["jwt:ExpiresMinutes"]);
+
+        var key = Encoding.ASCII.GetBytes(_configuration["jwt:Key"]
+                        ?? throw new ArgumentNullException());
+
+        var accessTokenExpirationMinutes = double.Parse(_configuration["jwt:AccessTokenExpirationMinutes"]
+                        ?? throw new ArgumentNullException());
+
+        var refreshTokenExpirationDays = int.Parse(_configuration["jwt:RefreshTokenExpirationDays"]
+                        ?? throw new ArgumentNullException());
+        
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -35,7 +43,7 @@ public class TokenService : ITokenService
         {
             Subject = new ClaimsIdentity(claims, "Bearer"),
             NotBefore = DateTime.UtcNow.AddHours(-3),
-            Expires = DateTime.UtcNow.AddHours(-3).AddMinutes(expiresMinutes),
+            Expires = DateTime.UtcNow.AddHours(-3).AddMinutes(accessTokenExpirationMinutes),
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
         };
@@ -48,7 +56,8 @@ public class TokenService : ITokenService
 
     public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
     {
-        var key = Encoding.ASCII.GetBytes(_configuration["jwt:Key"]);
+        var key = Encoding.ASCII.GetBytes(_configuration["jwt:Key"] 
+        ?? throw new ArgumentNullException());
         var tokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = false,
@@ -71,34 +80,16 @@ public class TokenService : ITokenService
     
     public string GenerateRefreshToken()
     {
-        int length = 30;
+        const int length = 30;
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         var random = new Random();
         var stringBuilder = new StringBuilder(length);
 
-        for (int i = 0; i < length; i++)
+        for (var i = 0; i < length; i++)
         {
-            char c = chars[random.Next(chars.Length)];
+            var c = chars[random.Next(chars.Length)];
             stringBuilder.Append(c);
         }
         return stringBuilder.ToString();
-    }
-
-    private static List<(string, string)> _refreshTokens = new();
-
-    public static void SaveRefreshToken(string username, string refreshToken)
-    {
-        _refreshTokens.Add((username, refreshToken));
-    }
-
-    public static string GetSavedRefreshToken(string username)
-    {
-        return  _refreshTokens.FirstOrDefault(x => x.Item1 == username).Item2;
-    }
-
-    public static void RemoveRefreshToken(string username, string refreshToken)
-    {
-        var item  = _refreshTokens.FirstOrDefault(x => x.Item1 == username && x.Item2 == refreshToken);
-        _refreshTokens.Remove(item);
     }
 }

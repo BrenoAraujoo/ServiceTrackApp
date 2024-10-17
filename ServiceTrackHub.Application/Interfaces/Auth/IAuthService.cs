@@ -6,6 +6,6 @@ namespace ServiceTrackHub.Application.Interfaces.Auth;
 public interface IAuthService
 {
     Task<Result> AuthenticateAsync(LoginModel loginModel);
-    Task<Result> Refresh(string token, string refreshToken);
+    Task<Result> Refresh(TokenRequest tokenRequest);
     
 }

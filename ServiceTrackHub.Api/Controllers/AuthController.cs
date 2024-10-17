@@ -25,9 +25,9 @@ public class AuthController : ApiControllerBase
     }
 
     [HttpPost("v1/refresh")]
-    public async Task<IActionResult> Refresh(string token, string refreshToken)
+    public async Task<IActionResult> Refresh([FromBody] TokenRequest tokenRequest)
     {
-        var result = await _authService.Refresh(token, refreshToken);
+        var result = await _authService.Refresh(tokenRequest);
         return !result.IsSuccess ?  ApiControllerHandleResult(result) : Ok(result);
         
     }

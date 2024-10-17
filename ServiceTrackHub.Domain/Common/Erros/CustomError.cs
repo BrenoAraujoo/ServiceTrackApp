@@ -7,11 +7,11 @@
 
         public static readonly CustomError None = new(0, string.Empty);
 
-        private static readonly int RecordNotFoundCode = 1;
-        private static readonly int ValidationErrorCode = 2;
-        private static readonly int ConflictErrorCode = 3;
-        private static readonly int AuthenticationErrorCode = 4;
-        private static readonly int ServerErrorCode = 5;
+        private const int RecordNotFoundCode = 1;
+        private const int ValidationErrorCode = 2;
+        private const int ConflictErrorCode = 3;
+        private const int AuthenticationErrorCode = 4;
+        private const int ServerErrorCode = 5;
         
         public static CustomError RecordNotFound(string message) => new (RecordNotFoundCode, message);
         public static CustomError ValidationError(string message) 

@@ -32,8 +32,6 @@ public class AuthService : IAuthService
         
         var token = _tokenService.GenerateToken(user);
         var refreshTokenHash = _hashService.Hash(token.RefreshToken);
-        Console.WriteLine($"Refresh token: {token.RefreshToken}");
-        Console.WriteLine($"Refresh token hash: {refreshTokenHash}");
         if(!refreshTokenHash.IsSuccess)
             return Result.Failure(CustomError.AuthenticationError(ErrorMessage.InvalidRefreshToken));
         
@@ -44,25 +42,25 @@ public class AuthService : IAuthService
         return Result<Token>.Success(token);
     }
 
-    public async Task<Result> Refresh(string token, string refreshToken)
+    public async Task<Result> Refresh(TokenRequest tokenRequest)
     {
-        var principal = _tokenService.GetPrincipalFromExpiredToken(token);
+        var principal = _tokenService.GetPrincipalFromExpiredToken(tokenRequest.AccessToken);
         var userId = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        
+        if (userId is null) return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
+        
         var user = await _userRepository.GetByIdAsync(Guid.Parse(userId));
-        if (user is null)
-            return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
+        if (user is null) return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
 
         var savedRefreshToken = user.RefreshTokenHash;
-        if (!_hashService.Verify(refreshToken, savedRefreshToken).IsSuccess)
-            return Result.Failure(CustomError.ValidationError("Refresh token is invalid"));
+        if (savedRefreshToken != null && !_hashService.Verify(tokenRequest.RefreshToken, savedRefreshToken).IsSuccess)
+            return Result.Failure(CustomError.AuthenticationError(ErrorMessage.InvalidRefreshToken));
         
         var newToken = _tokenService.GenerateToken(user);
-        Console.WriteLine($"new token AccessToken {newToken.AccessToken}");
-        Console.WriteLine($"new token RefreshToken {newToken.RefreshToken}");
         var newRefreshTokenHash = _hashService.Hash(newToken.RefreshToken);
-        Console.WriteLine($"newRefreshTokenHash.Data {newRefreshTokenHash.Data}");
         if(!newRefreshTokenHash.IsSuccess)
-            return Result.Failure(CustomError.ValidationError("Refresh token is invalid - hash"));
+            return Result.Failure(CustomError.AuthenticationError(ErrorMessage.InvalidRefreshToken));
+        
         user.SetRefreshToken(newRefreshTokenHash.Data);
         await _userRepository.UpdateAsync(user);
 
