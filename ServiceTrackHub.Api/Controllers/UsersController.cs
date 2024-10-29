@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceTrackHub.Application.InputViewModel.Auth;
 using ServiceTrackHub.Application.InputViewModel.User;
 using ServiceTrackHub.Application.Interfaces.Auth;
@@ -12,16 +13,15 @@ namespace ServiceTrackHub.Api.Controllers
     public class UsersController : ApiControllerBase
     {
         private readonly IUserService _userService;
-        private readonly ITokenService _tokenService;
         private readonly IAuthService _authService;
-        public UsersController(IUserService userService, ITokenService tokenService, IAuthService authService)
+        public UsersController(IUserService userService, IAuthService authService)
         {
             _userService = userService;
-            _tokenService = tokenService;
             _authService = authService;
         }
 
         //[Authorize(Roles = "Admin")]
+        //[Authorize]
         [HttpGet("v1/users")]
         public async Task <ActionResult> GetUsers([FromQuery] UserFilter filter,[FromQuery] PaginationRequest paginationRequest)
         {
@@ -29,6 +29,7 @@ namespace ServiceTrackHub.Api.Controllers
             return Ok(result);
         }
 
+        
         [HttpGet("v1/users/{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
@@ -38,6 +39,7 @@ namespace ServiceTrackHub.Api.Controllers
                 Ok(result):
                 ApiControllerHandleResult(result);
         }
+        
         [HttpPost("v1/users")]
         public async Task<IActionResult> Create([FromBody] CreateUserModel userInputModel)
         {

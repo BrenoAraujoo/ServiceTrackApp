@@ -69,7 +69,7 @@ namespace ServiceTrackHub.Domain.Entities
             PasswordHash = newPassword;
         }
 
-        public void UpdateRefreshToken(string newRefreshToken)
+        public void UpdateRefreshToken(string? newRefreshToken)
         {
             RefreshTokenHash = newRefreshToken;
         }

@@ -16,5 +16,6 @@ namespace ServiceTrackHub.Domain.Interfaces
         Task RemoveAsync (User user);
         
         Task UpdateRefreshTokenAsync(User user, string refreshToken, DateTime? refreshTokenExpiresAt);
+        Task RemoveUserRefreshToken(User user);
     }
 }
