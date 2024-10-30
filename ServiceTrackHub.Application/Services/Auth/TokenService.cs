@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Application.ViewModel.Auth;
+using ServiceTrackHub.Domain.Common.Utils;
 using ServiceTrackHub.Domain.Entities;
 
 namespace ServiceTrackHub.Application.Services.Auth;
@@ -32,8 +33,8 @@ public class TokenService : ITokenService
         var refreshTokenExpirationDays = int.Parse(_configuration["jwt:RefreshTokenExpirationDays"]
                         ?? throw new ArgumentNullException());
         
-        var refreshTokenExpirationTime = DateTime.UtcNow.AddHours(-3).AddDays(refreshTokenExpirationDays);
-        var accessTokenExpirationTime = DateTime.UtcNow.AddHours(-3).AddMinutes(accessTokenExpirationMinutes);
+        var refreshTokenExpirationTime = DateTime.UtcNow.AddDays(refreshTokenExpirationDays);
+        var accessTokenExpirationTime = DateTime.UtcNow.AddMinutes(accessTokenExpirationMinutes);
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -44,7 +45,7 @@ public class TokenService : ITokenService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims, "Bearer"),
-            NotBefore = DateTime.UtcNow.AddHours(-3),
+            NotBefore = DateTime.UtcNow,
             Expires = accessTokenExpirationTime,
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
@@ -62,9 +63,9 @@ public class TokenService : ITokenService
         ?? throw new ArgumentNullException());
         var tokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateLifetime = false,
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key)
         };
@@ -82,16 +83,7 @@ public class TokenService : ITokenService
     
     public string GenerateRefreshToken()
     {
-        const int length = 30;
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var random = new Random();
-        var stringBuilder = new StringBuilder(length);
+        return Utils.GenerateRandomString(20);
 
-        for (var i = 0; i < length; i++)
-        {
-            var c = chars[random.Next(chars.Length)];
-            stringBuilder.Append(c);
-        }
-        return stringBuilder.ToString();
     }
 }

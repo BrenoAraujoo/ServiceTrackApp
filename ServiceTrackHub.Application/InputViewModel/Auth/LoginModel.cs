@@ -3,14 +3,8 @@ using ServiceTrackHub.Domain.ValueObjects;
 
 namespace ServiceTrackHub.Application.InputViewModel.Auth;
 
-public record LoginModel
+public record LoginModel(string Email, string Password)
 {
-    public string Email { get; private set; }
-    public string Password { get; private set; }
-
-    public LoginModel(string email, string password)
-    {
-        Email = new Email(email).Value;
-        Password = new Password(password).Value;
-    }
+    public string Email { get; private set; } = Email;
+    public string Password { get; private set; } = Password;
 }

@@ -24,6 +24,13 @@ public class AuthController : ApiControllerBase
         return !result.IsSuccess ? ApiControllerHandleResult(result) : Ok(result);
     }
 
+    [HttpPost("v1/logout")]
+    public async Task<IActionResult> Logout([FromBody] TokenRequest tokenRequest)
+    {
+        var result = await _authService.Logout(tokenRequest);
+        return !result.IsSuccess ? ApiControllerHandleResult(result) : NoContent();
+    }
+
     [HttpPost("v1/refresh")]
     public async Task<IActionResult> Refresh([FromBody] TokenRequest tokenRequest)
     {

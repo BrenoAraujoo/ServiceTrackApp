@@ -79,6 +79,17 @@ namespace ServiceTrackHub.Infra.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task RemoveUserRefreshToken(User user)
+        {
+            var entry = _context.Entry(user);
+            if (user.RefreshTokenHash != null)
+            {
+                entry.Property(x => x.RefreshTokenHash).IsModified = true;
+                user.UpdateRefreshToken(null);
+            }
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<User> UpdateAsync(User user)
         {
             _context.Users.Update(user);

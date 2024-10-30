@@ -9,6 +9,7 @@ public interface IAuthService
     Task<Result> AuthenticateAsync(LoginModel loginModel);
     Task<Result> Refresh(TokenRequest tokenRequest);
     
-    Result ValidateRefreshToken(User user, string refreshToken);
+    Task<Result> Logout(TokenRequest tokenRequest);
+    bool IsValidRefreshToken(User user, string providedRefreshToken);
     
 }
