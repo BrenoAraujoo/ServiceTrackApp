@@ -13,10 +13,9 @@ namespace ServiceTrackHub.Application.Services.Domain
 {
     public class UserService : IUserService
     {
-        private IUserRepository _userRepository;
-        private ITasksRepository _tasksRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly ITasksRepository _tasksRepository;
         private readonly IHashService _hashService;
-
 
         public UserService(IUserRepository userRepository, ITasksRepository tasksRepository, 
             IHashService hashService)
