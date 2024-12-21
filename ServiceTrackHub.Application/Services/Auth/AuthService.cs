@@ -46,6 +46,7 @@ public class AuthService : IAuthService
 
     public async Task<Result> Refresh(TokenRequest tokenRequest)
     {
+        
         var principal = _tokenService.GetPrincipalFromExpiredToken(tokenRequest.AccessToken);
         var userId = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         
