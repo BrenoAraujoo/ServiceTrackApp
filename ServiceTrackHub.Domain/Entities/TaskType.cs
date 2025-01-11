@@ -8,7 +8,6 @@ namespace ServiceTrackHub.Domain.Entities
 
         private const int MaxTaskTypeNameLenght = 50;
         private const int MinTaskTypeNameLenght = 3;
-        private const int MinDescriptionLength = 10;
         private const int MaxDescriptionLength = 100;
         public Guid CreatorId { get; private set; }
 
@@ -42,40 +41,33 @@ namespace ServiceTrackHub.Domain.Entities
             base.Update();
         }
 
-        public void Update(string? name, string? description)
+        public void Update(string? name, string? description, bool active)
         {
             SetName(name);
             SetDescription(description);
+            Active = active;
             base.Update();
         }
 
         private void SetName(string? name)
         {
-            if (!string.IsNullOrEmpty(name))
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException(ErrorMessage.TaskTypeInvalidName);
+            switch (name.Length)
             {
-                switch (name.Length)
-                {
-                    case > MaxTaskTypeNameLenght:
-                        throw new ArgumentException(ErrorMessage.TaskTypeMaxName);
-                    case < MinTaskTypeNameLenght:
-                        throw new ArgumentException(ErrorMessage.TaskTypeMinName);
-                }
+                case > MaxTaskTypeNameLenght:
+                    throw new ArgumentException(ErrorMessage.TaskTypeMaxName);
+                case < MinTaskTypeNameLenght:
+                    throw new ArgumentException(ErrorMessage.TaskTypeMinName);
             }
+
             Name = name ?? Name;
         }
         
         private void SetDescription(string? description)
         {
-            if (!string.IsNullOrWhiteSpace(description))
-            {
-                switch (description.Length)
-                {
-                    case > MaxDescriptionLength:
-                        throw new ArgumentException(ErrorMessage.TaskMaxDescription);
-                    case < MinDescriptionLength:
-                        throw new ArgumentException(ErrorMessage.TaskMinDescription);
-                }
-            }
+            if (!string.IsNullOrWhiteSpace(description) && description.Length > MaxDescriptionLength)
+                throw new ArgumentException(ErrorMessage.TaskMaxDescription);
             Description = description ?? Description;
         }
     }

@@ -36,7 +36,7 @@
 
         #region Task Type messages
         public const string TaskTypeNotFound = "Tipo de tarefa não encontrado";
-        public const string TaskTypeInvalid= "Tipo de tarefa inválido";
+        public const string TaskTypeInvalidName= "O nome do tipo da tarefa não pode ser vazio";
         public const string TaskTypeCantBeRemoved= "Esse tipo de tarefa não pode ser removida pois está associada " +
                                                    "a uma ou mais tarefas.";
         public const string TaskTypeMaxName = "O nome do tipo de tarefa deve ter no máximo 100 caracteres.";

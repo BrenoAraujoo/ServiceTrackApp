@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ServiceTrackHub.Application.Extensions;
 using ServiceTrackHub.Application.InputViewModel.TaskType;
+using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Application.Interfaces.Domain;
 using ServiceTrackHub.Domain.Filters;
 using ServiceTrackHub.Domain.Pagination;
@@ -10,9 +13,11 @@ namespace ServiceTrackHub.Api.Controllers
     public class TaskTypeController : ApiControllerBase
     {
         private readonly ITaskTypeService _taskTypeService;
-        public TaskTypeController(ITaskTypeService taskTypeService)
+        private readonly ITokenService _tokenService;
+        public TaskTypeController(ITaskTypeService taskTypeService, ITokenService tokenService)
         {
             _taskTypeService = taskTypeService;
+            _tokenService = tokenService;
         }
 
         [HttpGet("v1/tasktypes")]
@@ -34,7 +39,11 @@ namespace ServiceTrackHub.Api.Controllers
         [HttpPost("v1/tasktypes")]
         public async Task<IActionResult> Create([FromBody] CreateTaskTypeModel model)
         {
-            var result = await _taskTypeService.Create(model);
+            var token = HttpContext.Request.Headers["Bearer"].FirstOrDefault();
+            var principal = _tokenService.GetPrincipalFromExpiredToken(token);
+            var userId = principal.GetUserId();
+            
+            var result = await _taskTypeService.Create(model, userId);
             return result.IsSuccess ?
             CreatedAtAction(nameof(Create), result) :
             ApiControllerHandleResult(result);
