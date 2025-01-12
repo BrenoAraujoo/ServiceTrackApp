@@ -154,7 +154,7 @@ namespace ServiceTrackHub.Application.Services.Domain
             }
         }
 
-        public async Task<Result> Remove(Guid id)
+        public async Task<Result> Delete(Guid id)
         {
             var user = await _userRepository.GetByIdAsync(id);
             if (user is null)
@@ -162,8 +162,15 @@ namespace ServiceTrackHub.Application.Services.Domain
             var userTasks = await _tasksRepository.GetTasksByUserIdAsync(user.Id);
             if (userTasks.Count > 0)
                 return Result.Failure(CustomError.Conflict(ErrorMessage.UserCannotBeRemove));
-            await _userRepository.RemoveAsync(user);
-            return Result.Success();
+            try
+            {
+                await _userRepository.RemoveAsync(user);
+                return Result.Success();
+            }
+            catch (Exception e)
+            {
+                return Result.Failure(CustomError.Conflict(e.Message));
+            }
         }
 
         public async Task<Result> SetUserRefreshTokenHash(User user, string refreshTokenHash)

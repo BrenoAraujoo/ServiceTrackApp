@@ -15,7 +15,8 @@ namespace ServiceTrackHub.Infra.Data.EntitiesConfiguration
 
             builder.HasOne(x => x.TaskType)
                 .WithMany()
-                .HasForeignKey(x => x.TaskTypeId);
+                .HasForeignKey(x => x.TaskTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(x => x.Description)
                 .HasMaxLength(100)

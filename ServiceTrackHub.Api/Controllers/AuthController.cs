@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceTrackHub.Application.InputViewModel.Auth;
 using ServiceTrackHub.Application.Interfaces.Auth;
-using ServiceTrackHub.Application.Interfaces.Domain;
-using ServiceTrackHub.Application.Services.Auth;
-using ServiceTrackHub.Application.ViewModel.Auth;
-using ServiceTrackHub.Domain.Common.Result;
 
 namespace ServiceTrackHub.Api.Controllers;
 

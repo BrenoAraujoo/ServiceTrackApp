@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceTrackHub.Application.InputViewModel.Task;
 using ServiceTrackHub.Application.Interfaces.Domain;
-using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Filters;
 using ServiceTrackHub.Domain.Pagination;
 

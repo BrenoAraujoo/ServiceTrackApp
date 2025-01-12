@@ -1,5 +1,4 @@
 ﻿using ServiceTrackHub.Application.InputViewModel.Task;
-using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.Interfaces.Domain;
 using ServiceTrackHub.Application.ViewModel.Tasks;
 using ServiceTrackHub.Domain.Common.Erros;

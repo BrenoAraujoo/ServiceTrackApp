@@ -3,6 +3,7 @@ using ServiceTrackHub.Application.Interfaces.Domain;
 using ServiceTrackHub.Application.ViewModel.TaskType;
 using ServiceTrackHub.Domain.Common.Erros;
 using ServiceTrackHub.Domain.Common.Result;
+using ServiceTrackHub.Domain.CustomExceptions;
 using ServiceTrackHub.Domain.Entities;
 using ServiceTrackHub.Domain.Filters;
 using ServiceTrackHub.Domain.Interfaces;
@@ -64,12 +65,19 @@ namespace ServiceTrackHub.Application.Services.Domain
             if (taskType is null)
                 return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
 
-            var tasks = await _tasksRepository.GetFilteredAsync(x => x.TaskTypeId == id);
-            if (tasks.Count > 0)
-                return Result.Failure(
-                    CustomError.Conflict(ErrorMessage.TaskTypeCantBeRemoved));
-            await _taskTypeRepository.RemoveAsync(taskType);
-            return Result.Success();
+            try
+            {
+                await _taskTypeRepository.RemoveAsync(taskType);
+                return Result.Success();
+            }
+            catch (CustomConflictException e)
+            {
+                return Result.Failure(CustomError.Conflict(e.Message));
+            }
+            catch (Exception e)
+            {
+                return Result.Failure(CustomError.ServerError(@$"{e.Message} - {e.StackTrace}"));
+            }
         }
 
         public async Task<Result> GetAll(IFilterCriteria<TaskType> filter, PaginationRequest paginationRequest)
