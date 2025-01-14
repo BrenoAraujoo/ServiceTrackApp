@@ -63,6 +63,20 @@ namespace ServiceTrackHub.Api.Controllers
             var result = await _taskTypeService.Delete(id);
             return !result.IsSuccess?  ApiControllerHandleResult(result): NoContent() ;
         }
+
+        [HttpPut("v1/tasktypes/{id}/activate")]
+        public async Task<IActionResult> Activate(Guid id)
+        {
+            var result = await _taskTypeService.Activate(id);
+            return !result.IsSuccess ? ApiControllerHandleResult(result): NoContent();
+        }
+        
+        [HttpPut("v1/tasktypes/{id}/deactivate")]
+        public async Task<IActionResult> Deactivate(Guid id)
+        {
+            var result = await _taskTypeService.Deactivate(id);
+            return !result.IsSuccess ? ApiControllerHandleResult(result): NoContent();
+        }
     }
         
 }

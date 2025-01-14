@@ -13,5 +13,7 @@ namespace ServiceTrackHub.Application.Interfaces.Domain
         Task<Result> Create(CreateTaskTypeModel taskTypeInput, Guid userId);
         Task<Result> Update(Guid id, UpdateTaskTypeModel taskTypeInput);
         Task<Result> Delete(Guid id);
+        Task <Result>Deactivate(Guid id);
+        Task <Result>Activate(Guid id);
     }
 }

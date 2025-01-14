@@ -26,37 +26,34 @@ namespace ServiceTrackHub.Application.Services.Domain
             _tasksRepository = tasksRepository;
             _userRepository = userRepository;
         }
-        
+
         public async Task<Result> Create(CreateTaskTypeModel taskTypeInput, Guid userId)
         {
-            
             var taskTypeExists = await _taskTypeRepository.GetByNameAsync(taskTypeInput.Name) is not null;
-            var user = await _userRepository.GetByIdAsync(userId);
-             if(taskTypeExists)
+            if (taskTypeExists)
                 return Result.Failure(CustomError.Conflict(ErrorMessage.TaskNameAlreadyExists));
-             
-             if(user is null)
-                 return Result.Failure(CustomError.Conflict(ErrorMessage.UserNotFound));
-             try
-             {
-                 var taskTypeEntity = new TaskType(
-                     userId,
-                     taskTypeInput.Name,
-                     taskTypeInput.Description);
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user is null)
+                return Result.Failure(CustomError.Conflict(ErrorMessage.UserNotFound));
+            try
+            {
+                var taskTypeEntity = new TaskType(
+                    userId,
+                    taskTypeInput.Name,
+                    taskTypeInput.Description);
 
-                 await _taskTypeRepository.CreateAsync(taskTypeEntity);
-                 var taskViewModel = TaskTypeDetailedViewModel.ToViewModel(taskTypeEntity, user);
-                 return Result<TaskTypeDetailedViewModel>.Success(taskViewModel);
-             }
-             catch (ArgumentException e)
-             {
-                 return Result.Failure(CustomError.ValidationError(e.Message));
-             }
-             catch (Exception e)
-             {
-                 return Result.Failure(CustomError.ServerError("Ocorreu um erro inesperado ao criar o usuário."));
-             }
-
+                await _taskTypeRepository.CreateAsync(taskTypeEntity);
+                var taskViewModel = TaskTypeDetailedViewModel.ToViewModel(taskTypeEntity, user);
+                return Result<TaskTypeDetailedViewModel>.Success(taskViewModel);
+            }
+            catch (ArgumentException e)
+            {
+                return Result.Failure(CustomError.ValidationError(e.Message));
+            }
+            catch (Exception e)
+            {
+                return Result.Failure(CustomError.ServerError("Ocorreu um erro inesperado ao criar o usuário."));
+            }
         }
 
         public async Task<Result> Delete(Guid id)
@@ -111,17 +108,56 @@ namespace ServiceTrackHub.Application.Services.Domain
             var taskTypeEntity = await _taskTypeRepository.GetByIdAsync(id);
             if(taskTypeEntity is null)
                 return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
-            var user = await _userRepository.GetByIdAsync(taskTypeEntity.CreatorId); 
-            if(user is null)
-                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
-            
-            taskTypeEntity.Update(taskTypeInput.Name, taskTypeInput.Description, taskTypeInput.Active);
-            
-            await _taskTypeRepository.UpdateAsync(taskTypeEntity);
-            var taskTypeModel = TaskTypeDetailedViewModel.ToViewModel(taskTypeEntity, user);
+            try
+            {
+                taskTypeEntity.Update(taskTypeInput.Name, taskTypeInput.Description, taskTypeInput.Active);
+                await _taskTypeRepository.UpdateAsync(taskTypeEntity);
+                return Result.Success();
+            }
+            catch (ArgumentException e)
+            {
+                return Result.Failure(CustomError.ValidationError(e.Message));
+            }
+            catch (Exception e)
+            {
+                return Result.Failure(CustomError.ServerError(@$"{e.Message} - {e.StackTrace}"));
+            }
+        }
 
-            return Result<TaskTypeDetailedViewModel?>.Success(taskTypeModel);
+        public async Task<Result> Activate(Guid id)
+        {
+            var taskType = await _taskTypeRepository.GetByIdAsync(id);
+            if(taskType is null)
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
+            try
+            {
+                taskType.Activate();
+                taskType.Update();
+                await _taskTypeRepository.UpdateAsync(taskType);
+                return Result.Success();
+            }
+            catch (Exception e)
+            {
+                return Result.Failure(CustomError.ValidationError(e.Message));
+            }
         }
         
+        public async Task<Result> Deactivate(Guid id)
+        {
+            var taskType = await _taskTypeRepository.GetByIdAsync(id);
+            if(taskType is null)
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.TaskTypeNotFound));
+            try
+            {
+                taskType.Deactivate();
+                taskType.Update();
+                await _taskTypeRepository.UpdateAsync(taskType);
+                return Result.Success();
+            }
+            catch (Exception e)
+            {
+                return Result.Failure(CustomError.ValidationError(e.Message));
+            }
+        }
     }
 }
