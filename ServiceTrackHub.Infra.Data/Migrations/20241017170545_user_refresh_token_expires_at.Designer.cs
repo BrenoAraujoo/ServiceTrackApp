@@ -12,8 +12,8 @@ using ServiceTrackHub.Infra.Data.Context;
 namespace ServiceTrackHub.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250112192202_UpdateTaskTypeDeleteBehavior")]
-    partial class UpdateTaskTypeDeleteBehavior
+    [Migration("20241017170545_user_refresh_token_expires_at")]
+    partial class user_refresh_token_expires_at
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace ServiceTrackHub.Infra.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ServiceTrackApp.Domain.Entities.TaskType", b =>
+            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.TaskType", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -58,7 +58,7 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                     b.ToTable("task_type", (string)null);
                 });
 
-            modelBuilder.Entity("ServiceTrackApp.Domain.Entities.Tasks", b =>
+            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.Tasks", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -92,7 +92,7 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                     b.ToTable("tasks", (string)null);
                 });
 
-            modelBuilder.Entity("ServiceTrackApp.Domain.Entities.User", b =>
+            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -144,9 +144,9 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                     b.ToTable("users", (string)null);
                 });
 
-            modelBuilder.Entity("ServiceTrackApp.Domain.Entities.TaskType", b =>
+            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.TaskType", b =>
                 {
-                    b.HasOne("ServiceTrackApp.Domain.Entities.User", "User")
+                    b.HasOne("ServiceTrackHub.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -155,15 +155,15 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ServiceTrackApp.Domain.Entities.Tasks", b =>
+            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.Tasks", b =>
                 {
-                    b.HasOne("ServiceTrackApp.Domain.Entities.TaskType", "TaskType")
+                    b.HasOne("ServiceTrackHub.Domain.Entities.TaskType", "TaskType")
                         .WithMany()
                         .HasForeignKey("TaskTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceTrackApp.Domain.Entities.User", "User")
+                    b.HasOne("ServiceTrackHub.Domain.Entities.User", "User")
                         .WithMany("Tasks")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -174,7 +174,7 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ServiceTrackApp.Domain.Entities.User", b =>
+            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.User", b =>
                 {
                     b.Navigation("Tasks");
                 });
