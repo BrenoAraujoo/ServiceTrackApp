@@ -1,6 +1,6 @@
 ﻿
 
-namespace ServiceTrackHub.Application.InputViewModel.User
+namespace ServiceTrackApp.Application.InputViewModel.User
 {
     public record UpdateUserModel(
         string? Name,

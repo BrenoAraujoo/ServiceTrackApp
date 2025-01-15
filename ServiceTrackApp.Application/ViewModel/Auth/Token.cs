@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Application.ViewModel.Auth;
+﻿namespace ServiceTrackApp.Application.ViewModel.Auth;
 
 public class Token
 {

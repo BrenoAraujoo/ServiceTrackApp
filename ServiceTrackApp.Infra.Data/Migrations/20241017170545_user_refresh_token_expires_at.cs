@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ServiceTrackHub.Infra.Data.Migrations
+namespace ServiceTrackApp.Infra.Data.Migrations
 {
     /// <inheritdoc />
     public partial class user_refresh_token_expires_at : Migration

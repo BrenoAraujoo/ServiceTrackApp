@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Domain.CustomExceptions;
+﻿namespace ServiceTrackApp.Domain.CustomExceptions;
 
 public class CustomConflictException : Exception
 {

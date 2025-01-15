@@ -1,6 +1,6 @@
-﻿using ServiceTrackHub.Domain.Entities;
+﻿using ServiceTrackApp.Domain.Entities;
 
-namespace ServiceTrackHub.Domain.Filters;
+namespace ServiceTrackApp.Domain.Filters;
 
 public class UserFilter : IFilterCriteria<User>
 {

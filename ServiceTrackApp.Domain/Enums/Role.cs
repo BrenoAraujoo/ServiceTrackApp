@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Domain.Enums;
+﻿namespace ServiceTrackApp.Domain.Enums;
 
 public enum Role : byte
 {

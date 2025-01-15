@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTrackHub.Api", "ServiceTrackHub.Api\ServiceTrackHub.Api.csproj", "{C0EFC4BE-63AB-40AA-B3AD-DED7C70F1AE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTrackApp.Api", "ServiceTrackApp.Api\ServiceTrackApp.Api.csproj", "{C0EFC4BE-63AB-40AA-B3AD-DED7C70F1AE1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTrackHub.Application", "ServiceTrackHub.Application\ServiceTrackHub.Application.csproj", "{CCC5365F-A934-4786-997C-C9DAC7392C55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTrackApp.Application", "ServiceTrackApp.Application\ServiceTrackApp.Application.csproj", "{CCC5365F-A934-4786-997C-C9DAC7392C55}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTrackHub.Domain", "ServiceTrackHub.Domain\ServiceTrackHub.Domain.csproj", "{8FF4752D-C380-43B7-86F8-C7807530FEC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTrackApp.Domain", "ServiceTrackApp.Domain\ServiceTrackApp.Domain.csproj", "{8FF4752D-C380-43B7-86F8-C7807530FEC0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTrackHub.Infra.Data", "ServiceTrackHub.Infra.Data\ServiceTrackHub.Infra.Data.csproj", "{7887B42A-E5E3-44A1-8EBA-4A270FC4148F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTrackApp.Infra.Data", "ServiceTrackApp.Infra.Data\ServiceTrackApp.Infra.Data.csproj", "{7887B42A-E5E3-44A1-8EBA-4A270FC4148F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTrackHub.Infra.IoC", "ServiceTrackHub.Infra.IoC\ServiceTrackHub.Infra.IoC.csproj", "{6839DB12-0293-44E7-94F4-325747082DAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTrackApp.Infra.IoC", "ServiceTrackApp.Infra.IoC\ServiceTrackApp.Infra.IoC.csproj", "{6839DB12-0293-44E7-94F4-325747082DAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

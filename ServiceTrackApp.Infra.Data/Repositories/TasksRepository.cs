@@ -1,13 +1,13 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using ServiceTrackHub.Domain.Entities;
-using ServiceTrackHub.Domain.Filters;
-using ServiceTrackHub.Domain.Interfaces;
-using ServiceTrackHub.Domain.Pagination;
-using ServiceTrackHub.Infra.Data.Context;
-using ServiceTrackHub.Infra.Data.Helpers;
+using ServiceTrackApp.Domain.Entities;
+using ServiceTrackApp.Domain.Filters;
+using ServiceTrackApp.Domain.Interfaces;
+using ServiceTrackApp.Domain.Pagination;
+using ServiceTrackApp.Infra.Data.Context;
+using ServiceTrackApp.Infra.Data.Helpers;
 
-namespace ServiceTrackHub.Infra.Data.Repositories
+namespace ServiceTrackApp.Infra.Data.Repositories
 {
     public class TasksRepository : ITasksRepository
     {

@@ -1,10 +1,10 @@
-﻿using ServiceTrackHub.Application.InputViewModel.Task;
-using ServiceTrackHub.Domain.Common.Result;
-using ServiceTrackHub.Domain.Entities;
-using ServiceTrackHub.Domain.Filters;
-using ServiceTrackHub.Domain.Pagination;
+﻿using ServiceTrackApp.Application.InputViewModel.Task;
+using ServiceTrackApp.Domain.Common.Result;
+using ServiceTrackApp.Domain.Entities;
+using ServiceTrackApp.Domain.Filters;
+using ServiceTrackApp.Domain.Pagination;
 
-namespace ServiceTrackHub.Application.Interfaces.Domain
+namespace ServiceTrackApp.Application.Interfaces.Domain
 {
     public interface ITasksService
     {

@@ -3,12 +3,12 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using ServiceTrackHub.Application.Interfaces.Auth;
-using ServiceTrackHub.Application.ViewModel.Auth;
-using ServiceTrackHub.Domain.Common.Utils;
-using ServiceTrackHub.Domain.Entities;
+using ServiceTrackApp.Application.Interfaces.Auth;
+using ServiceTrackApp.Application.ViewModel.Auth;
+using ServiceTrackApp.Domain.Common.Utils;
+using ServiceTrackApp.Domain.Entities;
 
-namespace ServiceTrackHub.Application.Services.Auth;
+namespace ServiceTrackApp.Application.Services.Auth;
 
 public class TokenService : ITokenService
 {

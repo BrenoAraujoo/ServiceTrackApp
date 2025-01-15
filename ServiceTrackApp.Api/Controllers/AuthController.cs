@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ServiceTrackHub.Application.InputViewModel.Auth;
-using ServiceTrackHub.Application.Interfaces.Auth;
+using ServiceTrackApp.Application.InputViewModel.Auth;
+using ServiceTrackApp.Application.Interfaces.Auth;
 
-namespace ServiceTrackHub.Api.Controllers;
+namespace ServiceTrackApp.Api.Controllers;
 
 [ApiController]
 public class AuthController : ApiControllerBase

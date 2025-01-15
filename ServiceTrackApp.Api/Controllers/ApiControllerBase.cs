@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ServiceTrackHub.Domain.Common.Result;
+using ServiceTrackApp.Domain.Common.Result;
 
-namespace ServiceTrackHub.Api.Controllers
+namespace ServiceTrackApp.Api.Controllers
 {
     public class ApiControllerBase : ControllerBase
     {

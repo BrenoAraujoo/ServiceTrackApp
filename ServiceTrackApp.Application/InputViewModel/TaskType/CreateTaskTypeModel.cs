@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Application.InputViewModel.TaskType
+﻿namespace ServiceTrackApp.Application.InputViewModel.TaskType
 {
 public record CreateTaskTypeModel(
     

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace ServiceTrackHub.Domain.Common.Utils;
+namespace ServiceTrackApp.Domain.Common.Utils;
 
 public class Utils
 {

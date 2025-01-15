@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
-using ServiceTrackHub.Application.ViewModel.Auth;
-using ServiceTrackHub.Domain.Entities;
+using ServiceTrackApp.Application.ViewModel.Auth;
+using ServiceTrackApp.Domain.Entities;
 
-namespace ServiceTrackHub.Application.Interfaces.Auth;
+namespace ServiceTrackApp.Application.Interfaces.Auth;
 
 public interface ITokenService
 {

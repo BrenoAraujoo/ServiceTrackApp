@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace ServiceTrackHub.Application.Extensions;
+namespace ServiceTrackApp.Application.Extensions;
 
 public static class ClaimsPrincipalExtensions
 {

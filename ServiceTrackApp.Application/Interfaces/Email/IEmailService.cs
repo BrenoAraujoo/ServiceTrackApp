@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Application.Interfaces.Email;
+﻿namespace ServiceTrackApp.Application.Interfaces.Email;
 
 public interface IEmailService
 {

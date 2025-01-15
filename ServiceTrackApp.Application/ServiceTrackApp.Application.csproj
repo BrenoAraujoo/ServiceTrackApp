@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>ServiceTrackHub.Application</RootNamespace>
+    <RootNamespace>ServiceTrackApp.Application</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ServiceTrackHub.Domain\ServiceTrackHub.Domain.csproj" />
+    <ProjectReference Include="..\ServiceTrackApp.Domain\ServiceTrackApp.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

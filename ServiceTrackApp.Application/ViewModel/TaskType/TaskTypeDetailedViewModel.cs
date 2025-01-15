@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Application.ViewModel.TaskType
+﻿namespace ServiceTrackApp.Application.ViewModel.TaskType
 {
    public record TaskTypeDetailedViewModel
     {

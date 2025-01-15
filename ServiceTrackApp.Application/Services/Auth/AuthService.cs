@@ -1,13 +1,13 @@
 ﻿using System.Security.Claims;
-using ServiceTrackHub.Application.InputViewModel.Auth;
-using ServiceTrackHub.Application.Interfaces.Auth;
-using ServiceTrackHub.Application.ViewModel.Auth;
-using ServiceTrackHub.Domain.Common.Erros;
-using ServiceTrackHub.Domain.Common.Result;
-using ServiceTrackHub.Domain.Entities;
-using ServiceTrackHub.Domain.Interfaces;
+using ServiceTrackApp.Application.InputViewModel.Auth;
+using ServiceTrackApp.Application.Interfaces.Auth;
+using ServiceTrackApp.Application.ViewModel.Auth;
+using ServiceTrackApp.Domain.Common.Erros;
+using ServiceTrackApp.Domain.Common.Result;
+using ServiceTrackApp.Domain.Entities;
+using ServiceTrackApp.Domain.Interfaces;
 
-namespace ServiceTrackHub.Application.Services.Auth;
+namespace ServiceTrackApp.Application.Services.Auth;
 
 public class AuthService : IAuthService
 {

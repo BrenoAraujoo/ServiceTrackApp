@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ServiceTrackHub.Domain.Entities;
-using ServiceTrackHub.Domain.Interfaces;
-using ServiceTrackHub.Domain.Pagination;
-using ServiceTrackHub.Infra.Data.Context;
-using ServiceTrackHub.Infra.Data.Helpers;
 using System.Linq.Dynamic.Core;
-using ServiceTrackHub.Domain.Filters;
+using ServiceTrackApp.Domain.Entities;
+using ServiceTrackApp.Domain.Filters;
+using ServiceTrackApp.Domain.Interfaces;
+using ServiceTrackApp.Domain.Pagination;
+using ServiceTrackApp.Infra.Data.Context;
+using ServiceTrackApp.Infra.Data.Helpers;
 
-namespace ServiceTrackHub.Infra.Data.Repositories
+namespace ServiceTrackApp.Infra.Data.Repositories
 {
     public class UserRepository : IUserRepository
     {

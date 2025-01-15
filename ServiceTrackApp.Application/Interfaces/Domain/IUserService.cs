@@ -1,9 +1,9 @@
-﻿using ServiceTrackHub.Application.InputViewModel.User;
-using ServiceTrackHub.Domain.Common.Result;
-using ServiceTrackHub.Domain.Filters;
-using ServiceTrackHub.Domain.Pagination;
+﻿using ServiceTrackApp.Application.InputViewModel.User;
+using ServiceTrackApp.Domain.Common.Result;
+using ServiceTrackApp.Domain.Filters;
+using ServiceTrackApp.Domain.Pagination;
 
-namespace ServiceTrackHub.Application.Interfaces.Domain
+namespace ServiceTrackApp.Application.Interfaces.Domain
 {
     public interface IUserService
     {

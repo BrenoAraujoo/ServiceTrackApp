@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Domain.Interfaces
+﻿namespace ServiceTrackApp.Domain.Interfaces
 {
     public interface IEntityActivable
     {

@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ServiceTrackHub.Application.Extensions;
-using ServiceTrackHub.Application.InputViewModel.TaskType;
-using ServiceTrackHub.Application.Interfaces.Auth;
-using ServiceTrackHub.Application.Interfaces.Domain;
-using ServiceTrackHub.Domain.Filters;
-using ServiceTrackHub.Domain.Pagination;
+using ServiceTrackApp.Application.InputViewModel.TaskType;
+using ServiceTrackApp.Application.Interfaces.Auth;
+using ServiceTrackApp.Application.Interfaces.Domain;
+using ServiceTrackApp.Domain.Filters;
+using ServiceTrackApp.Domain.Pagination;
+using ServiceTrackApp.Application.Extensions;
 
-namespace ServiceTrackHub.Api.Controllers
+namespace ServiceTrackApp.Api.Controllers
 {
     [ApiController]
     public class TaskTypeController : ApiControllerBase

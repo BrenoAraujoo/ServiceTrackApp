@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Application.InputViewModel.Auth;
+﻿namespace ServiceTrackApp.Application.InputViewModel.Auth;
 
 public record TokenRequest(
     string AccessToken,

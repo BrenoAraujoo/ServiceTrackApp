@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ServiceTrackHub.Infra.Data.Context;
+using ServiceTrackApp.Infra.Data.Context;
 
 #nullable disable
 
-namespace ServiceTrackHub.Infra.Data.Migrations
+namespace ServiceTrackApp.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20241016162721_user_refresh_token")]

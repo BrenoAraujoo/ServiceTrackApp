@@ -1,6 +1,6 @@
-﻿using ServiceTrackHub.Domain.Common.Erros;
+﻿using ServiceTrackApp.Domain.Common.Erros;
 
-namespace ServiceTrackHub.Domain.ValueObjects;
+namespace ServiceTrackApp.Domain.ValueObjects;
 
 public class JobPosition : ValueObject
 {

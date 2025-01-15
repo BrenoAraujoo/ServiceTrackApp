@@ -1,8 +1,8 @@
-﻿using ServiceTrackHub.Application.InputViewModel.Auth;
-using ServiceTrackHub.Domain.Common.Result;
-using ServiceTrackHub.Domain.Entities;
+﻿using ServiceTrackApp.Application.InputViewModel.Auth;
+using ServiceTrackApp.Domain.Common.Result;
+using ServiceTrackApp.Domain.Entities;
 
-namespace ServiceTrackHub.Application.Interfaces.Auth;
+namespace ServiceTrackApp.Application.Interfaces.Auth;
 
 public interface IAuthService
 {

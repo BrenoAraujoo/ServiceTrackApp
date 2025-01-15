@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Domain.Pagination;
+﻿namespace ServiceTrackApp.Domain.Pagination;
 
 public class PagedList<T>
 {

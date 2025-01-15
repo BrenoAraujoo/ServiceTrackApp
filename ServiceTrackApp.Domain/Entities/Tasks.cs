@@ -1,6 +1,6 @@
-﻿using ServiceTrackHub.Domain.Common.Erros;
+﻿using ServiceTrackApp.Domain.Common.Erros;
 
-namespace ServiceTrackHub.Domain.Entities
+namespace ServiceTrackApp.Domain.Entities
 {
     public sealed class Tasks : BaseEntity
     {

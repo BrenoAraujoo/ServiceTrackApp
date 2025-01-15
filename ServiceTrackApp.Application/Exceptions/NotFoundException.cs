@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Application.Exceptions
+﻿namespace ServiceTrackApp.Application.Exceptions
 {
     public class NotFoundException : Exception
     {

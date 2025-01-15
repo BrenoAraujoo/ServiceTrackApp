@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ServiceTrackHub.Application.InputViewModel.Auth;
-using ServiceTrackHub.Application.InputViewModel.User;
-using ServiceTrackHub.Application.Interfaces.Auth;
-using ServiceTrackHub.Application.Interfaces.Domain;
-using ServiceTrackHub.Domain.Filters;
-using ServiceTrackHub.Domain.Pagination;
+using ServiceTrackApp.Application.InputViewModel.Auth;
+using ServiceTrackApp.Application.InputViewModel.User;
+using ServiceTrackApp.Application.Interfaces.Auth;
+using ServiceTrackApp.Application.Interfaces.Domain;
+using ServiceTrackApp.Domain.Filters;
+using ServiceTrackApp.Domain.Pagination;
 
-namespace ServiceTrackHub.Api.Controllers
+namespace ServiceTrackApp.Api.Controllers
 {
     [ApiController]
     public class UsersController : ApiControllerBase

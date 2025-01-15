@@ -1,6 +1,6 @@
-﻿using ServiceTrackHub.Domain.Common.Erros;
+﻿using ServiceTrackApp.Domain.Common.Erros;
 
-namespace ServiceTrackHub.Domain.Common.Result
+namespace ServiceTrackApp.Domain.Common.Result
 {
     public class Result
     {

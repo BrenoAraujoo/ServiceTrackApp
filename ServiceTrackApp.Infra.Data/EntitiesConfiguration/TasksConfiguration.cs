@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ServiceTrackHub.Domain.Entities;
+using ServiceTrackApp.Domain.Entities;
 
-namespace ServiceTrackHub.Infra.Data.EntitiesConfiguration
+namespace ServiceTrackApp.Infra.Data.EntitiesConfiguration
 {
     public class TasksConfiguration : IEntityTypeConfiguration<Tasks>
     {

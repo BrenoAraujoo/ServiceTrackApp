@@ -1,6 +1,6 @@
-﻿using ServiceTrackHub.Application.Interfaces.Email;
+﻿using ServiceTrackApp.Application.Interfaces.Email;
 
-namespace ServiceTrackHub.Application.Services;
+namespace ServiceTrackApp.Application.Services;
 
 public class EmailService : IEmailService
 {

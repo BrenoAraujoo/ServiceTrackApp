@@ -3,8 +3,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ServiceTrackHub.Api.Middleware;
-using ServiceTrackHub.Infra.IoC;
+using ServiceTrackApp.Api.Middleware;
+using ServiceTrackApp.Infra.IoC;
 
 
 var builder = WebApplication.CreateBuilder(args);

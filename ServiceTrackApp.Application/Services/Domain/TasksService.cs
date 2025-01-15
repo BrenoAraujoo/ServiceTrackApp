@@ -1,14 +1,14 @@
-﻿using ServiceTrackHub.Application.InputViewModel.Task;
-using ServiceTrackHub.Application.Interfaces.Domain;
-using ServiceTrackHub.Application.ViewModel.Tasks;
-using ServiceTrackHub.Domain.Common.Erros;
-using ServiceTrackHub.Domain.Common.Result;
-using ServiceTrackHub.Domain.Entities;
-using ServiceTrackHub.Domain.Filters;
-using ServiceTrackHub.Domain.Interfaces;
-using ServiceTrackHub.Domain.Pagination;
+﻿using ServiceTrackApp.Application.InputViewModel.Task;
+using ServiceTrackApp.Application.Interfaces.Domain;
+using ServiceTrackApp.Application.ViewModel.Tasks;
+using ServiceTrackApp.Domain.Common.Erros;
+using ServiceTrackApp.Domain.Common.Result;
+using ServiceTrackApp.Domain.Entities;
+using ServiceTrackApp.Domain.Filters;
+using ServiceTrackApp.Domain.Interfaces;
+using ServiceTrackApp.Domain.Pagination;
 
-namespace ServiceTrackHub.Application.Services.Domain
+namespace ServiceTrackApp.Application.Services.Domain
 {
     public class TasksService : ITasksService
     {

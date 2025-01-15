@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace ServiceTrackHub.Infra.Data.Migrations
+namespace ServiceTrackApp.Infra.Data.Migrations
 {
     /// <inheritdoc />
     public partial class user_smart_phone_not_required : Migration

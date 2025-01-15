@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ServiceTrackHub.Domain.Entities;
+using ServiceTrackApp.Domain.Entities;
 
-namespace ServiceTrackHub.Infra.Data.Context
+namespace ServiceTrackApp.Infra.Data.Context
 {
     public class ApplicationDbContext : DbContext
     {

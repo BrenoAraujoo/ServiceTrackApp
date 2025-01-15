@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Domain.Filters;
+﻿namespace ServiceTrackApp.Domain.Filters;
 
 public interface IFilterCriteria <T>
 {

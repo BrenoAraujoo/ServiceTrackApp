@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ServiceTrackHub.Api.Middleware
+namespace ServiceTrackApp.Api.Middleware
 {
     public class GlobalExceptionHandler : IExceptionHandler
     {

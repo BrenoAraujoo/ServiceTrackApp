@@ -1,6 +1,6 @@
-﻿using ServiceTrackHub.Domain.Common.Result;
+﻿using ServiceTrackApp.Domain.Common.Result;
 
-namespace ServiceTrackHub.Application.Interfaces.Auth;
+namespace ServiceTrackApp.Application.Interfaces.Auth;
 
 public interface IHashService
 {

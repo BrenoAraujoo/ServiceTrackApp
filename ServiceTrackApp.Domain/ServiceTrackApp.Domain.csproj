@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>ServiceTrackHub.Domain</RootNamespace>
+    <RootNamespace>ServiceTrackApp.Domain</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

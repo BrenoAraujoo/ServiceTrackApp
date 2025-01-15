@@ -1,8 +1,8 @@
-﻿using ServiceTrackHub.Application.Interfaces.Auth;
-using ServiceTrackHub.Domain.Common.Result;
-using ServiceTrackHub.Domain.Common.Erros;
+﻿using ServiceTrackApp.Application.Interfaces.Auth;
+using ServiceTrackApp.Domain.Common.Erros;
+using ServiceTrackApp.Domain.Common.Result;
 
-namespace ServiceTrackHub.Application.Services.Auth;
+namespace ServiceTrackApp.Application.Services.Auth;
 
 public class HashService : IHashService
 {

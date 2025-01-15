@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>ServiceTrackHub.Api</RootNamespace>
+    <RootNamespace>ServiceTrackApp.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ServiceTrackHub.Infra.IoC\ServiceTrackHub.Infra.IoC.csproj" />
+    <ProjectReference Include="..\ServiceTrackApp.Infra.IoC\ServiceTrackApp.Infra.IoC.csproj" />
   </ItemGroup>
 
 </Project>

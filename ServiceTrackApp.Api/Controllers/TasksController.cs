@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ServiceTrackHub.Application.InputViewModel.Task;
-using ServiceTrackHub.Application.Interfaces.Domain;
-using ServiceTrackHub.Domain.Filters;
-using ServiceTrackHub.Domain.Pagination;
+using ServiceTrackApp.Application.InputViewModel.Task;
+using ServiceTrackApp.Application.Interfaces.Domain;
+using ServiceTrackApp.Domain.Filters;
+using ServiceTrackApp.Domain.Pagination;
 
-namespace ServiceTrackHub.Api.Controllers
+namespace ServiceTrackApp.Api.Controllers
 {
 
     [ApiController]

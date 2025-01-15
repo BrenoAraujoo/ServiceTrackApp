@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ServiceTrackHub.Domain.Pagination;
+using ServiceTrackApp.Domain.Pagination;
 
-namespace ServiceTrackHub.Infra.Data.Helpers;
+namespace ServiceTrackApp.Infra.Data.Helpers;
 
 public static class PaginationHelper
 {

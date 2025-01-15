@@ -1,8 +1,8 @@
-﻿using ServiceTrackHub.Domain.Entities;
-using ServiceTrackHub.Domain.Filters;
-using ServiceTrackHub.Domain.Pagination;
+﻿using ServiceTrackApp.Domain.Entities;
+using ServiceTrackApp.Domain.Filters;
+using ServiceTrackApp.Domain.Pagination;
 
-namespace ServiceTrackHub.Domain.Interfaces
+namespace ServiceTrackApp.Domain.Interfaces
 {
     public interface ITaskTypeRepository
     {

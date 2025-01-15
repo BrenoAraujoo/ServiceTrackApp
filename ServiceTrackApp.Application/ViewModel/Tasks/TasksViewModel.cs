@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Application.ViewModel.Tasks
+﻿namespace ServiceTrackApp.Application.ViewModel.Tasks
 {
     public record TasksViewModel
     {

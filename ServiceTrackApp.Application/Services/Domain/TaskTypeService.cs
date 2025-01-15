@@ -1,15 +1,15 @@
-﻿using ServiceTrackHub.Application.InputViewModel.TaskType;
-using ServiceTrackHub.Application.Interfaces.Domain;
-using ServiceTrackHub.Application.ViewModel.TaskType;
-using ServiceTrackHub.Domain.Common.Erros;
-using ServiceTrackHub.Domain.Common.Result;
-using ServiceTrackHub.Domain.CustomExceptions;
-using ServiceTrackHub.Domain.Entities;
-using ServiceTrackHub.Domain.Filters;
-using ServiceTrackHub.Domain.Interfaces;
-using ServiceTrackHub.Domain.Pagination;
+﻿using ServiceTrackApp.Application.InputViewModel.TaskType;
+using ServiceTrackApp.Application.Interfaces.Domain;
+using ServiceTrackApp.Application.ViewModel.TaskType;
+using ServiceTrackApp.Domain.Common.Erros;
+using ServiceTrackApp.Domain.Common.Result;
+using ServiceTrackApp.Domain.CustomExceptions;
+using ServiceTrackApp.Domain.Entities;
+using ServiceTrackApp.Domain.Filters;
+using ServiceTrackApp.Domain.Interfaces;
+using ServiceTrackApp.Domain.Pagination;
 
-namespace ServiceTrackHub.Application.Services.Domain
+namespace ServiceTrackApp.Application.Services.Domain
 {
     public class TaskTypeService : ITaskTypeService
     {

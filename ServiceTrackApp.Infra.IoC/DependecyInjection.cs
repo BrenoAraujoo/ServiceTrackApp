@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ServiceTrackHub.Domain.Interfaces;
-using ServiceTrackHub.Infra.Data.Context;
-using ServiceTrackHub.Infra.Data.Repositories;
-using ServiceTrackHub.Application.Interfaces.Auth;
-using ServiceTrackHub.Application.Interfaces.Domain;
-using ServiceTrackHub.Application.Services.Auth;
-using ServiceTrackHub.Application.Services.Domain;
+using ServiceTrackApp.Application.Interfaces.Auth;
+using ServiceTrackApp.Application.Interfaces.Domain;
+using ServiceTrackApp.Application.Services.Auth;
+using ServiceTrackApp.Application.Services.Domain;
+using ServiceTrackApp.Domain.Interfaces;
+using ServiceTrackApp.Infra.Data.Context;
+using ServiceTrackApp.Infra.Data.Repositories;
 
-namespace ServiceTrackHub.Infra.IoC
+namespace ServiceTrackApp.Infra.IoC
 {
     public  static class DependencyInjection
     {

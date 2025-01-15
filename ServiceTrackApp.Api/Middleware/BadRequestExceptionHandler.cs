@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using ServiceTrackHub.Application.Exceptions;
+using ServiceTrackApp.Application.Exceptions;
 
-namespace ServiceTrackHub.Api.Middleware
+namespace ServiceTrackApp.Api.Middleware
 {
     public class BadRequestExceptionHandler : IExceptionHandler
     {

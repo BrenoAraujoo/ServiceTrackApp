@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Domain.Common.Erros
+﻿namespace ServiceTrackApp.Domain.Common.Erros
 {
     public sealed class ErrorMessage
     {

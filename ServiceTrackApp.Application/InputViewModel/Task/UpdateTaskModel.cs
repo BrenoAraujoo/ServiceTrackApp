@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Application.InputViewModel.Task
+﻿namespace ServiceTrackApp.Application.InputViewModel.Task
 {
     public record UpdateTaskModel(
         string? Description,

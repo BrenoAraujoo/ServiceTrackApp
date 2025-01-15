@@ -1,4 +1,4 @@
-﻿namespace ServiceTrackHub.Application.ViewModel.User
+﻿namespace ServiceTrackApp.Application.ViewModel.User
 {
     public record UserViewModel
     {

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace ServiceTrackHub.Infra.Data.Migrations
+namespace ServiceTrackApp.Infra.Data.Migrations
 {
     /// <inheritdoc />
     public partial class User_Email_Password_And_Phone : Migration
