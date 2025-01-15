@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServiceTrackHub.Infra.Data.Context;
 
@@ -11,9 +12,11 @@ using ServiceTrackHub.Infra.Data.Context;
 namespace ServiceTrackHub.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240912171223_user_roles")]
+    partial class user_roles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace ServiceTrackHub.Infra.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.TaskType", b =>
+            modelBuilder.Entity("ServiceTrackApp.Domain.Entities.TaskType", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -55,7 +58,7 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                     b.ToTable("task_type", (string)null);
                 });
 
-            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.Tasks", b =>
+            modelBuilder.Entity("ServiceTrackApp.Domain.Entities.Tasks", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -67,6 +70,11 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<Guid>("TaskTypeId")
                         .HasColumnType("uniqueidentifier");
@@ -89,7 +97,7 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                     b.ToTable("tasks", (string)null);
                 });
 
-            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.User", b =>
+            modelBuilder.Entity("ServiceTrackApp.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -105,10 +113,6 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<string>("JobPosition")
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -119,19 +123,13 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime?>("RefreshTokenExpiresAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RefreshTokenHash")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<byte>("Role")
                         .HasColumnType("tinyint");
-
-                    b.Property<string>("SmartPhoneNumber")
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
@@ -141,9 +139,9 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                     b.ToTable("users", (string)null);
                 });
 
-            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.TaskType", b =>
+            modelBuilder.Entity("ServiceTrackApp.Domain.Entities.TaskType", b =>
                 {
-                    b.HasOne("ServiceTrackHub.Domain.Entities.User", "User")
+                    b.HasOne("ServiceTrackApp.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -152,15 +150,15 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.Tasks", b =>
+            modelBuilder.Entity("ServiceTrackApp.Domain.Entities.Tasks", b =>
                 {
-                    b.HasOne("ServiceTrackHub.Domain.Entities.TaskType", "TaskType")
+                    b.HasOne("ServiceTrackApp.Domain.Entities.TaskType", "TaskType")
                         .WithMany()
                         .HasForeignKey("TaskTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceTrackHub.Domain.Entities.User", "User")
+                    b.HasOne("ServiceTrackApp.Domain.Entities.User", "User")
                         .WithMany("Tasks")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -171,7 +169,7 @@ namespace ServiceTrackHub.Infra.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ServiceTrackHub.Domain.Entities.User", b =>
+            modelBuilder.Entity("ServiceTrackApp.Domain.Entities.User", b =>
                 {
                     b.Navigation("Tasks");
                 });
