@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>ServiceTrackApp.Domain</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="CustomDataAnnotations\**" />
+    <Compile Remove="Pagination.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="CustomDataAnnotations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="CustomDataAnnotations\**" />
+  </ItemGroup>
+
+</Project>
