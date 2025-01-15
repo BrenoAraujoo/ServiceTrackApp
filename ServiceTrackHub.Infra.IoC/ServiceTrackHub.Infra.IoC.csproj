@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceTrackHub.Application\ServiceTrackHub.Application.csproj" />
+    <ProjectReference Include="..\ServiceTrackHub.Domain\ServiceTrackHub.Domain.csproj" />
+    <ProjectReference Include="..\ServiceTrackHub.Infra.Data\ServiceTrackHub.Infra.Data.csproj" />
+  </ItemGroup>
+
+</Project>

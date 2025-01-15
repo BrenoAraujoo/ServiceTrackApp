@@ -1,0 +1,7 @@
+@ServiceTrackHub = http://localhost:7278
+
+
+GET {{ServiceTrackHub}}/v1/users/
+Accept: application/json
+
+###
