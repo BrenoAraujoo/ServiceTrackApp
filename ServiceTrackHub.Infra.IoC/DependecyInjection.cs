@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using ServiceTrackHub.Domain.Interfaces;
 using ServiceTrackHub.Infra.Data.Context;
 using ServiceTrackHub.Infra.Data.Repositories;
-using ServiceTrackHub.Application.Interfaces;
 using ServiceTrackHub.Application.Interfaces.Auth;
 using ServiceTrackHub.Application.Interfaces.Domain;
 using ServiceTrackHub.Application.Services.Auth;

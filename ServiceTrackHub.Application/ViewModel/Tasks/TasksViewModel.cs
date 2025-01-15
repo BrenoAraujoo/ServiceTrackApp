@@ -1,6 +1,4 @@
-﻿using ServiceTrackHub.Domain.Entities;
-
-namespace ServiceTrackHub.Application.ViewModel.Tasks
+﻿namespace ServiceTrackHub.Application.ViewModel.Tasks
 {
     public record TasksViewModel
     {

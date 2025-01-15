@@ -5,6 +5,9 @@ using ServiceTrackHub.Domain.Pagination;
 using ServiceTrackHub.Infra.Data.Context;
 using ServiceTrackHub.Infra.Data.Helpers;
 using System.Linq.Dynamic.Core;
+using Microsoft.Data.SqlClient;
+using ServiceTrackHub.Domain.Common.Erros;
+using ServiceTrackHub.Domain.CustomExceptions;
 using ServiceTrackHub.Domain.Filters;
 
 namespace ServiceTrackHub.Infra.Data.Repositories
@@ -52,8 +55,16 @@ namespace ServiceTrackHub.Infra.Data.Repositories
 
         public async Task RemoveAsync(TaskType taskType)
         {
-            _context.Remove(taskType);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                _context.Remove(taskType);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                throw new CustomConflictException(ErrorMessage.TaskTypeCantBeRemoved);
+            }
         }
 
         public async Task<TaskType> UpdateAsync(TaskType taskType)

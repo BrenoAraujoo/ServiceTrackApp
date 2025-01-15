@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ServiceTrackHub.Domain.ValueObjects;
-
-namespace ServiceTrackHub.Application.InputViewModel.Auth;
+﻿namespace ServiceTrackHub.Application.InputViewModel.Auth;
 
 public record LoginModel(string Email, string Password)
 {

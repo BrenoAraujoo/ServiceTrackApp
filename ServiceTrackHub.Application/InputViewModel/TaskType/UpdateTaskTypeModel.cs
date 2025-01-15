@@ -2,5 +2,6 @@
 
 public record UpdateTaskTypeModel(
     string? Name,
-    string? Description
+    string? Description,
+    bool Active
 );

@@ -14,6 +14,6 @@ namespace ServiceTrackHub.Application.Interfaces.Domain
         Task<Result> Update(Guid id, UpdateUserModel updateUserModel);
         Task <Result>Deactivate(Guid id);
         Task <Result>Activate(Guid id);
-        Task <Result>Remove(Guid id);
+        Task <Result>Delete(Guid id);
     }
 }
