@@ -12,13 +12,13 @@ namespace ServiceTrackApp.Api.Middleware
             Exception exception,
             CancellationToken cancellationToken)
         {
-
-            ProblemDetails? problemDetails;
+            
+            //If the exception can't be handled, return false.
             if(exception is not NotFoundException)
             {
                 return false;
             }
-            problemDetails = new ProblemDetails
+            var problemDetails = new ProblemDetails
             {
                 Status = StatusCodes.Status404NotFound,
                 Title = "Not found"

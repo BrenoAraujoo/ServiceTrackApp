@@ -34,6 +34,7 @@ namespace ServiceTrackApp.Infra.IoC
             services.AddScoped<IHashService, HashService>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IAuthService, AuthService>();
+
             return services;
         }
     }

@@ -10,10 +10,7 @@ namespace ServiceTrackApp.Api.Middleware
             Exception exception,
             CancellationToken cancellationToken)
         {
-
-            ProblemDetails? problemDetails;
-
-            problemDetails = new ProblemDetails
+            var problemDetails = new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
                 Title = "Server Error",

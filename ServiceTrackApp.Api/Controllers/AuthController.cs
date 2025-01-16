@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceTrackApp.Application.InputViewModel.Auth;
 using ServiceTrackApp.Application.Interfaces.Auth;
 
@@ -13,6 +14,7 @@ public class AuthController : ApiControllerBase
     {
         _authService = authService;
     }
+    [AllowAnonymous]
     [HttpPost("v1/login")]
     public async Task<IActionResult> Authenticate([FromBody] LoginModel loginModel)
     {

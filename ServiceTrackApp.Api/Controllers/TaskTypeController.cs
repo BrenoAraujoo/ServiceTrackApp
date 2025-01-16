@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceTrackApp.Application.InputViewModel.TaskType;
 using ServiceTrackApp.Application.Interfaces.Auth;
 using ServiceTrackApp.Application.Interfaces.Domain;
@@ -35,6 +36,7 @@ namespace ServiceTrackApp.Api.Controllers
             return Ok(result);
 
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost("v1/tasktypes")]
         public async Task<IActionResult> Create([FromBody] CreateTaskTypeModel model)
         {
@@ -47,7 +49,8 @@ namespace ServiceTrackApp.Api.Controllers
             CreatedAtAction(nameof(Create), result) :
             ApiControllerHandleResult(result);
         }
-
+        
+        [Authorize(Roles = "Admin")]
         [HttpPut("v1/tasktypes/{id}")]
         public async Task<IActionResult> Update([FromBody] UpdateTaskTypeModel model, [FromRoute] Guid id)
         {
@@ -56,7 +59,7 @@ namespace ServiceTrackApp.Api.Controllers
                 NoContent():
                 ApiControllerHandleResult(result);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("v1/tasktypes/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -64,6 +67,7 @@ namespace ServiceTrackApp.Api.Controllers
             return !result.IsSuccess?  ApiControllerHandleResult(result): NoContent() ;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("v1/tasktypes/{id}/activate")]
         public async Task<IActionResult> Activate(Guid id)
         {
@@ -71,6 +75,7 @@ namespace ServiceTrackApp.Api.Controllers
             return !result.IsSuccess ? ApiControllerHandleResult(result): NoContent();
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpPut("v1/tasktypes/{id}/deactivate")]
         public async Task<IActionResult> Deactivate(Guid id)
         {

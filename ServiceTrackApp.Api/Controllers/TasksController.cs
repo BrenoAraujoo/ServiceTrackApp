@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceTrackApp.Application.InputViewModel.Task;
 using ServiceTrackApp.Application.Interfaces.Domain;
 using ServiceTrackApp.Domain.Filters;
@@ -16,7 +17,7 @@ namespace ServiceTrackApp.Api.Controllers
         {
             _tasksService = tasksService;
         }
-        
+        [Authorize]
         [HttpGet("v1/tasks")]
         public async Task<IActionResult> GetTasks([FromQuery] TasksFilter filter,
             [FromQuery] PaginationRequest pagination)
@@ -25,14 +26,15 @@ namespace ServiceTrackApp.Api.Controllers
             return Ok(result);
         }
 
-
+        [Authorize]
         [HttpGet("v1/tasks/{id}")]
         public async Task<IActionResult> GetTaskById(Guid id)
         {
             var result = await _tasksService.GetById(id);
             return Ok(result);
         }
-
+        
+        [Authorize(Roles = "Admin")]
         [HttpPost("v1/tasks")]
         public async Task<IActionResult> Create([FromBody] CreateTaskModel taskInput)
         {
@@ -49,13 +51,14 @@ namespace ServiceTrackApp.Api.Controllers
             return Ok(userTasks);
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpPut("v1/tasks/{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateTaskModel inputTask)
         {
             var result = await _tasksService.Update(id, inputTask);
             return !result.IsSuccess? ApiControllerHandleResult(result) : NoContent();
         }
- 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("v1/tasks/{id}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
