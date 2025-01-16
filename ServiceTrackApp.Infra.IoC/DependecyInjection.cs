@@ -17,8 +17,7 @@ namespace ServiceTrackApp.Infra.IoC
             (this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>
-                (options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), 
+                (options => options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"), 
                 b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             
             services.AddScoped<ITasksRepository, TasksRepository>();

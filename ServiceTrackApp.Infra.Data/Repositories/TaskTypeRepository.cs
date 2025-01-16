@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
-using Microsoft.Data.SqlClient;
 using ServiceTrackApp.Domain.Common.Erros;
 using ServiceTrackApp.Domain.CustomExceptions;
 using ServiceTrackApp.Domain.Entities;

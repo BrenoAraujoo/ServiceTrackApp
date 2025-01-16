@@ -7,7 +7,7 @@ namespace ServiceTrackApp.Infra.Data.Context
     {
         public ApplicationDbContext(DbContextOptions <ApplicationDbContext> options) : base(options)
         {
-            
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Tasks> Tasks { get; set; }
@@ -17,6 +17,7 @@ namespace ServiceTrackApp.Infra.Data.Context
         {
             base.OnModelCreating(builder);
             builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+            
             //builder.ApplyConfiguration<Service>(new Service());
 
         }
