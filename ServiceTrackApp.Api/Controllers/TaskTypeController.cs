@@ -6,6 +6,7 @@ using ServiceTrackApp.Application.Interfaces.Domain;
 using ServiceTrackApp.Domain.Filters;
 using ServiceTrackApp.Domain.Pagination;
 using ServiceTrackApp.Application.Extensions;
+using ServiceTrackApp.Application.Interfaces;
 
 namespace ServiceTrackApp.Api.Controllers
 {
@@ -14,10 +15,12 @@ namespace ServiceTrackApp.Api.Controllers
     {
         private readonly ITaskTypeService _taskTypeService;
         private readonly ITokenService _tokenService;
-        public TaskTypeController(ITaskTypeService taskTypeService, ITokenService tokenService)
+        private readonly IUserContextService _userContextService;
+        public TaskTypeController(ITaskTypeService taskTypeService, ITokenService tokenService, IUserContextService contextService)
         {
             _taskTypeService = taskTypeService;
             _tokenService = tokenService;
+            _userContextService = contextService;
         }
 
         [HttpGet("v1/tasktypes")]
@@ -36,13 +39,11 @@ namespace ServiceTrackApp.Api.Controllers
             return Ok(result);
 
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Manager")]
         [HttpPost("v1/tasktypes")]
         public async Task<IActionResult> Create([FromBody] CreateTaskTypeModel model)
         {
-            var token = HttpContext.Request.Headers["Bearer"].FirstOrDefault();
-            var principal = _tokenService.GetPrincipalFromExpiredToken(token);
-            var userId = principal.GetUserId();
+            var userId = _userContextService.GetUserId();
             
             var result = await _taskTypeService.Create(model, userId);
             return result.IsSuccess ?

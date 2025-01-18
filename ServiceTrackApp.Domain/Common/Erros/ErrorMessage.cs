@@ -62,7 +62,9 @@
 
         public const string InvalidEmailOrPassword = "Usuário ou senha inválidos";
         public const string InvalidRefreshToken = "Refresh Token está inválido ou vencido";
-        
+        public const string Unauthorized = "Acesso negado. Você não tem permissão para acessar este recurso.";
+        public const string NotAuthenticated = "Acesso negado. Você não está autenticado. Faça login novamente.";
+
         #endregion
     }
 }

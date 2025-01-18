@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ServiceTrackApp.Application.Exceptions;
 using ServiceTrackApp.Application.InputViewModel.Auth;
 using ServiceTrackApp.Application.InputViewModel.User;
+using ServiceTrackApp.Application.Interfaces;
 using ServiceTrackApp.Application.Interfaces.Auth;
 using ServiceTrackApp.Application.Interfaces.Domain;
 using ServiceTrackApp.Domain.Filters;
@@ -15,10 +15,12 @@ namespace ServiceTrackApp.Api.Controllers
     {
         private readonly IUserService _userService;
         private readonly IAuthService _authService;
-        public UsersController(IUserService userService, IAuthService authService)
+        private readonly IUserContextService _userContextService;
+        public UsersController(IUserService userService, IAuthService authService, IUserContextService userContextService)
         {
             _userService = userService;
             _authService = authService;
+            _userContextService = userContextService;
         }
 
 
@@ -30,7 +32,7 @@ namespace ServiceTrackApp.Api.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("v1/users/{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
@@ -51,7 +53,7 @@ namespace ServiceTrackApp.Api.Controllers
                 CreatedAtAction(nameof(Create), result);
         }
         
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPut("v1/users/{id:guid}")]
         public async Task<IActionResult> Update([FromRoute]Guid id, [FromBody]UpdateUserModel userInput)
         {

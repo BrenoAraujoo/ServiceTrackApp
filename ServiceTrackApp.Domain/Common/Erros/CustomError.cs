@@ -11,7 +11,8 @@
         private const int ValidationErrorCode = 2;
         private const int ConflictErrorCode = 3;
         private const int AuthenticationErrorCode = 4;
-        private const int ServerErrorCode = 5;
+        private const int AuthorizationErrorCode = 5;
+        private const int ServerErrorCode = 6;
         
         public static CustomError RecordNotFound(string message) => new (RecordNotFoundCode, message);
         public static CustomError ValidationError(string message) 
@@ -20,7 +21,7 @@
         public static CustomError Conflict (string message) => new (ConflictErrorCode, message);
 
         public static CustomError AuthenticationError(string message) => new (AuthenticationErrorCode, message);
-        
+        public static CustomError AuthorizationError(string message) => new (AuthorizationErrorCode, message);
         public static CustomError ServerError(string message) => new (ServerErrorCode, message);
     }
 }

@@ -14,6 +14,7 @@ namespace ServiceTrackApp.Api.Controllers
                 2 => BadRequest(result),
                 3 => Conflict(result),
                 4 => Unauthorized(result),
+                5 => Forbid(),
                 _ => StatusCode(500, "Internal Server Error")
 
             };

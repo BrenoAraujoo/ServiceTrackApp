@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ServiceTrackApp.Application.Interfaces;
 using ServiceTrackApp.Application.Interfaces.Auth;
 using ServiceTrackApp.Application.Interfaces.Domain;
+using ServiceTrackApp.Application.Services;
 using ServiceTrackApp.Application.Services.Auth;
 using ServiceTrackApp.Application.Services.Domain;
 using ServiceTrackApp.Domain.Interfaces;
@@ -34,6 +36,9 @@ namespace ServiceTrackApp.Infra.IoC
             services.AddScoped<IHashService, HashService>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IAuthService, AuthService>();
+            
+            services.AddHttpContextAccessor();
+            services.AddScoped<IUserContextService, UserContextService>();
 
             return services;
         }

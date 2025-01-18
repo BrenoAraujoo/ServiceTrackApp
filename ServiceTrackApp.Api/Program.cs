@@ -3,13 +3,14 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ServiceTrackApp.Api.ExceptionsHandlers;
 using ServiceTrackApp.Api.Middleware;
 using ServiceTrackApp.Infra.IoC;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+ConfigureServices();
 ConfigureSwagger();
 builder.Services.AddInfrastructure(builder.Configuration);
 ConfigureExceptionHandler();
@@ -27,10 +28,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+ConfigureCustomMiddlewares();
 app.UseExceptionHandler();
 app.UseCors("AllowSpecificOrigin");
 
-app.UseMiddleware<CustomAuthorizationMiddleware>();
 
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
@@ -40,6 +41,11 @@ app.UseAuthorization();
 
 app.Run();
 return;
+
+void ConfigureCustomMiddlewares()
+{
+    app.UseMiddleware<CustomAuthorizationMiddleware>();
+}
 
 void ConfigureSwagger()
 {
@@ -74,11 +80,6 @@ void ConfigureSwagger()
     
     });
 
-    builder.Services.AddControllers()
-        .ConfigureApiBehaviorOptions( options =>
-        {
-            options.SuppressModelStateInvalidFilter = true;
-        });
 }
 
 void ConfigureAuthorization()
@@ -123,7 +124,11 @@ void ConfigureCors()
 /// <returns></returns>
 void ConfigureExceptionHandler()
 {
-    builder.Services.AddExceptionHandler<NotFoundExceptionHandler>();
-    builder.Services.AddExceptionHandler<BadRequestExceptionHandler>();
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+}
+
+void ConfigureServices()
+{
+    builder.Services.AddControllers()
+        .ConfigureApiBehaviorOptions(options => { options.SuppressModelStateInvalidFilter = true; });
 }
