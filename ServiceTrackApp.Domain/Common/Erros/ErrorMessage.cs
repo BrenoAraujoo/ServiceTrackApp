@@ -66,5 +66,9 @@
         public const string NotAuthenticated = "Acesso negado. Você não está autenticado. Faça login novamente.";
 
         #endregion
+
+        #region BlobUploadService
+        public const string UploadImageError = "Erro ao efetuar o upload da imagem. Tente novamente.";
+        #endregion
     }
 }

@@ -37,6 +37,8 @@ namespace ServiceTrackApp.Infra.IoC
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IAuthService, AuthService>();
             
+            services.AddTransient<IBlobStorageService, BlobStorageService>();
+            
             services.AddHttpContextAccessor();
             services.AddScoped<IUserContextService, UserContextService>();
 

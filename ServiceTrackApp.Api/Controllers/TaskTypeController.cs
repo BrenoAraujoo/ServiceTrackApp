@@ -22,7 +22,7 @@ namespace ServiceTrackApp.Api.Controllers
             _tokenService = tokenService;
             _userContextService = contextService;
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpGet("v1/tasktypes")]
         public async Task<IActionResult> GetAll([FromQuery] TaskTypeFilter filter, [FromQuery] PaginationRequest paginationRequest)
         {
@@ -30,16 +30,14 @@ namespace ServiceTrackApp.Api.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpGet("v1/tasktypes/{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var result = await _taskTypeService.GetById(id);
-            if (!result.IsSuccess)
-                return ApiControllerHandleResult(result);
-            return Ok(result);
-
+            return !result.IsSuccess ? ApiControllerHandleResult(result) : Ok(result);
         }
+        
         [Authorize(Roles = "Admin,Manager")]
         [HttpPost("v1/tasktypes")]
         public async Task<IActionResult> Create([FromBody] CreateTaskTypeModel model)
