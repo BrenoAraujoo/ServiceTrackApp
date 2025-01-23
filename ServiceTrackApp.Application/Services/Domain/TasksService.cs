@@ -65,7 +65,10 @@ namespace ServiceTrackApp.Application.Services.Domain
                     taskInput.UserId,
                     taskInput.UserToId,
                     taskInput.Description,
-                    userTo?.Active ?? false);
+                    userTo?.Active ?? false,
+                    taskInput.Priority,
+                    taskInput.Status,
+                    taskInput.CustomerId);
 
                 await _tasksRepository.CreateAsync(taskDomain);
                 var taskModel = TasksViewModel.ToViewModel(taskDomain);

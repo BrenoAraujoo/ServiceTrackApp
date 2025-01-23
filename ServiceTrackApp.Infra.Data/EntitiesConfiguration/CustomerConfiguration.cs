@@ -16,9 +16,13 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             .ValueGeneratedNever();
         
         builder.Property(x => x.Name)
-            .IsRequired(false)
+            .IsRequired()
             .HasColumnType("varchar(100)")
             .HasMaxLength(100);
+
+        builder.HasMany(c => c.Tasks)
+            .WithOne(t => t.Customer)
+            .HasForeignKey(t => t.CustomerId);
         
         //Value objects
         builder.OwnsOne(x => x.Address, address =>

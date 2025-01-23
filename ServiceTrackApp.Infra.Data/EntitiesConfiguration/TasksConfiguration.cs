@@ -19,7 +19,7 @@ namespace ServiceTrackApp.Infra.Data.EntitiesConfiguration
                 .OnDelete(DeleteBehavior.Restrict);
             
             builder.HasOne(x=> x.Customer)
-                .WithMany()
+                .WithMany(c => c.Tasks)
                 .HasForeignKey(x => x.CustomerId)
                 .OnDelete(DeleteBehavior.Restrict);
             

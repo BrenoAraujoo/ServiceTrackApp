@@ -10,6 +10,8 @@ public class Customer : BaseEntity
     public SmartPhoneNumber? SmartPhoneNumber { get; private set; }
     public Address Address { get; private set; }
 
+    public IReadOnlyCollection<Tasks> Tasks { get; private set; } = new List<Tasks>();
+    protected  Customer() { }
     public Customer(Guid id, string name, Email email, SmartPhoneNumber? smartPhoneNumber, Address address)
     {
         Id = id;
