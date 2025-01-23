@@ -27,25 +27,27 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         //Value objects
         builder.OwnsOne(x => x.Address, address =>
         {
-            address.Property(x => x.Street).IsRequired().HasMaxLength(100);
-            address.Property(x => x.City).IsRequired().HasMaxLength(40);
-            address.Property(x => x.Country).IsRequired().HasMaxLength(30);
-            address.Property(x => x.PostalCode).IsRequired().HasMaxLength(8);
-            address.Property(x => x.State).IsRequired().HasMaxLength(30);
+            address.Property(x => x.Street).IsRequired().HasMaxLength(100).HasColumnName("Street");
+            address.Property(x => x.City).IsRequired().HasMaxLength(40).HasColumnName("City");
+            address.Property(x => x.Country).IsRequired().HasMaxLength(30).HasColumnName("Country");
+            address.Property(x => x.PostalCode).IsRequired().HasMaxLength(8).HasColumnName("PostalCode");
+            address.Property(x => x.State).IsRequired().HasMaxLength(30).HasColumnName("State");
         });
 
         builder.OwnsOne(x => x.Email, email =>
         {
             email.Property(e => e.Value)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(50)
+                .HasColumnName("Email");
         });
         
         builder.OwnsOne(x => x.SmartPhoneNumber, phone =>
         {
             phone.Property(x => x.Value)
                 .IsRequired(false)
-                .HasMaxLength(11);
+                .HasMaxLength(11)
+                .HasColumnName("SmartPhoneNumber");
         });
 
     }
