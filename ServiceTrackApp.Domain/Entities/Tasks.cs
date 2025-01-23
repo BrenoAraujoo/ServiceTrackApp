@@ -1,4 +1,6 @@
 ﻿using ServiceTrackApp.Domain.Common.Erros;
+using ServiceTrackApp.Domain.Enums;
+using ServiceTrackApp.Domain.ValueObjects;
 
 namespace ServiceTrackApp.Domain.Entities
 {
@@ -10,18 +12,32 @@ namespace ServiceTrackApp.Domain.Entities
         public Guid TaskTypeId{ get; private set; }
         public TaskType TaskType { get; private set; }
         public Guid UserId { get; private set; }
-       
         public Guid? UserToId{ get; private  set; }
         public string? Description { get; private set; }
+        public Priority Priority { get; private set; }
+        public Status Status { get; private set; }
+        public Guid CustomerId { get; set; }
+        public Customer Customer { get; private set; } // Ef nav property
         public User User { get; private set; } // EF nav property
         protected Tasks(){}
 
-        public Tasks(Guid taskTypeId,Guid userFromId, Guid? userToId, string? description, bool isUserActive)
+        public Tasks(
+            Guid taskTypeId,
+            Guid userFromId,
+            Guid? userToId, 
+            string? description, 
+            bool isUserActive,
+            Priority priority,
+            Status status,
+            Guid customerId)
         {
             TaskTypeId = taskTypeId;
             UserId = userFromId;
             SetUserToId(userToId, isUserActive);
             SetDescription(description);
+            Priority = priority;
+            Status = status;
+            CustomerId = customerId;
         }
 
         public void Update(Guid? userToId, bool isUserActive, string? description)

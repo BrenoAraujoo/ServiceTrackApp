@@ -56,6 +56,8 @@
 
         public const string InvalidJobPosition = "O cargo deve ter no máximo 40 caracteres.";
 
+        public const string InvalidPostalCode = "O CEP está inválido ou vazio";
+
         #endregion
 
         #region Auth messages

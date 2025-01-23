@@ -3,7 +3,7 @@ using ServiceTrackApp.Domain.Common.Erros;
 
 namespace ServiceTrackApp.Domain.ValueObjects;
 
-public class Password : ValueObject
+public record Password : ValueObject
 {
 
     public string Value { get; set; }

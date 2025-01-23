@@ -3,7 +3,7 @@ using ServiceTrackApp.Domain.Common.Erros;
 
 namespace ServiceTrackApp.Domain.ValueObjects;
 
-public class Email : ValueObject
+public record Email : ValueObject
 {
     public string Value { get; private set; }
 
@@ -18,7 +18,7 @@ public class Email : ValueObject
     public override bool IsValid(object value)
     {
         var valueString = value as string;
-        if (valueString.Length is > 40 or < 8)
+        if (valueString.Length is > 50 or < 8)
             return false;
 
         string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";

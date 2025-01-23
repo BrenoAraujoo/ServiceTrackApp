@@ -2,7 +2,7 @@
 
 namespace ServiceTrackApp.Domain.ValueObjects;
 
-public class JobPosition : ValueObject
+public record JobPosition : ValueObject
 {
     public string? Value { get; set; }
 

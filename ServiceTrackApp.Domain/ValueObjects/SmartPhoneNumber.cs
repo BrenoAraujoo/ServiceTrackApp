@@ -3,7 +3,7 @@ using ServiceTrackApp.Domain.Common.Erros;
 
 namespace ServiceTrackApp.Domain.ValueObjects;
 
-public class SmartPhoneNumber : ValueObject
+public record SmartPhoneNumber : ValueObject
 {
     public string? Value { get; private set; }
 
