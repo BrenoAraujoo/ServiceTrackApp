@@ -105,13 +105,17 @@ namespace ServiceTrackApp.Application.Services.Domain
                 parsedRole
                 : (Role?)null;
             
+            var jobPosition = !string.IsNullOrWhiteSpace(updateUserModel.JobPosition)?
+                new JobPosition(updateUserModel.JobPosition)
+                : null;
+            
             try
             {
                 userEntity.Update(
                     updateUserModel.Name,
                     email,
                     updateUserModel.SmartPhoneNumber, 
-                    updateUserModel.JobPosition,
+                    jobPosition,
                     role);
 
                 if (updateUserModel.Password is not null)
@@ -203,14 +207,14 @@ namespace ServiceTrackApp.Application.Services.Domain
         }
         
         
-        public User CreateUser(CreateUserModel userModel)
+        private User CreateUser(CreateUserModel userModel)
         {
             return new User(
                 userModel.Name,
                 new Email(userModel.Email),
                 userModel.Password, 
                 ParseRole(userModel.Role),
-                userModel.JobPosition,
+                new JobPosition(userModel.JobPosition),
                 userModel.SmartPhoneNumber);
         }
         private Role ParseRole(string role)

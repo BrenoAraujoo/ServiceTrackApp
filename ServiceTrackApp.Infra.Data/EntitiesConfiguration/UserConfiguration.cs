@@ -36,10 +36,13 @@ namespace ServiceTrackApp.Infra.Data.EntitiesConfiguration
                 .HasConversion<byte>()
                 .IsRequired();
 
-            builder.Property(u => u.JobPosition)
-                .HasMaxLength(40)
-                .IsRequired(false);
-            
+            builder.OwnsOne(x => x.JobPosition, jobPosition =>
+            {
+                jobPosition.Property(x => x.Value)
+                    .HasMaxLength(40)
+                    .IsRequired(false)
+                    .HasColumnName("JobPosition");
+            });
             
             builder
                 .HasMany(x => x.Tasks)

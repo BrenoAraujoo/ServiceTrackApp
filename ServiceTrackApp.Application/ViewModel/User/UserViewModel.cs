@@ -18,7 +18,7 @@
                 Name = user.Name,
                 Email = user.Email.Value,
                 SmartPhoneNumber = user.SmartPhoneNumber,
-                JobPosition = user.JobPosition,
+                JobPosition = user.JobPosition.Value,
                 Active = user.Active,
                 Role = user.Role.ToString()
                 

@@ -2,23 +2,15 @@
 
 namespace ServiceTrackApp.Domain.ValueObjects;
 
-public record JobPosition : ValueObject
+public record JobPosition
 {
-    public string? Value { get; set; }
+    private const int MaxLength = 40;
+    public string? Value { get; private set; }
 
     public JobPosition(string? value)
     {
-        if(!string.IsNullOrEmpty(value) && !IsValid(value))
+        if(!string.IsNullOrWhiteSpace(value) && value.Length > MaxLength)
             throw new ArgumentException(ErrorMessage.InvalidJobPosition);
         Value = value;
     }
-    
-    public override bool IsValid(object value)
-    {
-        if (value is not string valueString) return false;
-        return valueString.Length is <= 40;
-    }
-    
-
-    
 }

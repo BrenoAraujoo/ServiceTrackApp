@@ -15,21 +15,21 @@ namespace ServiceTrackApp.Domain.Entities
         public DateTime? RefreshTokenExpiresAt { get; private set; }
         public string? SmartPhoneNumber { get; private set; }
         public bool Active { get; private set; }
-        public string? JobPosition { get; private set; }
+        public JobPosition? JobPosition { get; private set; }
         public Role Role { get; private set; } // EF navigation property
 
         // ORM constructor
         public User() { }
 
         public User(string name, Email email, string password, Role role, 
-            string? jobPosition = null, string? smartPhoneNumber = null)
+            JobPosition? jobPosition = null, string? smartPhoneNumber = null)
         {
             SetName(name);
             Email = email;
             PasswordHash = new Password(password).Value;
             SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber).Value;
             SetUserRole(role);
-            JobPosition = new JobPosition(jobPosition).Value;
+            JobPosition = jobPosition;
             Active = true;
         }
 
@@ -53,7 +53,7 @@ namespace ServiceTrackApp.Domain.Entities
             string? name = null,
             Email? email = null,
             string? smartPhoneNumber = null,
-            string? jobPosition = null,
+            JobPosition? jobPosition = null,
             Role? role = null)
         {
             if (name != null) UpdateName(name);
@@ -112,9 +112,9 @@ namespace ServiceTrackApp.Domain.Entities
             SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber).Value;
         }
 
-        private void UpdateJobPosition(string? jobPosition)
+        private void UpdateJobPosition(JobPosition? jobPosition)
         {
-            JobPosition = new JobPosition(jobPosition).Value;
+            JobPosition = jobPosition;
         }
     }
 }
