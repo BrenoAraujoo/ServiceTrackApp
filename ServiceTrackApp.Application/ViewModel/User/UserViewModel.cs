@@ -8,7 +8,7 @@
         public string SmartPhoneNumber { get; set; }
         public string? JobPosition { get; set; }
         public bool Active { get; set; }
-        public string UserRole { get; set; }
+        public string Role { get; set; }
 
         public static UserViewModel ToViewModel(Domain.Entities.User user)
         {
@@ -20,7 +20,7 @@
                 SmartPhoneNumber = user.SmartPhoneNumber,
                 JobPosition = user.JobPosition,
                 Active = user.Active,
-                UserRole = user.Role.ToString()
+                Role = user.Role.ToString()
                 
             };
         }

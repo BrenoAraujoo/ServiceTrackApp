@@ -21,14 +21,14 @@ namespace ServiceTrackApp.Domain.Entities
         // ORM constructor
         public User() { }
 
-        public User(string name, Email email, string password, Role userRole, 
+        public User(string name, Email email, string password, Role role, 
             string? jobPosition = null, string? smartPhoneNumber = null)
         {
             SetName(name);
             Email = email;
             PasswordHash = new Password(password).Value;
             SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber).Value;
-            SetUserRole(userRole);
+            SetUserRole(role);
             JobPosition = new JobPosition(jobPosition).Value;
             Active = true;
         }
@@ -54,13 +54,13 @@ namespace ServiceTrackApp.Domain.Entities
             Email? email = null,
             string? smartPhoneNumber = null,
             string? jobPosition = null,
-            Role? userRole = null)
+            Role? role = null)
         {
             if (name != null) UpdateName(name);
             if (email != null) UpdateEmail(email);
             if (smartPhoneNumber != null) UpdateSmartPhoneNumber(smartPhoneNumber);
             if (jobPosition != null) UpdateJobPosition(jobPosition);
-            if (userRole.HasValue) SetUserRole(userRole.Value);
+            if (role.HasValue) SetUserRole(role.Value);
             base.Update();
         }
 
@@ -88,7 +88,7 @@ namespace ServiceTrackApp.Domain.Entities
             Role = role;
         }
 
-        public void UpdateEmail(Email newEmail)
+        private void UpdateEmail(Email newEmail)
         {
             Email = newEmail;
         }

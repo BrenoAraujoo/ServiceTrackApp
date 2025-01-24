@@ -11,22 +11,7 @@ namespace ServiceTrackApp.Application.InputViewModel.User
         string? Email,
         string? SmartPhoneNumber,
         string? JobPosition,
-        string? UserRole,
+        string? Role,
         string? Password
-    )
-    {
-        public Domain.Entities.User ToDomain()
-        {
-            if(!Enum.TryParse(UserRole, out Role role))
-                throw new ArgumentException(ErrorMessage.UserRoleNotFound);
-            
-            return new Domain.Entities.User(
-                Name ?? string.Empty,
-                new Email(Email ?? string.Empty),
-                Password ?? string.Empty,
-                role,
-                JobPosition ?? string.Empty,
-                SmartPhoneNumber?? string.Empty);
-        }
-    }
+    );
 }
