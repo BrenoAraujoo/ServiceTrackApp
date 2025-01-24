@@ -3,26 +3,19 @@ using ServiceTrackApp.Domain.Common.Erros;
 
 namespace ServiceTrackApp.Domain.ValueObjects;
 
-public record Email : ValueObject
+public record Email
 {
+    private const string Pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+    private const int MinLength = 5;
+    private const int MaxLength = 50;
     public string Value { get; private set; }
-
-
+    
     public Email(string value)
     {
-        if (string.IsNullOrEmpty(value)|| !IsValid(value))
+        if (string.IsNullOrEmpty(value)|| !Regex.IsMatch(value, Pattern))
             throw new ArgumentException(ErrorMessage.InvalidEmail);
+        if(value.Length is > MaxLength or < MinLength)
+            throw new ArgumentException(ErrorMessage.InvalidEmailLeght);
         Value = value;
     }
-
-    public override bool IsValid(object value)
-    {
-        var valueString = value as string;
-        if (valueString.Length is > 50 or < 8)
-            return false;
-
-        string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-        return Regex.IsMatch(valueString, pattern);
-    }
-    
 }

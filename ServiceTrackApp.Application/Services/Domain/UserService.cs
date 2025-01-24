@@ -63,8 +63,12 @@ namespace ServiceTrackApp.Application.Services.Domain
             
             try
             {
+                var userEntity = userInput.ToDomain();
+                
+                /*
                 var userEntity = new User(userInput.Name, userInput.Email,
                     userInput.Password, userInput.UserRole, userInput.JobPosition, userInput.SmartPhoneNumber);
+                */
 
                 var passwordHash = _hashService.Hash(userInput.Password);
                 if (!passwordHash.IsSuccess)
@@ -89,14 +93,15 @@ namespace ServiceTrackApp.Application.Services.Domain
 
         public async Task<Result> Update(Guid id, UpdateUserModel userInput)
         {
+            var userInputDomain = userInput.ToDomain();
             var userEntity = await _userRepository.GetByIdAsync(id);
             if (userEntity is null)
                 return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
             
             try
             {
-                userEntity.Update(userInput.Name, userInput.Email, userInput.SmartPhoneNumber, 
-                    userInput.JobPosition, userInput.UserRole);
+                userEntity.Update(userInputDomain.Name, userInputDomain.Email, userInputDomain.SmartPhoneNumber, 
+                    userInputDomain.JobPosition, userInputDomain.Role);
 
                 if (userInput.Password is not null)
                 {

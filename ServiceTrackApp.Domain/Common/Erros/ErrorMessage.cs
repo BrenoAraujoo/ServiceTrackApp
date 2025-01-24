@@ -51,6 +51,7 @@
         public const string InvalidPhone = "O campo  obrigatório 'telefone' não foi enviado ou está em um formato inválido. " +
                                                      "Verifique o formato e o tamanho, que deve possui 11 digitos.";
         public const string InvalidEmail = "O campo obrigatório 'email' não foi enviado ou está em um formato inválido.";
+        public const string InvalidEmailLeght = "O campo 'email' deve ter entre 8 e 50 caracteres.";
         
         public const string InvalidPassword = "O campo obrigatório 'senha' não foi enviado ou está em um formato inválido.";
 

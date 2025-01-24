@@ -16,7 +16,7 @@
             {
                 Id = user.Id,
                 Name = user.Name,
-                Email = user.Email,
+                Email = user.Email.Value,
                 SmartPhoneNumber = user.SmartPhoneNumber,
                 JobPosition = user.JobPosition,
                 Active = user.Active,

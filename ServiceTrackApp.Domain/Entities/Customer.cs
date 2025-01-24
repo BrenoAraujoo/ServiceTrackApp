@@ -1,10 +1,10 @@
-﻿using ServiceTrackApp.Domain.ValueObjects;
+﻿using ServiceTrackApp.Domain.Interfaces;
+using ServiceTrackApp.Domain.ValueObjects;
 
 namespace ServiceTrackApp.Domain.Entities;
 
-public class Customer : BaseEntity
+public class Customer : BaseEntity, IEntityActivable
 {
-    public Guid Id { get; private set; }
     public string Name { get; private set; }
     public Email Email { get; private set; }
     public SmartPhoneNumber? SmartPhoneNumber { get; private set; }
@@ -12,12 +12,21 @@ public class Customer : BaseEntity
 
     public IReadOnlyCollection<Tasks> Tasks { get; private set; } = new List<Tasks>();
     protected  Customer() { }
-    public Customer(Guid id, string name, Email email, SmartPhoneNumber? smartPhoneNumber, Address address)
+    public Customer(string name, Email email, SmartPhoneNumber? smartPhoneNumber, Address address)
     {
-        Id = id;
         Name = name;
         Email = email;
         SmartPhoneNumber = smartPhoneNumber;
         Address = address;
+    }
+
+    public void Activate()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Deactivate()
+    {
+        throw new NotImplementedException();
     }
 }

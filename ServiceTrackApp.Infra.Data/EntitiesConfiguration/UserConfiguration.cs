@@ -11,10 +11,18 @@ namespace ServiceTrackApp.Infra.Data.EntitiesConfiguration
             //Primary Key
             builder.HasKey(x => x.Id);
             builder.ToTable("users");
+            
             builder.Property(x => x.Name).HasMaxLength(50)
                 .IsRequired();
-            builder.Property(x => x.Email).HasMaxLength(40)
-                .IsRequired();
+            
+            builder.OwnsOne(x => x.Email, email =>
+            {
+                email.Property(x => x.Value)
+                    .HasMaxLength(40)
+                    .IsRequired()
+                    .HasColumnName("Email");
+            });
+            
             builder.Property(x => x.PasswordHash).HasMaxLength(100)
                 .IsRequired();
             builder.Property(x => x.RefreshTokenHash).HasMaxLength(100);

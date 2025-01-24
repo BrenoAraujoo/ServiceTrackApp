@@ -9,7 +9,7 @@ namespace ServiceTrackApp.Domain.Entities
     {
         public string Name { get; private set; }
         public IReadOnlyCollection<Tasks> Tasks { get; private set; } = new List<Tasks>();
-        public string Email { get; private set; }
+        public Email Email { get; private set; }
         public string PasswordHash { get; private set; }
         public string? RefreshTokenHash { get; private set; }
         public DateTime? RefreshTokenExpiresAt { get; private set; }
@@ -21,11 +21,11 @@ namespace ServiceTrackApp.Domain.Entities
         // ORM constructor
         public User() { }
 
-        public User(string name, string email, string password, string userRole, 
+        public User(string name, Email email, string password, Role userRole, 
             string? jobPosition = null, string? smartPhoneNumber = null)
         {
             SetName(name);
-            Email = new Email(email).Value;
+            Email = email;
             PasswordHash = new Password(password).Value;
             SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber).Value;
             SetUserRole(userRole);
@@ -51,16 +51,16 @@ namespace ServiceTrackApp.Domain.Entities
 
         public void Update(
             string? name = null,
-            string? email = null,
+            Email? email = null,
             string? smartPhoneNumber = null,
             string? jobPosition = null,
-            string? userRole = null)
+            Role? userRole = null)
         {
             if (name != null) UpdateName(name);
             if (email != null) UpdateEmail(email);
             if (smartPhoneNumber != null) UpdateSmartPhoneNumber(smartPhoneNumber);
             if (jobPosition != null) UpdateJobPosition(jobPosition);
-            if (userRole != null) SetUserRole(userRole);
+            if (userRole.HasValue) SetUserRole(userRole.Value);
             base.Update();
         }
 
@@ -81,17 +81,16 @@ namespace ServiceTrackApp.Domain.Entities
             RefreshTokenExpiresAt = newRefreshTokenExpiresAt;
         }
 
-        private void SetUserRole(string role)
+        private void SetUserRole(Role role)
         {
-            if (!Enum.TryParse<Role>(role, out var roleEnum))
+            if (!Enum.IsDefined(typeof(Role), role))
                 throw new ArgumentException(ErrorMessage.UserRoleNotFound);
-
-            Role = roleEnum;
+            Role = role;
         }
 
-        public void UpdateEmail(string newEmail)
+        public void UpdateEmail(Email newEmail)
         {
-            Email = new Email(newEmail).Value;
+            Email = newEmail;
         }
 
         private void SetName(string name)

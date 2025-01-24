@@ -21,7 +21,7 @@ namespace ServiceTrackApp.Infra.Data.Repositories
         public async Task<TaskType> CreateAsync(TaskType taskType)
         {
             _context.Add(taskType);
-            var result = await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return taskType;
         }
 

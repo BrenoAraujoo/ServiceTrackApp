@@ -20,7 +20,7 @@ namespace ServiceTrackApp.Infra.Data.Repositories
         public async Task<User> CreateAsync(User user)
         {
             _context.Add(user);
-            var result = await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return user;
         }
 
@@ -32,7 +32,7 @@ namespace ServiceTrackApp.Infra.Data.Repositories
             
             //TODO Tratar Order By usando propriedades inexistentes, para evitar erro.
             query = !string.IsNullOrEmpty(paginationRequest.OrderBy) ? query.OrderBy(paginationRequest.OrderBy) :
-                query.OrderBy(x => x.Email);
+                query.OrderBy(x => x.Email.Value);
 
             
             return await PaginationHelper.ToPagedListAsync(query, paginationRequest.PageNumber, paginationRequest.PageSize);
@@ -52,7 +52,7 @@ namespace ServiceTrackApp.Infra.Data.Repositories
         {
             var user = await _context.Users
                 .AsNoTracking()
-                .SingleOrDefaultAsync(user => user.Email==email);
+                .SingleOrDefaultAsync(user => user.Email.Value==email);
             return user;
         }
 
