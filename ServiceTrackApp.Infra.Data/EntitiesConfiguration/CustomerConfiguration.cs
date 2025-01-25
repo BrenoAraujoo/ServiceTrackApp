@@ -14,6 +14,10 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
 
         builder.Property(x => x.Id)
             .ValueGeneratedNever();
+
+        builder.HasMany(x => x.Contacts)
+            .WithOne(c => c.Customer);
+            
         
         builder.Property(x => x.Name)
             .IsRequired()
@@ -45,9 +49,17 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.OwnsOne(x => x.SmartPhoneNumber, phone =>
         {
             phone.Property(x => x.Value)
-                .IsRequired(false)
+                .IsRequired()
                 .HasMaxLength(11)
                 .HasColumnName("SmartPhoneNumber");
+        });
+
+        builder.OwnsOne(x => x.CpfCnpj, cpfCnpj =>
+        {
+            cpfCnpj.Property(x => x.Value)
+                .IsRequired()
+                .HasMaxLength(14)
+                .HasColumnName("CpfCnpj");
         });
 
     }

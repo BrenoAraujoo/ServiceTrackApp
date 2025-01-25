@@ -2,7 +2,7 @@
 
 namespace ServiceTrackApp.Domain.Entities;
 
-public class Contacts : BaseEntity
+public class Contact : BaseEntity
 {
     public string Name { get; private set; }
     public JobPosition? JobPosition { get; private set; }
@@ -11,7 +11,9 @@ public class Contacts : BaseEntity
     public Guid CustomerId  { get; private set; }
     public Customer Customer { get; private set; } // Ef nav prop
 
-    public Contacts(string name, JobPosition? jobPosition, Email? email, SmartPhoneNumber smartPhoneNumber, Guid customerId, Customer customer)
+    protected Contact() { } // Ef default constructor
+
+    public Contact(string name, JobPosition? jobPosition, Email? email, SmartPhoneNumber smartPhoneNumber, Guid customerId, Customer customer)
     {
         Name = name;
         JobPosition = jobPosition;
