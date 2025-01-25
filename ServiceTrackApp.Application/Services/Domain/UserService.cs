@@ -71,7 +71,7 @@ namespace ServiceTrackApp.Application.Services.Domain
                 if (!passwordHash.IsSuccess)
                     return Result.Failure(CustomError.Conflict(ErrorMessage.UserErrorPasswordHash));
                 
-                userEntity.SetPassword(passwordHash.Data);
+                userEntity.SetPassword(new Password(passwordHash.Data));
 
                 await _userRepository.CreateAsync(userEntity);
                 var userModel = UserViewModel.ToViewModel(userEntity);
@@ -99,14 +99,14 @@ namespace ServiceTrackApp.Application.Services.Domain
                 new Email(updateUserModel.Email) :
                 null;
             
-            var role = !string.IsNullOrWhiteSpace(updateUserModel.Role) &&
-                       Enum.TryParse(updateUserModel.Role, true, out Role parsedRole) &&
-                       Enum.IsDefined(typeof(Role), parsedRole) ?
-                parsedRole
-                : (Role?)null;
+            var role = RoleExtensions.ParseOrNull(updateUserModel.Role);
             
             var jobPosition = !string.IsNullOrWhiteSpace(updateUserModel.JobPosition)?
                 new JobPosition(updateUserModel.JobPosition)
+                : null;
+
+            var smartPhoneNumber = !string.IsNullOrWhiteSpace(updateUserModel.SmartPhoneNumber)
+                ? new SmartPhoneNumber(updateUserModel.SmartPhoneNumber)
                 : null;
             
             try
@@ -114,7 +114,7 @@ namespace ServiceTrackApp.Application.Services.Domain
                 userEntity.Update(
                     updateUserModel.Name,
                     email,
-                    updateUserModel.SmartPhoneNumber, 
+                    smartPhoneNumber, 
                     jobPosition,
                     role);
 
@@ -124,7 +124,7 @@ namespace ServiceTrackApp.Application.Services.Domain
                     if (!passwordHash.IsSuccess)
                         return Result.Failure(CustomError.Conflict(ErrorMessage.UserErrorPasswordHash));
                 
-                    userEntity.SetPassword(passwordHash.Data);
+                    userEntity.SetPassword(new Password(passwordHash.Data));
                 }
 
                 await _userRepository.UpdateAsync(userEntity);
@@ -212,16 +212,11 @@ namespace ServiceTrackApp.Application.Services.Domain
             return new User(
                 userModel.Name,
                 new Email(userModel.Email),
-                userModel.Password, 
-                ParseRole(userModel.Role),
+                new Password(userModel.Password), 
+                RoleExtensions.ParseRole(userModel.Role), 
                 new JobPosition(userModel.JobPosition),
-                userModel.SmartPhoneNumber);
+                new SmartPhoneNumber(userModel.SmartPhoneNumber));
         }
-        private Role ParseRole(string role)
-        {
-            if(!Enum.TryParse(role, out Role parsedRole))
-                throw new ArgumentException(ErrorMessage.UserRoleNotFound);
-            return parsedRole;
-        }
+
     }
 }

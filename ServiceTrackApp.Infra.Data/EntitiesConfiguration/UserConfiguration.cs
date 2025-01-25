@@ -15,6 +15,26 @@ namespace ServiceTrackApp.Infra.Data.EntitiesConfiguration
             builder.Property(x => x.Name).HasMaxLength(50)
                 .IsRequired();
             
+            builder.Property(x => x.RefreshTokenHash)
+                .HasMaxLength(100);
+            
+            builder.Property(x => x.Id)
+                .ValueGeneratedNever();
+            
+            // Configurar a conversão do enum Role para ser armazenado como int
+            builder.Property(u => u.Role)
+                .HasConversion<byte>()
+                .IsRequired();
+
+            // Configuracao de Value Objects
+            builder.OwnsOne(x => x.PasswordHash, password =>
+            {
+                password.Property(x => x.Value)
+                    .HasMaxLength(100)
+                    .IsRequired()
+                    .HasColumnName("PasswordHash");
+            });
+            
             builder.OwnsOne(x => x.Email, email =>
             {
                 email.Property(x => x.Value)
@@ -23,18 +43,13 @@ namespace ServiceTrackApp.Infra.Data.EntitiesConfiguration
                     .HasColumnName("Email");
             });
             
-            builder.Property(x => x.PasswordHash).HasMaxLength(100)
-                .IsRequired();
-            builder.Property(x => x.RefreshTokenHash).HasMaxLength(100);
-            builder.Property(x => x.SmartPhoneNumber).HasMaxLength(11)
-                .IsRequired(false);
-            builder.Property(x => x.Id)
-                .ValueGeneratedNever();
-            
-            // Configurar a conversão do enum Role para ser armazenado como int
-            builder.Property(u => u.Role)
-                .HasConversion<byte>()
-                .IsRequired();
+            builder.OwnsOne(x => x.SmartPhoneNumber, smartPhoneNumber =>
+            {
+                smartPhoneNumber.Property(x => x.Value)
+                    .HasMaxLength(11)
+                    .IsRequired(false)
+                    .HasColumnName("SmartPhoneNumber");
+            });
 
             builder.OwnsOne(x => x.JobPosition, jobPosition =>
             {

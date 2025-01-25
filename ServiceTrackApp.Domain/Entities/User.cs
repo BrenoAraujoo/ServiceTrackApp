@@ -1,4 +1,5 @@
-﻿using ServiceTrackApp.Domain.Common.Erros;
+﻿using System.Diagnostics;
+using ServiceTrackApp.Domain.Common.Erros;
 using ServiceTrackApp.Domain.Enums;
 using ServiceTrackApp.Domain.Interfaces;
 using ServiceTrackApp.Domain.ValueObjects;
@@ -10,10 +11,10 @@ namespace ServiceTrackApp.Domain.Entities
         public string Name { get; private set; }
         public IReadOnlyCollection<Tasks> Tasks { get; private set; } = new List<Tasks>();
         public Email Email { get; private set; }
-        public string PasswordHash { get; private set; }
+        public Password PasswordHash { get; private set; }
         public string? RefreshTokenHash { get; private set; }
         public DateTime? RefreshTokenExpiresAt { get; private set; }
-        public string? SmartPhoneNumber { get; private set; }
+        public SmartPhoneNumber? SmartPhoneNumber { get; private set; }
         public bool Active { get; private set; }
         public JobPosition? JobPosition { get; private set; }
         public Role Role { get; private set; } // EF navigation property
@@ -21,13 +22,13 @@ namespace ServiceTrackApp.Domain.Entities
         // ORM constructor
         public User() { }
 
-        public User(string name, Email email, string password, Role role, 
-            JobPosition? jobPosition = null, string? smartPhoneNumber = null)
+        public User(string name, Email email, Password password, Role role, 
+            JobPosition? jobPosition = null, SmartPhoneNumber? smartPhoneNumber = null)
         {
             SetName(name);
             Email = email;
-            PasswordHash = new Password(password).Value;
-            SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber).Value;
+            PasswordHash = password;
+            SmartPhoneNumber = smartPhoneNumber;
             SetUserRole(role);
             JobPosition = jobPosition;
             Active = true;
@@ -50,11 +51,11 @@ namespace ServiceTrackApp.Domain.Entities
         }
 
         public void Update(
-            string? name = null,
-            Email? email = null,
-            string? smartPhoneNumber = null,
-            JobPosition? jobPosition = null,
-            Role? role = null)
+            string? name,
+            Email? email,
+            SmartPhoneNumber? smartPhoneNumber,
+            JobPosition? jobPosition,
+            Role? role)
         {
             if (name != null) UpdateName(name);
             if (email != null) UpdateEmail(email);
@@ -64,7 +65,7 @@ namespace ServiceTrackApp.Domain.Entities
             base.Update();
         }
 
-        public void SetPassword(string newPassword)
+        public void SetPassword(Password newPassword)
         {
             PasswordHash = newPassword;
         }
@@ -107,9 +108,9 @@ namespace ServiceTrackApp.Domain.Entities
             SetName(name);
         }
 
-        private void UpdateSmartPhoneNumber(string? smartPhoneNumber)
+        private void UpdateSmartPhoneNumber(SmartPhoneNumber? smartPhoneNumber)
         {
-            SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber).Value;
+            SmartPhoneNumber = smartPhoneNumber;
         }
 
         private void UpdateJobPosition(JobPosition? jobPosition)

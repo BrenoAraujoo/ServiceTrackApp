@@ -12,9 +12,6 @@ namespace ServiceTrackApp.Application.InputViewModel.User
         string Password,
         string? JobPosition,
         string Role
-    )
-    {
-    }
-    
+    );
 
 }

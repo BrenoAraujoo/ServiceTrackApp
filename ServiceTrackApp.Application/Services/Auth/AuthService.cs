@@ -6,6 +6,7 @@ using ServiceTrackApp.Domain.Common.Erros;
 using ServiceTrackApp.Domain.Common.Result;
 using ServiceTrackApp.Domain.Entities;
 using ServiceTrackApp.Domain.Interfaces;
+using ServiceTrackApp.Domain.ValueObjects;
 
 namespace ServiceTrackApp.Application.Services.Auth;
 
@@ -26,8 +27,10 @@ public class AuthService : IAuthService
         var user = await _userRepository.GetByEmailAsync(loginModel.Email);
         if(user is null)
             return Result.Failure(CustomError.RecordNotFound(ErrorMessage.InvalidEmailOrPassword));
+       
+        var storedPassword = new Password(user.PasswordHash.Value, isHashed:true);
+        var checkPassword = _hashService.Verify(loginModel.Password, storedPassword.Value);
         
-        var checkPassword = _hashService.Verify(loginModel.Password, user.PasswordHash);
         if(!checkPassword.IsSuccess)
             return Result.Failure(CustomError.ValidationError(ErrorMessage.InvalidEmailOrPassword));
         
