@@ -20,9 +20,20 @@ public class CustomerRepository (ApplicationDbContext context) : ICustomerReposi
 
     public async Task<Customer> CreateAsync(Customer customer)
     {
-        context.Add(customer);
-        await context.SaveChangesAsync();
-        return customer;
+        await using var transaction = await context.Database.BeginTransactionAsync();
+        try
+        {
+            context.Customers.Add(customer);
+            await context.SaveChangesAsync();
+            await transaction.CommitAsync();
+            return customer;
+
+        }
+        catch (Exception e)
+        {
+            await transaction.RollbackAsync();
+            throw new Exception($"Creating customer failed: {e.Message}");
+        }
     }
 
     public Task<Customer> UpdateAsync(Customer trackedCustomer)

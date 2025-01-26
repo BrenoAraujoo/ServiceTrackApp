@@ -178,7 +178,7 @@ namespace ServiceTrackApp.Application.Services.Domain
             var user = await _userRepository.GetByIdAsync(id);
             if (user is null)
                 return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
-            var userTasks = await _tasksRepository.GetTasksByUserIdAsync(user.Id);
+            var userTasks = await _tasksRepository.GetByUserIdAsync(user.Id);
             if (userTasks.Count > 0)
                 return Result.Failure(CustomError.Conflict(ErrorMessage.UserCannotBeRemove));
             try
@@ -207,7 +207,7 @@ namespace ServiceTrackApp.Application.Services.Domain
         }
         
         
-        private User CreateUser(CreateUserModel userModel)
+        private static User CreateUser(CreateUserModel userModel)
         {
             return new User(
                 userModel.Name,

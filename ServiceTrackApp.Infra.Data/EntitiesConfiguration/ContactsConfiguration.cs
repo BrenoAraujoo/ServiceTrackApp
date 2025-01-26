@@ -20,7 +20,8 @@ public class ContactsConfiguration : IEntityTypeConfiguration<Contact>
         
         builder.HasOne(x => x.Customer)
             .WithMany(c => c.Contacts)
-            .HasForeignKey(x => x.CustomerId);
+            .HasForeignKey(x => x.CustomerId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         //Configure Value Objects
         builder.OwnsOne(x => x.SmartPhoneNumber, smartPhoneNumberBuilder =>

@@ -23,7 +23,11 @@ public class Customer : BaseEntity, IEntityActivable
         Address = address;
         CpfCnpj = cpfCnpj;
     }
-    
+
+    public void AddContact(Contact contact)
+    {
+        Contacts.Add(contact);
+    }
     public void Activate()
     {
         throw new NotImplementedException();

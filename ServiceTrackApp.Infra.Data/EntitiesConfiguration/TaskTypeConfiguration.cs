@@ -9,7 +9,7 @@ namespace ServiceTrackApp.Infra.Data.EntitiesConfiguration
         public void Configure(EntityTypeBuilder<TaskType> builder)
         {
             builder.HasKey(t => t.Id);
-            builder.ToTable("task_type");
+            builder.ToTable("task_types");
             builder.Property(t => t.Name)
                 .HasMaxLength(50)
                 .IsRequired();

@@ -39,7 +39,7 @@ namespace ServiceTrackApp.Application.Services.Domain
 
         public async Task<Result> GetTasksByUserId(Guid userId)
         {
-            var tasks = await _tasksRepository.GetTasksByUserIdAsync(userId);
+            var tasks = await _tasksRepository.GetByUserIdAsync(userId);
             var tasksViewModel = TasksViewModel.ToViewModel(tasks);
             return Result<List<TasksViewModel>>.Success(tasksViewModel);
         }

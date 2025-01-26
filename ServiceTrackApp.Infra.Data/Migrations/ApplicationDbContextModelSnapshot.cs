@@ -66,7 +66,7 @@ namespace ServiceTrackApp.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("customer", (string)null);
+                    b.ToTable("customers", (string)null);
                 });
 
             modelBuilder.Entity("ServiceTrackApp.Domain.Entities.TaskType", b =>
@@ -99,7 +99,7 @@ namespace ServiceTrackApp.Infra.Data.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.ToTable("task_type", (string)null);
+                    b.ToTable("task_types", (string)null);
                 });
 
             modelBuilder.Entity("ServiceTrackApp.Domain.Entities.Tasks", b =>
@@ -268,7 +268,7 @@ namespace ServiceTrackApp.Infra.Data.Migrations
 
                             b1.HasKey("CustomerId");
 
-                            b1.ToTable("customer");
+                            b1.ToTable("customers");
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
@@ -287,7 +287,7 @@ namespace ServiceTrackApp.Infra.Data.Migrations
 
                             b1.HasKey("CustomerId");
 
-                            b1.ToTable("customer");
+                            b1.ToTable("customers");
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
@@ -330,7 +330,7 @@ namespace ServiceTrackApp.Infra.Data.Migrations
 
                             b1.HasKey("CustomerId");
 
-                            b1.ToTable("customer");
+                            b1.ToTable("customers");
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
@@ -349,7 +349,7 @@ namespace ServiceTrackApp.Infra.Data.Migrations
 
                             b1.HasKey("CustomerId");
 
-                            b1.ToTable("customer");
+                            b1.ToTable("customers");
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");

@@ -25,11 +25,15 @@ namespace ServiceTrackApp.Infra.IoC
             services.AddScoped<ITasksRepository, TasksRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITaskTypeRepository, TaskTypeRepository>();
+            services.AddScoped<IContactRepository, ContactRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
             
           
             services.AddScoped<ITasksService, TasksService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITaskTypeService, TaskTypeService>();
+            services.AddScoped<IContactService, ContactService>();
+            services.AddScoped<ICustomerService, CustomerService>();
             
 
             //Auth

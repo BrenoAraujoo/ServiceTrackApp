@@ -1,8 +1,9 @@
-﻿using ServiceTrackApp.Domain.ValueObjects;
+﻿using ServiceTrackApp.Domain.Entities;
 
 namespace ServiceTrackApp.Application.InputViewModel.Customer;
 
 public record CustomerCreateModel(
+    string CpfCnpj,
     string Name,
     string Email,
     string? SmartPhoneNumber,
@@ -10,4 +11,5 @@ public record CustomerCreateModel(
     string City,
     string State,
     string Country,
-    string PostalCod);
+    string PostalCod,
+    List<Domain.Entities.Contact>? Contacts);

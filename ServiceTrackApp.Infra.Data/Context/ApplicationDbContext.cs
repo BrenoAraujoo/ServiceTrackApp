@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using ServiceTrackApp.Domain.Entities;
 
 namespace ServiceTrackApp.Infra.Data.Context
@@ -12,6 +13,8 @@ namespace ServiceTrackApp.Infra.Data.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Tasks> Tasks { get; set; }
         public DbSet<TaskType> TaskType { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

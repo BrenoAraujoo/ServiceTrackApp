@@ -13,13 +13,12 @@ public class Contact : BaseEntity
 
     protected Contact() { } // Ef default constructor
 
-    public Contact(string name, JobPosition? jobPosition, Email? email, SmartPhoneNumber smartPhoneNumber, Guid customerId, Customer customer)
+    public Contact(string name, JobPosition? jobPosition, Email? email, SmartPhoneNumber smartPhoneNumber, Guid customerId)
     {
         Name = name;
         JobPosition = jobPosition;
         Email = email;
         SmartPhoneNumber = smartPhoneNumber;
         CustomerId = customerId;
-        Customer = customer;
     }
 }
