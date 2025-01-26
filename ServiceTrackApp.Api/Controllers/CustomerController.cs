@@ -2,6 +2,8 @@
 using ServiceTrackApp.Application.InputViewModel.Customer;
 using ServiceTrackApp.Application.Interfaces.Domain;
 using ServiceTrackApp.Domain.Entities;
+using ServiceTrackApp.Domain.Filters;
+using ServiceTrackApp.Domain.Pagination;
 
 namespace ServiceTrackApp.Api.Controllers;
 
@@ -16,8 +18,16 @@ public class CustomerController : ApiControllerBase
     }
 
     [HttpPost("v1/customer")]
-    public IActionResult Create([FromBody] CustomerCreateModel model)
+    public async Task<IActionResult> Create([FromBody] CustomerCreateModel model)
     {
-        return null;
+        var result = await _customerService.Create(model);
+        return result.IsSuccess ? Ok(result) : ApiControllerHandleResult(result);
+    }
+
+    [HttpGet("v1/customer")]
+    public async Task<IActionResult> Get([FromQuery] CustomerFilter filter, [FromQuery] PaginationRequest pagination)
+    {
+        var result = await _customerService.GetAll(filter, pagination);
+        return Ok(result);
     }
 }

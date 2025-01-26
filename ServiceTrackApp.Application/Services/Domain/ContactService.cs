@@ -1,5 +1,4 @@
 ﻿using ServiceTrackApp.Application.InputViewModel.Contact;
-using ServiceTrackApp.Application.InputViewModel.Task;
 using ServiceTrackApp.Application.Interfaces.Domain;
 using ServiceTrackApp.Domain.Common.Erros;
 using ServiceTrackApp.Domain.Common.Result;
@@ -65,13 +64,12 @@ public class ContactService : IContactService
         throw new NotImplementedException();
     }
 
-    private static Contact CreateContact(CreateContactModel contactModel)
-    {
-        return new Contact
-        (contactModel.Name,
-            new JobPosition(contactModel.JobPosition),
-            new Email(contactModel.Email ?? string.Empty),
-            new SmartPhoneNumber(contactModel.SmartPhoneNumber),
-            contactModel.CustomerId);
-    }
+     internal static Contact CreateContact(CreateContactModel contactModel)
+     {
+         return new Contact
+         (contactModel.Name,
+             new JobPosition(contactModel.JobPosition),
+             new Email(contactModel.Email ?? string.Empty),
+             new SmartPhoneNumber(contactModel.SmartPhoneNumber)); //, contactModel.CustomerId);
+     }
 }

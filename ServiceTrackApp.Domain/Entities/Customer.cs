@@ -12,7 +12,7 @@ public class Customer : BaseEntity, IEntityActivable
     public Address Address { get; private set; }
     public IReadOnlyCollection<Tasks> Tasks { get; private set; } = new List<Tasks>();
     
-    public IList<Contact> Contacts { get; set; } = new List<Contact>();
+    public IList<Contact> Contacts { get; private set; } = new List<Contact>();
     
     protected  Customer() { } //EF default constructor
     public Customer(string name, Email email, SmartPhoneNumber smartPhoneNumber, Address address, CpfCnpj cpfCnpj)

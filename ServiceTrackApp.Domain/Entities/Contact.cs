@@ -1,4 +1,5 @@
-﻿using ServiceTrackApp.Domain.ValueObjects;
+﻿using System.Text.Json.Serialization;
+using ServiceTrackApp.Domain.ValueObjects;
 
 namespace ServiceTrackApp.Domain.Entities;
 
@@ -9,10 +10,13 @@ public class Contact : BaseEntity
     public Email? Email { get; private set; }
     public SmartPhoneNumber SmartPhoneNumber { get; private set; }
     public Guid CustomerId  { get; private set; }
+    
+    [JsonIgnore]
     public Customer Customer { get; private set; } // Ef nav prop
 
     protected Contact() { } // Ef default constructor
 
+    /*
     public Contact(string name, JobPosition? jobPosition, Email? email, SmartPhoneNumber smartPhoneNumber, Guid customerId)
     {
         Name = name;
@@ -20,5 +24,14 @@ public class Contact : BaseEntity
         Email = email;
         SmartPhoneNumber = smartPhoneNumber;
         CustomerId = customerId;
+    }
+    */
+    
+    public Contact(string name, JobPosition? jobPosition, Email? email, SmartPhoneNumber smartPhoneNumber)
+    {
+        Name = name;
+        JobPosition = jobPosition;
+        Email = email;
+        SmartPhoneNumber = smartPhoneNumber;
     }
 }

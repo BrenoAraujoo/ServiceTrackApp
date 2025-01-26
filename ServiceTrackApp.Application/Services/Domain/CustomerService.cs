@@ -15,17 +15,24 @@ namespace ServiceTrackApp.Application.Services.Domain;
 public class CustomerService : ICustomerService
 {
     private readonly ICustomerRepository _customerRepository;
-    private readonly IContactRepository _contactRepository;
 
     public CustomerService(ICustomerRepository customerRepository, IContactRepository contactRepository)
     {
         _customerRepository = customerRepository;
-        _contactRepository = contactRepository;
     }
 
-    public Task<Result> GetAll(IFilterCriteria<Customer> filter, PaginationRequest pagination)
+    public async Task<Result> GetAll(IFilterCriteria<Customer> filter, PaginationRequest pagination)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var customers = await _customerRepository.GetAllAsync(filter, pagination);
+            return Result<PagedList<Customer>>.Success(customers);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public Task<Result> GetById(Guid id)
@@ -76,10 +83,12 @@ public class CustomerService : ICustomerService
                 customerCreateModel.Country,
                 customerCreateModel.PostalCod),
             new CpfCnpj(customerCreateModel.CpfCnpj));
-
-         foreach (var contact in customerCreateModel.Contacts)
-             customer.AddContact(contact);
          
+         foreach (var contact in customerCreateModel.Contacts)
+         {
+             customer.Contacts.Add(ContactService.CreateContact(contact));
+         }
+             
          return customer;
     }
 }

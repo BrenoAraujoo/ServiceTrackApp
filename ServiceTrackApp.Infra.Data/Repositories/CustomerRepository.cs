@@ -3,14 +3,26 @@ using ServiceTrackApp.Domain.Filters;
 using ServiceTrackApp.Domain.Interfaces;
 using ServiceTrackApp.Domain.Pagination;
 using ServiceTrackApp.Infra.Data.Context;
+using ServiceTrackApp.Infra.Data.Helpers;
+using System.Linq.Dynamic.Core;
+using Microsoft.EntityFrameworkCore;
 
 namespace ServiceTrackApp.Infra.Data.Repositories;
 
 public class CustomerRepository (ApplicationDbContext context) : ICustomerRepository
 {
-    public Task<PagedList<Customer>> GetAllAsync(IFilterCriteria<Customer> filter, PaginationRequest paginationRequest)
+    public async Task<PagedList<Customer>> GetAllAsync(IFilterCriteria<Customer> filter, PaginationRequest paginationRequest)
     {
-        throw new NotImplementedException();
+        var query = context.Customers.AsQueryable();
+        query = filter.Apply(query);
+        
+        query = query.Include(c => c.Contacts);
+        
+        query = !string.IsNullOrEmpty(paginationRequest.OrderBy) ? query.OrderBy(paginationRequest.OrderBy) :
+            query.OrderBy(x => x.Email.Value);
+
+        
+        return await PaginationHelper.ToPagedListAsync(query, paginationRequest.PageNumber, paginationRequest.PageSize);
     }
 
     public Task<Customer?> GetByIdAsync(Guid id)

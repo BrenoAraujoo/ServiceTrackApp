@@ -4,6 +4,6 @@ public record CreateContactModel(
     string Name,
     string? JobPosition,
     string? Email,
-    string SmartPhoneNumber,
-    Guid CustomerId
+    string SmartPhoneNumber
+    //Guid CustomerId
 );

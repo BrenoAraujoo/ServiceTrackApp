@@ -1,4 +1,5 @@
-﻿using ServiceTrackApp.Domain.Entities;
+﻿using ServiceTrackApp.Application.InputViewModel.Contact;
+using ServiceTrackApp.Domain.Entities;
 
 namespace ServiceTrackApp.Application.InputViewModel.Customer;
 
@@ -12,4 +13,4 @@ public record CustomerCreateModel(
     string State,
     string Country,
     string PostalCod,
-    List<Domain.Entities.Contact>? Contacts);
+    List<CreateContactModel>? Contacts);
