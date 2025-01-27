@@ -14,9 +14,10 @@ public class CustomerRepository (ApplicationDbContext context) : ICustomerReposi
     public async Task<PagedList<Customer>> GetAllAsync(IFilterCriteria<Customer> filter, PaginationRequest paginationRequest)
     {
         var query = context.Customers.AsQueryable();
-        query = filter.Apply(query);
         
         query = query.Include(c => c.Contacts);
+        query = filter.Apply(query);
+        
         
         query = !string.IsNullOrEmpty(paginationRequest.OrderBy) ? query.OrderBy(paginationRequest.OrderBy) :
             query.OrderBy(x => x.Email.Value);

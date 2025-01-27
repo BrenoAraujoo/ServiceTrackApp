@@ -2,6 +2,7 @@
 using ServiceTrackApp.Application.InputViewModel.Customer;
 using ServiceTrackApp.Application.InputViewModel.Task;
 using ServiceTrackApp.Application.Interfaces.Domain;
+using ServiceTrackApp.Application.ViewModel.Customer;
 using ServiceTrackApp.Domain.Common.Erros;
 using ServiceTrackApp.Domain.Common.Result;
 using ServiceTrackApp.Domain.Entities;
@@ -25,8 +26,10 @@ public class CustomerService : ICustomerService
     {
         try
         {
-            var customers = await _customerRepository.GetAllAsync(filter, pagination);
-            return Result<PagedList<Customer>>.Success(customers);
+            var pagedList = await _customerRepository.GetAllAsync(filter, pagination);
+            var customerSimpleViewModel = CustomerSimpleViewModel.ToViewModel(pagedList.EntityList);
+            var pagedViewModel = new PagedList<CustomerSimpleViewModel>(customerSimpleViewModel, pagedList.PageNumber, pagination.PageSize, pagedList.TotalItems);
+            return Result<PagedList<CustomerSimpleViewModel>>.Success(pagedViewModel);
         }
         catch (Exception e)
         {
@@ -83,12 +86,13 @@ public class CustomerService : ICustomerService
                 customerCreateModel.Country,
                 customerCreateModel.PostalCod),
             new CpfCnpj(customerCreateModel.CpfCnpj));
-         
+
+         if (customerCreateModel.Contacts is null) return customer;
          foreach (var contact in customerCreateModel.Contacts)
          {
              customer.Contacts.Add(ContactService.CreateContact(contact));
          }
-             
+
          return customer;
     }
 }

@@ -9,7 +9,8 @@ public class CustomerFilter : IFilterCriteria<Customer>
     public IQueryable<Customer> Apply(IQueryable<Customer> query)
     {
         if(Name is not null)
-            query = query.Where(u => u.Name.Contains(Name));
+            query = query
+                .Where(u => u.Name.ToLower().Contains(Name.ToLower()));
         return query;
     }
 }
