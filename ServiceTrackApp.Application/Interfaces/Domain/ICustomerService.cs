@@ -12,7 +12,7 @@ public interface ICustomerService
     Task<Result> GetAll(IFilterCriteria<Customer> filter, PaginationRequest pagination);
     Task<Result> GetById(Guid id);
     Task<Result> GetByUserId(Guid userId);
-    Task<Result> Create(CustomerCreateModel customerCreateModel);
-    Task<Result> Update(Guid taskId, UpdateTaskModel taskModel);
+    Task<Result> Create(CustomerCreateModel model);
+    Task<Result> Update(Guid customerId, CustomerUpdateModel customerUpdateModel);
     Task <Result>Delete(Guid id);
 }

@@ -57,7 +57,7 @@ namespace ServiceTrackApp.Domain.Entities
             JobPosition? jobPosition,
             Role? role)
         {
-            if (name != null) UpdateName(name);
+            if (name != null) SetName(name);
             if (email != null) UpdateEmail(email);
             if (smartPhoneNumber != null) UpdateSmartPhoneNumber(smartPhoneNumber);
             if (jobPosition != null) UpdateJobPosition(jobPosition);
@@ -102,11 +102,7 @@ namespace ServiceTrackApp.Domain.Entities
                 throw new ArgumentException("O nome precisa conter pelo menos 2 caracteres", nameof(name));
             Name = name;
         }
-
-        public void UpdateName(string name)
-        {
-            SetName(name);
-        }
+        
 
         private void UpdateSmartPhoneNumber(SmartPhoneNumber? smartPhoneNumber)
         {

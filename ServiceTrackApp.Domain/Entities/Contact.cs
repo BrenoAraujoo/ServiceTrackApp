@@ -15,17 +15,6 @@ public class Contact : BaseEntity
     public Customer Customer { get; private set; } // Ef nav prop
 
     protected Contact() { } // Ef default constructor
-
-    /*
-    public Contact(string name, JobPosition? jobPosition, Email? email, SmartPhoneNumber smartPhoneNumber, Guid customerId)
-    {
-        Name = name;
-        JobPosition = jobPosition;
-        Email = email;
-        SmartPhoneNumber = smartPhoneNumber;
-        CustomerId = customerId;
-    }
-    */
     
     public Contact(string name, JobPosition? jobPosition, Email? email, SmartPhoneNumber smartPhoneNumber)
     {
@@ -33,5 +22,17 @@ public class Contact : BaseEntity
         JobPosition = jobPosition;
         Email = email;
         SmartPhoneNumber = smartPhoneNumber;
+    }
+
+    public void Update(
+        string? name,
+        JobPosition? jobPosition,
+        Email? email, 
+        SmartPhoneNumber? smartPhoneNumber)
+    {
+        if(name != null) Name = name;
+        if(jobPosition != null) JobPosition = jobPosition;
+        if(email != null) Email = email;
+        if(smartPhoneNumber != null) SmartPhoneNumber = smartPhoneNumber;
     }
 }

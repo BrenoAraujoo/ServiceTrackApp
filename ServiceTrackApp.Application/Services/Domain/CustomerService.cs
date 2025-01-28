@@ -1,11 +1,11 @@
 ﻿using ServiceTrackApp.Application.InputViewModel.Contact;
 using ServiceTrackApp.Application.InputViewModel.Customer;
-using ServiceTrackApp.Application.InputViewModel.Task;
 using ServiceTrackApp.Application.Interfaces.Domain;
 using ServiceTrackApp.Application.ViewModel.Customer;
 using ServiceTrackApp.Domain.Common.Erros;
 using ServiceTrackApp.Domain.Common.Result;
 using ServiceTrackApp.Domain.Entities;
+using ServiceTrackApp.Domain.Factories;
 using ServiceTrackApp.Domain.Filters;
 using ServiceTrackApp.Domain.Interfaces;
 using ServiceTrackApp.Domain.Pagination;
@@ -33,8 +33,7 @@ public class CustomerService : ICustomerService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            return Result.Failure(CustomError.ServerError(e.Message));
         }
     }
 
@@ -48,11 +47,11 @@ public class CustomerService : ICustomerService
         throw new NotImplementedException();
     }
 
-    public async Task<Result> Create(CustomerCreateModel customerCreateModel)
+    public async Task<Result> Create(CustomerCreateModel model)
     {
         try
         {
-            var customerEntity = CreateCustomer(customerCreateModel);
+            var customerEntity = ToEntity(model);
             await _customerRepository.CreateAsync(customerEntity);
             return Result<Customer>.Success(customerEntity);
 
@@ -64,9 +63,35 @@ public class CustomerService : ICustomerService
         
     }
 
-    public Task<Result> Update(Guid taskId, UpdateTaskModel taskModel)
+    public async Task<Result> Update(Guid customerId, CustomerUpdateModel customerUpdateModel)
     {
-        throw new NotImplementedException();
+        var customerEntity = await _customerRepository.GetByIdAsync(customerId);
+        if(customerEntity is null)
+            return Result.Failure(CustomError.RecordNotFound(ErrorMessage.CustomerNotFound));
+        return Result.Failure(CustomError.RecordNotFound(ErrorMessage.CustomerNotFound));
+        
+        /*
+        try
+        {
+            customerEntity.Update(customerUpdateModel.Name,
+                new Email(customerUpdateModel.Email),
+                new SmartPhoneNumber(customerUpdateModel.SmartPhoneNumber),
+                new Address(
+                    customerUpdateModel.Street,
+                    customerUpdateModel.City,
+                    customerUpdateModel.State,
+                    customerUpdateModel.Country,
+                    customerUpdateModel.PostalCod),
+                new CpfCnpj(customerUpdateModel.CpfCnpj),null);
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        */
+   
     }
 
     public Task<Result> Delete(Guid id)
@@ -74,25 +99,57 @@ public class CustomerService : ICustomerService
         throw new NotImplementedException();
     }
     
-    private static Customer CreateCustomer(CustomerCreateModel customerCreateModel)
+    private static Customer ToEntity(CustomerCreateModel model)
     {
-         var customer = new Customer(customerCreateModel.Name,
-            new Email(customerCreateModel.Email),
-            new SmartPhoneNumber(customerCreateModel.SmartPhoneNumber),
-            new Address
-            (customerCreateModel.Street,
-                customerCreateModel.City,
-                customerCreateModel.State,
-                customerCreateModel.Country,
-                customerCreateModel.PostalCod),
-            new CpfCnpj(customerCreateModel.CpfCnpj));
+        List<Contact>? contacts = new ();
+        if (model.Contacts is not null)
+        {
+            contacts = model.Contacts.Select(
+                c => new Contact(
+                    c.Name,
+                    new JobPosition(c.JobPosition),
+                    c.Email is not null ? new Email(c.Email) : null,
+                    new SmartPhoneNumber(c.SmartPhoneNumber)))
+                .ToList();
+        }
+        
+        var customer  = CustomerFactory.Create(
+            model.CpfCnpj,
+            model.Name,
+            model.Email,
+            model.SmartPhoneNumber,
+            model.Street,
+            model.City,
+            model.State,
+            model.PostalCod,
+            model.Country,
+            contacts);
 
-         if (customerCreateModel.Contacts is null) return customer;
-         foreach (var contact in customerCreateModel.Contacts)
-         {
-             customer.Contacts.Add(ContactService.CreateContact(contact));
-         }
-
-         return customer;
+        return customer;
     }
+
+    
+    /*
+    private static (string? CpfCnpj,
+        string? Name,
+        string? Email,
+        string? SmartPhoneNumber,
+        string? Street,
+        string? City,
+        string? State,
+        string? Country,
+        string? PostalCod,
+        IList<ContactUpdateModel>? Contacts) CreateCustomerUpdateTuple (CustomerCreateModel customerCreateModel)
+    {
+        var name = !string.IsNullOrEmpty(customerCreateModel.Name) ? customerCreateModel.Name :
+                null;
+        var email = !string.IsNullOrWhiteSpace(customerCreateModel.Email)? new Email(customerCreateModel.Email) :
+        null;
+        
+        var smartPhoneNumber = !string.IsNullOrEmpty(customerCreateModel.SmartPhoneNumber) ? customerCreateModel.SmartPhoneNumber :
+            null;
+        
+        
+    }
+    */
 }

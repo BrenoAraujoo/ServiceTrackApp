@@ -19,6 +19,13 @@
 
         #endregion
 
+        #region Customer messages
+
+        public const string CustomerNotFound = "Cliente não encontrado";
+        
+
+        #endregion
+        
         #region Task messages
         public const string TaskNotFound = "Tarefa não foi encontrada";
         public const string TaskInvalid = "Tarefa inválida";

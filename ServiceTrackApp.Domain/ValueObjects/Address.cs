@@ -6,7 +6,13 @@ namespace ServiceTrackApp.Domain.ValueObjects;
 public record Address
 {
     private const string PostalCodePattern = @"^(\d{5})(\d{3})$";
-
+    
+    public string Street { get; init; }
+    public string City { get; init; }
+    public string State { get; init; }
+    public string Country { get; init; }
+    public string PostalCode { get; init; }
+    
     public Address(
         string street,
         string city,
@@ -33,10 +39,5 @@ public record Address
         Country = country;
         PostalCode = postalCode;
     }
-    public string Street { get; init; }
-    public string City { get; init; }
-    public string State { get; init; }
-    public string Country { get; init; }
-    public string PostalCode { get; init; }
     
 }

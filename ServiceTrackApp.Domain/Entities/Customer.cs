@@ -28,6 +28,24 @@ public class Customer : BaseEntity, IEntityActivable
     {
         Contacts.Add(contact);
     }
+
+    public void Update(
+        string? name,
+        string? email,
+        string? smartPhoneNumber,
+        string? address,
+        string? cpfCnpj,
+        IList<Contact>? contacts)
+    {
+        
+        /*
+        if(name is not null) Name = name;
+        if(email is not null) Email = new Email(email);
+        if(smartPhoneNumber is not null) SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber);
+        if(address is not null) Address = new Address(address);
+        if(cpfCnpj is not null) CpfCnpj = cpfCnpj;
+        */
+    }
     public void Activate()
     {
         throw new NotImplementedException();
@@ -37,4 +55,24 @@ public class Customer : BaseEntity, IEntityActivable
     {
         throw new NotImplementedException();
     }
+
+    private void UpdateCustomerContacts(List<Contact>? contacts)
+    {
+        if(contacts is null) return;
+        
+        contacts.ForEach(contact =>
+        {
+            var currentContact = Contacts.FirstOrDefault(c => c.Id == contact.Id);
+            if (currentContact is not null)
+            {
+                currentContact.Update(contact.Name, contact.JobPosition,contact.Email, contact.SmartPhoneNumber);
+            }
+            else
+            {
+                Contacts.Add(contact);
+            }
+        });
+        
+    }
+    
 }

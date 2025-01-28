@@ -95,20 +95,8 @@ namespace ServiceTrackApp.Application.Services.Domain
             if (userEntity is null)
                 return Result.Failure(CustomError.RecordNotFound(ErrorMessage.UserNotFound));
             
-            var email = !string.IsNullOrWhiteSpace(updateUserModel.Email)? 
-                new Email(updateUserModel.Email) :
-                null;
-            
-            var role = RoleExtensions.ParseOrNull(updateUserModel.Role);
-            
-            var jobPosition = !string.IsNullOrWhiteSpace(updateUserModel.JobPosition)?
-                new JobPosition(updateUserModel.JobPosition)
-                : null;
+            var (email, role, jobPosition, smartPhoneNumber) = CreateUserFieldsTuple(updateUserModel);
 
-            var smartPhoneNumber = !string.IsNullOrWhiteSpace(updateUserModel.SmartPhoneNumber)
-                ? new SmartPhoneNumber(updateUserModel.SmartPhoneNumber)
-                : null;
-            
             try
             {
                 userEntity.Update(
@@ -136,7 +124,7 @@ namespace ServiceTrackApp.Application.Services.Domain
                 return Result.Failure(CustomError.ValidationError(e.Message));
             }
         }
-
+        
         public async Task<Result> Activate(Guid id)
         {
             var userEntity = await _userRepository.GetByIdAsync(id);
@@ -216,6 +204,25 @@ namespace ServiceTrackApp.Application.Services.Domain
                 RoleExtensions.ParseRole(userModel.Role), 
                 new JobPosition(userModel.JobPosition),
                 new SmartPhoneNumber(userModel.SmartPhoneNumber));
+        }
+        
+        private static (Email? email, Role? role, JobPosition? jobPosition, SmartPhoneNumber? smartPhoneNumber) CreateUserFieldsTuple(
+            UpdateUserModel updateUserModel)
+        {
+            var email = !string.IsNullOrWhiteSpace(updateUserModel.Email)? 
+                new Email(updateUserModel.Email) :
+                null;
+            
+            var role = RoleExtensions.ParseOrNull(updateUserModel.Role);
+            
+            var jobPosition = !string.IsNullOrWhiteSpace(updateUserModel.JobPosition)?
+                new JobPosition(updateUserModel.JobPosition)
+                : null;
+
+            var smartPhoneNumber = !string.IsNullOrWhiteSpace(updateUserModel.SmartPhoneNumber)
+                ? new SmartPhoneNumber(updateUserModel.SmartPhoneNumber)
+                : null;
+            return (email, role, jobPosition, smartPhoneNumber);
         }
 
     }

@@ -7,7 +7,7 @@ public record CustomerCreateModel(
     string CpfCnpj,
     string Name,
     string Email,
-    string? SmartPhoneNumber,
+    string SmartPhoneNumber,
     string Street,
     string City,
     string State,
