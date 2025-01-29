@@ -20,7 +20,7 @@ public record CustomerSimpleViewModel
 
     public static IEnumerable<CustomerSimpleViewModel> ToViewModel(IEnumerable<Domain.Entities.Customer> customers)
     {
-        return customers.Select(CustomerSimpleViewModel.ToViewModel).ToList();
+        return customers.Select(ToViewModel).ToList();
     }
 
     private static string FormattedAddress(Domain.Entities.Customer customer)

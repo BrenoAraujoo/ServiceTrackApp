@@ -37,9 +37,20 @@ public class CustomerService : ICustomerService
         }
     }
 
-    public Task<Result> GetById(Guid id)
+    public async Task<Result> GetById(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var customerEntity = await _customerRepository.GetByIdAsync(id);
+            if(customerEntity is null)
+                return Result.Failure(CustomError.RecordNotFound(ErrorMessage.CustomerNotFound));
+            var customerViewModel = CustomerDetailedViewModel.ToViewModel(customerEntity);
+            return Result<CustomerDetailedViewModel>.Success(customerViewModel);
+        }
+        catch (Exception e)
+        {
+            return Result.Failure(CustomError.ServerError(e.Message));
+        }
     }
 
     public Task<Result> GetByUserId(Guid userId)

@@ -25,10 +25,17 @@ public class CustomerController : ApiControllerBase
     }
 
     [HttpGet("v1/customer")]
-    public async Task<IActionResult> Get([FromQuery] CustomerFilter filter, [FromQuery] PaginationRequest pagination)
+    public async Task<IActionResult> GetAll([FromQuery] CustomerFilter filter, [FromQuery] PaginationRequest pagination)
     {
         var result = await _customerService.GetAll(filter, pagination);
         return Ok(result);
+    }
+
+    [HttpGet("v1/customer/{id}")]
+    public async Task<IActionResult> GetById([FromRoute] Guid id)
+    {
+        var result = await _customerService.GetById(id);
+        return result.IsSuccess ? Ok(result) : ApiControllerHandleResult(result);
     }
 
     [HttpPut("v1/customer/{id}")]
@@ -36,4 +43,6 @@ public class CustomerController : ApiControllerBase
     {
         var result = await _customerService.Update(id, model);
         return result.IsSuccess ? Ok(result) : ApiControllerHandleResult(result);
-    }}
+    }
+    
+}

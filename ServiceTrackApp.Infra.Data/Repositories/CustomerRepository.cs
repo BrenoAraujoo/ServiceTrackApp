@@ -28,7 +28,10 @@ public class CustomerRepository (ApplicationDbContext context) : ICustomerReposi
 
     public async Task<Customer?> GetByIdAsync(Guid id)
     {
-       return await context.Customers.FirstOrDefaultAsync(c => c.Id == id);
+       return await context.Customers
+           .AsNoTracking()
+           .Include(c => c.Contacts)
+           .SingleOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<Customer> CreateAsync(Customer customer)
