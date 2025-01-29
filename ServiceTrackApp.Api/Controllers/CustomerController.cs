@@ -30,4 +30,10 @@ public class CustomerController : ApiControllerBase
         var result = await _customerService.GetAll(filter, pagination);
         return Ok(result);
     }
-}
+
+    [HttpPut("v1/customer/{id}")]
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] CustomerUpdateModel model)
+    {
+        var result = await _customerService.Update(id, model);
+        return result.IsSuccess ? Ok(result) : ApiControllerHandleResult(result);
+    }}

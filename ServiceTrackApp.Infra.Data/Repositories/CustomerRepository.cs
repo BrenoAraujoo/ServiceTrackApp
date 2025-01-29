@@ -26,9 +26,9 @@ public class CustomerRepository (ApplicationDbContext context) : ICustomerReposi
         return await PaginationHelper.ToPagedListAsync(query, paginationRequest.PageNumber, paginationRequest.PageSize);
     }
 
-    public Task<Customer?> GetByIdAsync(Guid id)
+    public async Task<Customer?> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+       return await context.Customers.FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<Customer> CreateAsync(Customer customer)
@@ -49,9 +49,11 @@ public class CustomerRepository (ApplicationDbContext context) : ICustomerReposi
         }
     }
 
-    public Task<Customer> UpdateAsync(Customer trackedCustomer)
+    public async Task<Customer> UpdateAsync(Customer trackedCustomer)
     {
-        throw new NotImplementedException();
+        context.Customers.Update(trackedCustomer);
+        await context.SaveChangesAsync();
+        return trackedCustomer;
     }
 
     public Task RemoveAsync(Customer customer)

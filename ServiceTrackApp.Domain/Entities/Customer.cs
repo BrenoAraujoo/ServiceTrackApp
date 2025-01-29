@@ -31,20 +31,21 @@ public class Customer : BaseEntity, IEntityActivable
 
     public void Update(
         string? name,
-        string? email,
-        string? smartPhoneNumber,
-        string? address,
-        string? cpfCnpj,
-        IList<Contact>? contacts)
+        Email? email,
+        SmartPhoneNumber? smartPhoneNumber,
+        Address? address,
+        CpfCnpj? cpfCnpj,
+        List<Contact>? contacts)
     {
         
-        /*
+        
         if(name is not null) Name = name;
-        if(email is not null) Email = new Email(email);
-        if(smartPhoneNumber is not null) SmartPhoneNumber = new SmartPhoneNumber(smartPhoneNumber);
-        if(address is not null) Address = new Address(address);
+        if(email is not null) Email = email;
+        if(smartPhoneNumber is not null) SmartPhoneNumber = smartPhoneNumber;
+        if(address is not null) Address = address;
         if(cpfCnpj is not null) CpfCnpj = cpfCnpj;
-        */
+        if(contacts is not null) UpdateOrAddContacts(contacts);
+        
     }
     public void Activate()
     {
@@ -56,23 +57,23 @@ public class Customer : BaseEntity, IEntityActivable
         throw new NotImplementedException();
     }
 
-    private void UpdateCustomerContacts(List<Contact>? contacts)
+    private void UpdateOrAddContacts(List<Contact>? contacts)
     {
         if(contacts is null) return;
         
         contacts.ForEach(contact =>
         {
-            var currentContact = Contacts.FirstOrDefault(c => c.Id == contact.Id);
-            if (currentContact is not null)
+            var existingContact = Contacts.FirstOrDefault
+                (c => c.Email == contact.Email || c.SmartPhoneNumber == contact.SmartPhoneNumber);
+            if (existingContact is not null)
             {
-                currentContact.Update(contact.Name, contact.JobPosition,contact.Email, contact.SmartPhoneNumber);
+                existingContact.Update(contact.Name, contact.JobPosition,contact.Email, contact.SmartPhoneNumber);
             }
             else
             {
                 Contacts.Add(contact);
             }
         });
-        
     }
     
 }

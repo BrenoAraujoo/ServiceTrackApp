@@ -68,29 +68,33 @@ public class CustomerService : ICustomerService
         var customerEntity = await _customerRepository.GetByIdAsync(customerId);
         if(customerEntity is null)
             return Result.Failure(CustomError.RecordNotFound(ErrorMessage.CustomerNotFound));
-        return Result.Failure(CustomError.RecordNotFound(ErrorMessage.CustomerNotFound));
-        
-        /*
+       
+        var (cpfCnpj, email, smartPhoneNumber,address, contacts) = 
+            CreateCustomerValueObjects(customerUpdateModel, customerEntity);
+
         try
         {
-            customerEntity.Update(customerUpdateModel.Name,
-                new Email(customerUpdateModel.Email),
-                new SmartPhoneNumber(customerUpdateModel.SmartPhoneNumber),
-                new Address(
-                    customerUpdateModel.Street,
-                    customerUpdateModel.City,
-                    customerUpdateModel.State,
-                    customerUpdateModel.Country,
-                    customerUpdateModel.PostalCod),
-                new CpfCnpj(customerUpdateModel.CpfCnpj),null);
-            
+            customerEntity.Update(
+                customerUpdateModel.Name,
+                email,
+                smartPhoneNumber,
+                address,
+                cpfCnpj,
+                contacts);
+            await _customerRepository.UpdateAsync(customerEntity);
+            var customerSimpleViewModel = CustomerSimpleViewModel.ToViewModel(customerEntity);
+            return Result<CustomerSimpleViewModel>.Success(customerSimpleViewModel);
+
+        }
+        catch (ArgumentException e)
+        {
+            return Result.Failure(CustomError.ValidationError("erro ao atualizar Customer"));
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+                return Result.Failure(CustomError.ServerError("erro ao atualizar Customer"));
         }
-        */
+        
    
     }
 
@@ -101,7 +105,7 @@ public class CustomerService : ICustomerService
     
     private static Customer ToEntity(CustomerCreateModel model)
     {
-        List<Contact>? contacts = new ();
+        List<Contact>? contacts = null;
         if (model.Contacts is not null)
         {
             contacts = model.Contacts.Select(
@@ -128,28 +132,34 @@ public class CustomerService : ICustomerService
         return customer;
     }
 
-    
-    /*
-    private static (string? CpfCnpj,
-        string? Name,
-        string? Email,
-        string? SmartPhoneNumber,
-        string? Street,
-        string? City,
-        string? State,
-        string? Country,
-        string? PostalCod,
-        IList<ContactUpdateModel>? Contacts) CreateCustomerUpdateTuple (CustomerCreateModel customerCreateModel)
+    private static (CpfCnpj? cpfCnpj, Email? email, SmartPhoneNumber? smartPhobeNumber,Address address, List<Contact>? contacts) 
+        CreateCustomerValueObjects(CustomerUpdateModel model, Customer entity)
     {
-        var name = !string.IsNullOrEmpty(customerCreateModel.Name) ? customerCreateModel.Name :
-                null;
-        var email = !string.IsNullOrWhiteSpace(customerCreateModel.Email)? new Email(customerCreateModel.Email) :
-        null;
+        var cpfCnpj = string.IsNullOrWhiteSpace(model.CpfCnpj) ? null : new CpfCnpj(model.CpfCnpj);
+        var email = string.IsNullOrWhiteSpace(model.Email) ? null : new Email(model.Email);
+        var smartPhoneNumber = string.IsNullOrWhiteSpace(model.SmartPhoneNumber) ? null : new SmartPhoneNumber(model.SmartPhoneNumber);
         
-        var smartPhoneNumber = !string.IsNullOrEmpty(customerCreateModel.SmartPhoneNumber) ? customerCreateModel.SmartPhoneNumber :
-            null;
-        
-        
+        var address = new Address(
+            model.Street ?? entity.Address.Street,
+            model.City ?? entity.Address.City,
+            model.State ?? entity.Address.State,
+            model.Country ?? entity.Address.Country,
+            model.PostalCod ?? entity.Address.PostalCode
+        );
+
+        List<Contact>? contacts = null;
+        if (model.Contacts is not null)
+        {
+            contacts = model.Contacts.Select(
+                    c => new Contact(
+                        c.Name ?? entity.Name,
+                        new JobPosition(c.JobPosition),
+                        c.Email is not null ? new Email(c.Email) : null,
+                        new SmartPhoneNumber(c.SmartPhoneNumber)))
+                .ToList();
+        }
+
+        return (cpfCnpj, email, smartPhoneNumber, address, contacts);
     }
-    */
+    
 }
